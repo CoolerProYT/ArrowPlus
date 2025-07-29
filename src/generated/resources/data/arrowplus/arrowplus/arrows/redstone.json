@@ -1,0 +1,6 @@
+{
+  "baseDamage": 1.8,
+  "color": -59580,
+  "material": "minecraft:redstone",
+  "translationKey": "item.arrowplus.redstone_arrow"
+}

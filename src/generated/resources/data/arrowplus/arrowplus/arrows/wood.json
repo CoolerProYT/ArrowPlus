@@ -1,0 +1,6 @@
+{
+  "baseDamage": 1.0,
+  "color": -7508381,
+  "material": "minecraft:oak_planks",
+  "translationKey": "item.arrowplus.wood_arrow"
+}

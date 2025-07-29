@@ -1,0 +1,6 @@
+{
+  "baseDamage": 2.5,
+  "color": -5194043,
+  "material": "minecraft:iron_ingot",
+  "translationKey": "item.arrowplus.iron_arrow"
+}

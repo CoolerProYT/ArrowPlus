@@ -1,0 +1,25 @@
+{
+  "item.minecraft.arrow": "Flint Arrow",
+  "creativetab.arrowplus": "Arrow+",
+  "tooltip.arrowplus.base_damage": "Base Damage: %d",
+  "item.arrowplus.cheated_item": "Invalid Arrow+ Item",
+
+  "item.arrowplus.stone_arrow": "Stone Arrow",
+  "item.arrowplus.iron_arrow": "Iron Arrow",
+  "item.arrowplus.copper_arrow": "Copper Arrow",
+  "item.arrowplus.gold_arrow": "Gold Arrow",
+  "item.arrowplus.lapis_arrow": "Lapis Arrow",
+  "item.arrowplus.emerald_arrow": "Emerald Arrow",
+  "item.arrowplus.diamond_arrow": "Diamond Arrow",
+  "item.arrowplus.obsidian_arrow": "Obsidian Arrow",
+  "item.arrowplus.amethyst_arrow": "Amethyst Arrow",
+  "item.arrowplus.netherite_arrow": "Netherite Arrow",
+  "item.arrowplus.wood_arrow": "Wood Arrow",
+  "item.arrowplus.bone_arrow": "Bone Arrow",
+  "item.arrowplus.brick_arrow": "Brick Arrow",
+  "item.arrowplus.quartz_arrow": "Quartz Arrow",
+  "item.arrowplus.prismarine_arrow": "Prismarine Arrow",
+  "item.arrowplus.glowstone_arrow": "Glowstone Arrow",
+  "item.arrowplus.redstone_arrow": "Redstone Arrow",
+  "item.arrowplus.charcoal_arrow": "Charcoal Arrow"
+}

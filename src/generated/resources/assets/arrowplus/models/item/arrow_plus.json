@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "arrowplus:item/arrow_plus",
+    "layer1": "arrowplus:item/arrow_plus_layer1"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "baseDamage": 2.0,
+  "color": -4822448,
+  "material": "minecraft:brick",
+  "translationKey": "item.arrowplus.brick_arrow"
+}
