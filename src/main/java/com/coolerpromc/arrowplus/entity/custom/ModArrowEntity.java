@@ -1,6 +1,5 @@
 package com.coolerpromc.arrowplus.entity.custom;
 
-import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
 import com.coolerpromc.arrowplus.util.ArrowData;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -13,7 +12,6 @@ import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ModArrowEntity extends AbstractArrow {
@@ -26,18 +24,19 @@ public class ModArrowEntity extends AbstractArrow {
         this.updateColor();
     }
 
-    public ModArrowEntity(EntityType<? extends AbstractArrow> entityType, LivingEntity owner, Level level, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, double baseDamage) {
-        super(entityType, owner, level, pickupItemStack.copyWithCount(1), firedFromWeapon);
+    public ModArrowEntity(EntityType<? extends AbstractArrow> entityType, LivingEntity owner, Level level, ItemStack pickupItemStack, double baseDamage) {
+        super(entityType, owner, level);
         this.stack = pickupItemStack;
         this.pickup = Pickup.ALLOWED;
+        ItemStack firedFromWeapon = owner.getUseItem();
 
-        if (firedFromWeapon != null && firedFromWeapon.getItem() instanceof BowItem){
-            int powerLevel = firedFromWeapon.getEnchantmentLevel(level.registryAccess().holderOrThrow(Enchantments.POWER));
+        if (firedFromWeapon.getItem() instanceof BowItem){
+            int powerLevel = firedFromWeapon.getEnchantmentLevel(Enchantments.POWER_ARROWS);
             if (powerLevel > 0) {
                 baseDamage += (baseDamage * 0.25D) * (powerLevel + 1);
             }
 
-            int infinityLevel = firedFromWeapon.getEnchantmentLevel(level.registryAccess().holderOrThrow(Enchantments.INFINITY));
+            int infinityLevel = firedFromWeapon.getEnchantmentLevel(Enchantments.INFINITY_ARROWS);
             this.pickup = infinityLevel > 0 ? Pickup.DISALLOWED : Pickup.ALLOWED;
         }
         this.setBaseDamage(baseDamage);
@@ -45,20 +44,15 @@ public class ModArrowEntity extends AbstractArrow {
     }
 
     public ModArrowEntity(EntityType<? extends AbstractArrow> entityType, double x, double y, double z, Level level, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon) {
-        super(entityType, x, y, z, level, pickupItemStack, firedFromWeapon);
+        super(entityType, x, y, z, level);
         this.stack = pickupItemStack;
         this.updateColor();
     }
 
     @Override
-    protected @NotNull ItemStack getDefaultPickupItem() {
-        return stack;
-    }
-
-    @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(COLOR, -1);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(COLOR, -1);
     }
 
     @Override
@@ -73,8 +67,13 @@ public class ModArrowEntity extends AbstractArrow {
         this.entityData.set(COLOR, tag.getInt("color"));
     }
 
+    @Override
+    protected ItemStack getPickupItem() {
+        return stack;
+    }
+
     public void updateColor() {
-        this.entityData.set(COLOR, stack.getOrDefault(ModDataComponents.ARROW_DATA, ArrowData.EMPTY).color());
+        this.entityData.set(COLOR, ArrowData.load(stack.getOrCreateTag()).color());
     }
 
     public int getColor() {

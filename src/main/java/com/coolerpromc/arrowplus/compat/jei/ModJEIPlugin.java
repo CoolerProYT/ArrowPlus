@@ -1,7 +1,6 @@
 package com.coolerpromc.arrowplus.compat.jei;
 
 import com.coolerpromc.arrowplus.ArrowPlus;
-import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
 import com.coolerpromc.arrowplus.item.ModItems;
 import com.coolerpromc.arrowplus.registry.ModRegistries;
 import mezz.jei.api.IModPlugin;
@@ -11,15 +10,18 @@ import mezz.jei.api.recipe.vanilla.IVanillaRecipeFactory;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.ISubtypeRegistration;
 import mezz.jei.common.util.RegistryUtil;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CraftingRecipe;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.ShapedRecipe;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @JeiPlugin
 public class ModJEIPlugin implements IModPlugin {
@@ -33,11 +35,11 @@ public class ModJEIPlugin implements IModPlugin {
         IVanillaRecipeFactory vanillaRecipeFactory = registration.getJeiHelpers().getVanillaRecipeFactory();
         String group = "arrowplus.arrow";
 
-        var arrowRecipes = RegistryUtil.getRegistry(ModRegistries.ARROW_DATA_KEY).stream().map(data -> {
+        List<CraftingRecipe> arrowRecipes = RegistryUtil.getRegistry(ModRegistries.ARROW_DATA_KEY).stream().map(data -> {
             Ingredient ingredient = Ingredient.of(Items.FLINT);
             ResourceLocation materialLocation = ResourceLocation.parse("invalid");
             ItemStack output = new ItemStack(ModItems.ARROW_PLUS.get(), 4);
-            output.set(ModDataComponents.ARROW_DATA, data);
+            data.save(output.getOrCreateTag());
 
             if (data.material().left().isPresent()){
                 ingredient = Ingredient.of(BuiltInRegistries.ITEM.get(data.material().left().get()));
@@ -49,17 +51,19 @@ public class ModJEIPlugin implements IModPlugin {
             }
 
             ResourceLocation id = ResourceLocation.fromNamespaceAndPath(ArrowPlus.MODID, "arrowplus.arrow." + materialLocation.getPath());
-            CraftingRecipe recipe = vanillaRecipeFactory.createShapedRecipeBuilder(CraftingBookCategory.MISC, List.of(output))
-                    .group(group)
-                    .define('m', ingredient)
-                    .define('s', Ingredient.of(Items.STICK))
-                    .define('f', Ingredient.of(Items.FEATHER))
-                    .pattern(" m ")
-                    .pattern(" s ")
-                    .pattern(" f ")
-                    .build();
-            return new RecipeHolder<>(id, recipe);
-        }).toList();
+            NonNullList<Ingredient> inputs = NonNullList.of(
+                Ingredient.EMPTY,
+                ingredient,
+                Ingredient.EMPTY,
+                Ingredient.EMPTY,
+                Ingredient.of(Items.STICK),
+                Ingredient.EMPTY,
+                Ingredient.EMPTY,
+                Ingredient.of(Items.FEATHER),
+                Ingredient.EMPTY
+            );
+            return (new ShapedRecipe(id, group, CraftingBookCategory.MISC, 3, 3, inputs, output));
+        }).collect(Collectors.toUnmodifiableList());
 
         registration.addRecipes(RecipeTypes.CRAFTING, arrowRecipes);
     }

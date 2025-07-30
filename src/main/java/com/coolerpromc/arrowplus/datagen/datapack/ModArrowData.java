@@ -3,7 +3,7 @@ package com.coolerpromc.arrowplus.datagen.datapack;
 import com.coolerpromc.arrowplus.ArrowPlus;
 import com.coolerpromc.arrowplus.registry.ModRegistries;
 import com.coolerpromc.arrowplus.util.ArrowData;
-import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -29,7 +29,7 @@ public class ModArrowData {
     public static final ResourceKey<ArrowData> REDSTONE = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, ResourceLocation.fromNamespaceAndPath(ArrowPlus.MODID, "redstone"));
     public static final ResourceKey<ArrowData> CHARCOAL = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, ResourceLocation.fromNamespaceAndPath(ArrowPlus.MODID, "charcoal"));
 
-    public static void bootstrap(BootstrapContext<ArrowData> context){
+    public static void bootstrap(BootstapContext<ArrowData> context){
         context.register(STONE, new ArrowData(ItemTags.STONE_CRAFTING_MATERIALS, 1.5d, 0xFF4D4B49, "item.arrowplus.stone_arrow"));
         context.register(IRON, new ArrowData(Items.IRON_INGOT, 2.5d, 0xFFB0BEC5, "item.arrowplus.iron_arrow"));
         context.register(COPPER, new ArrowData(Items.COPPER_INGOT, 2.2d, 0xFFD46D44, "item.arrowplus.copper_arrow"));

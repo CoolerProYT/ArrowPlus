@@ -65,7 +65,7 @@ public class ModArrowRenderer extends ArrowRenderer<ModArrowEntity> {
     }
 
     public void setVertex(PoseStack.Pose pose, VertexConsumer consumer, int x, int y, int z, float u, float v, int normalX, int normalY, int normalZ, int packedLight, int color) {
-        consumer.addVertex(pose, (float)x, (float)y, (float)z).setColor(color).setUv(u, v).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(pose, (float)normalX, (float)normalZ, (float)normalY);
+        consumer.vertex(pose.pose(), (float)x, (float)y, (float)z).color(color).uv(u, v).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(pose.normal(), (float)normalX, (float)normalZ, (float)normalY).endVertex();
     }
 
     @Override

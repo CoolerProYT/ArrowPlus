@@ -1,67 +1,65 @@
 package com.coolerpromc.arrowplus.item.custom;
 
-import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
 import com.coolerpromc.arrowplus.entity.custom.ModArrowEntity;
 import com.coolerpromc.arrowplus.util.ArrowData;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Position;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 public class ModArrowItem extends ArrowItem {
-    private final EntityType<? extends AbstractArrow> entityType;
+    private final RegistryObject<EntityType<ModArrowEntity>> entityType;
 
-    public ModArrowItem(Properties p_40512_, EntityType<? extends AbstractArrow> entityType) {
+    public ModArrowItem(Properties p_40512_, RegistryObject<EntityType<ModArrowEntity>> entityType) {
         super(p_40512_);
         this.entityType = entityType;
     }
 
     @Override
-    public AbstractArrow createArrow(Level level, ItemStack ammo, LivingEntity shooter, @Nullable ItemStack weapon) {
-        return new ModArrowEntity(entityType, shooter, level, ammo.copyWithCount(1), weapon, ammo.getOrDefault(ModDataComponents.ARROW_DATA, ArrowData.EMPTY).baseDamage());
+    public AbstractArrow createArrow(Level level, ItemStack ammo, LivingEntity shooter) {
+        return new ModArrowEntity(entityType.get(), shooter, level, ammo.copyWithCount(1), ArrowData.load(ammo.getOrCreateTag()).baseDamage());
     }
 
     @Override
-    public boolean isInfinite(ItemStack ammo, ItemStack bow, LivingEntity livingEntity) {
-        return bow.getEnchantmentLevel(livingEntity.level().registryAccess().holderOrThrow(Enchantments.INFINITY)) > 0;
+    public boolean isInfinite(ItemStack stack, ItemStack bow, Player player) {
+        return bow.getEnchantmentLevel(Enchantments.INFINITY_ARROWS) > 0;
     }
 
     @Override
-    public Projectile asProjectile(Level level, Position location, ItemStack stack, Direction p_338469_) {
+    public @Nullable Entity createEntity(Level level, Entity location, ItemStack stack) {
         ModArrowEntity arrow = new ModArrowEntity(
-                entityType,
-                location.x(),
-                location.y(),
-                location.z(),
+                entityType.get(),
+                location.getX(),
+                location.getY(),
+                location.getZ(),
                 level,
                 stack.copyWithCount(1),
                 null
         );
-        arrow.setBaseDamage(stack.getOrDefault(ModDataComponents.ARROW_DATA, ArrowData.EMPTY).baseDamage());
+        arrow.setBaseDamage(ArrowData.load(stack.getOrCreateTag()).baseDamage());
         arrow.pickup = AbstractArrow.Pickup.ALLOWED;
         return arrow;
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(Component.translatable("tooltip.arrowplus.base_damage", stack.getOrDefault(ModDataComponents.ARROW_DATA, ArrowData.EMPTY).baseDamage()).withColor(0xBBBBBB));
-
+    public void appendHoverText(ItemStack stack, @Nullable Level p_41422_, List<Component> tooltipComponents, TooltipFlag p_41424_) {
+        tooltipComponents.add(Component.translatable("tooltip.arrowplus.base_damage", ArrowData.load(stack.getOrCreateTag()).baseDamage()).withStyle(Style.EMPTY.withColor(0xBBBBBB)));
     }
 
     @Override
     public Component getName(ItemStack stack) {
-        return Component.translatable(stack.getOrDefault(ModDataComponents.ARROW_DATA, ArrowData.EMPTY).translationKey());
+        return Component.translatable(ArrowData.load(stack.getOrCreateTag()).translationKey());
     }
 }

@@ -1,6 +1,5 @@
 package com.coolerpromc.arrowplus;
 
-import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
 import com.coolerpromc.arrowplus.entity.ModEntities;
 import com.coolerpromc.arrowplus.entity.renderer.ModArrowRenderer;
 import com.coolerpromc.arrowplus.item.ModCreativeTabs;
@@ -8,30 +7,32 @@ import com.coolerpromc.arrowplus.item.ModItems;
 import com.coolerpromc.arrowplus.util.ArrowData;
 import com.coolerpromc.arrowplus.util.ModRecipeSerializer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
+@SuppressWarnings("removal")
 @Mod(ArrowPlus.MODID)
 public class ArrowPlus {
     public static final String MODID = "arrowplus";
 
-    public ArrowPlus(IEventBus modEventBus, ModContainer modContainer) {
+    public ArrowPlus() {
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         ModItems.register(modEventBus);
         ModEntities.register(modEventBus);
         ModRecipeSerializer.register(modEventBus);
         ModCreativeTabs.register(modEventBus);
-        ModDataComponents.register(modEventBus);
     }
 
-    @EventBusSubscriber(modid = MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
+    @Mod.EventBusSubscriber(modid = MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ClientModEvents
     {
         @SubscribeEvent
@@ -43,7 +44,7 @@ public class ArrowPlus {
         public static void onRegisterColorHandlers(RegisterColorHandlersEvent.Item event) {
             event.register((itemStack, i) -> {
                 if (itemStack.getItem() == ModItems.ARROW_PLUS.get()) {
-                    ArrowData arrowData = itemStack.get(ModDataComponents.ARROW_DATA);
+                    ArrowData arrowData = ArrowData.load(itemStack.getOrCreateTag());
                     if (arrowData != null && i == 1){
                         return arrowData.color();
                     }
@@ -56,7 +57,11 @@ public class ArrowPlus {
                     Minecraft minecraft = Minecraft.getInstance();
                     Player player = minecraft.player;
                     if (player != null) {
-                        ArrowData arrowData = player.getProjectile(itemStack).get(ModDataComponents.ARROW_DATA);
+                        ItemStack projectile = player.getProjectile(itemStack);
+                        CompoundTag projectileTag = projectile.getOrCreateTag();
+
+                        ArrowData arrowData = ArrowData.load(projectileTag);
+
                         if (arrowData != null && i == 1) {
                             return arrowData.color();
                         }
