@@ -1,0 +1,6 @@
+{
+  "baseDamage": 3.0,
+  "color": -16725933,
+  "material": "minecraft:emerald",
+  "translationKey": "item.arrowplus.emerald_arrow"
+}
