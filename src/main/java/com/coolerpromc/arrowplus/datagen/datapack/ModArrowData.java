@@ -6,6 +6,7 @@ import com.coolerpromc.arrowplus.util.ArrowData;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 
 public class ModArrowData {
@@ -29,7 +30,7 @@ public class ModArrowData {
     public static final ResourceKey<ArrowData> CHARCOAL = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, ResourceLocation.fromNamespaceAndPath(ArrowPlus.MODID, "charcoal"));
 
     public static void bootstrap(BootstrapContext<ArrowData> context){
-        context.register(STONE, new ArrowData(Items.STONE, 1.5d, 0xFF4D4B49, "item.arrowplus.stone_arrow"));
+        context.register(STONE, new ArrowData(ItemTags.STONE_CRAFTING_MATERIALS, 1.5d, 0xFF4D4B49, "item.arrowplus.stone_arrow"));
         context.register(IRON, new ArrowData(Items.IRON_INGOT, 2.5d, 0xFFB0BEC5, "item.arrowplus.iron_arrow"));
         context.register(COPPER, new ArrowData(Items.COPPER_INGOT, 2.2d, 0xFFD46D44, "item.arrowplus.copper_arrow"));
         context.register(GOLD, new ArrowData(Items.GOLD_INGOT, 2.0d, 0xFFFFD600, "item.arrowplus.gold_arrow"));
@@ -38,8 +39,8 @@ public class ModArrowData {
         context.register(DIAMOND, new ArrowData(Items.DIAMOND, 3.5d, 0xFF40C4FF, "item.arrowplus.diamond_arrow"));
         context.register(OBSIDIAN, new ArrowData(Items.OBSIDIAN, 3.8d, 0xFF2E1A47, "item.arrowplus.obsidian_arrow"));
         context.register(AMETHYST, new ArrowData(Items.AMETHYST_SHARD, 3.2d, 0xFF9C27B0, "item.arrowplus.amethyst_arrow"));
-        context.register(NETHERITE, new ArrowData(Items.NETHERITE_SCRAP, 4.5d, 0xFF3E3E3E, "item.arrowplus.netherite_arrow"));
-        context.register(WOOD, new ArrowData(Items.OAK_PLANKS, 1.0d, 0xFF8D6E63, "item.arrowplus.wood_arrow"));
+        context.register(NETHERITE, new ArrowData(Items.NETHERITE_INGOT, 4.5d, 0xFF3E3E3E, "item.arrowplus.netherite_arrow"));
+        context.register(WOOD, new ArrowData(ItemTags.PLANKS, 1.0d, 0xFF8D6E63, "item.arrowplus.wood_arrow"));
         context.register(BONE, new ArrowData(Items.BONE, 2.4d, 0xFFEEE8AA, "item.arrowplus.bone_arrow"));
         context.register(BRICK, new ArrowData(Items.BRICK, 2.0d, 0xFFB66A50, "item.arrowplus.brick_arrow"));
         context.register(QUARTZ, new ArrowData(Items.QUARTZ, 2.7d, 0xFFF5F5F5, "item.arrowplus.quartz_arrow"));

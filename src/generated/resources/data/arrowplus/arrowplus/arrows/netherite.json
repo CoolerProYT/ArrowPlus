@@ -1,6 +1,6 @@
 {
   "baseDamage": 4.5,
   "color": -12698050,
-  "material": "minecraft:netherite_scrap",
+  "material": "minecraft:netherite_ingot",
   "translationKey": "item.arrowplus.netherite_arrow"
 }

@@ -1,7 +1,9 @@
 package com.coolerpromc.arrowplus.item;
 
 import com.coolerpromc.arrowplus.ArrowPlus;
-import com.coolerpromc.arrowplus.util.ArrowData;
+import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
+import com.coolerpromc.arrowplus.registry.ModRegistries;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -18,9 +20,11 @@ public class ModCreativeTabs {
             () -> CreativeModeTab.builder().icon(() -> new ItemStack(Items.ARROW))
                     .title(Component.translatable("creativetab.arrowplus"))
                     .displayItems((itemDisplayParameters, output) -> {
-                        for (ItemStack entry : ArrowData.VARIANT_STACKS) {
-                            output.accept(entry);
-                        }
+                        itemDisplayParameters.holders().lookupOrThrow(ModRegistries.ARROW_DATA_KEY).listElements().map(Holder.Reference::value).forEach(arrowData -> {
+                            ItemStack arrow = ModItems.ARROW_PLUS.toStack();
+                            arrow.set(ModDataComponents.ARROW_DATA, arrowData);
+                            output.accept(arrow);
+                        });
                     })
                     .build()
     );

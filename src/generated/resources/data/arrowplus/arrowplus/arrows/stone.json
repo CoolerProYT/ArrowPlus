@@ -1,6 +1,6 @@
 {
   "baseDamage": 1.5,
   "color": -11711671,
-  "material": "minecraft:stone",
+  "material": "#minecraft:stone_crafting_materials",
   "translationKey": "item.arrowplus.stone_arrow"
 }
