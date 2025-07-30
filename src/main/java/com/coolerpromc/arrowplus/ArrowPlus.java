@@ -30,7 +30,7 @@ public class ArrowPlus {
         ModDataComponents.register(modEventBus);
     }
 
-    @EventBusSubscriber(modid = MODID, value = Dist.CLIENT)
+    @EventBusSubscriber(modid = MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
     public static class ClientModEvents
     {
         @SubscribeEvent

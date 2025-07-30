@@ -13,16 +13,17 @@ import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 
 import java.util.concurrent.CompletableFuture;
 
-@EventBusSubscriber(modid = ArrowPlus.MODID)
+@EventBusSubscriber(modid = ArrowPlus.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class ModDataGenerator {
     @SubscribeEvent
     public static void onGatherData(GatherDataEvent.Client event) {
         DataGenerator generator = event.getGenerator();
         PackOutput packOutput = generator.getPackOutput();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
+        ModBlockTagsProvider blockTagsProvider = new ModBlockTagsProvider(packOutput, lookupProvider);
 
         event.addProvider(new ModModelProvider(packOutput));
-        event.addProvider(new ModItemTagsProvider(packOutput, lookupProvider));
+        event.addProvider(new ModItemTagsProvider(packOutput, lookupProvider, blockTagsProvider.contentsGetter()));
         event.addProvider(new ModRecipeProvider.Runner(packOutput, lookupProvider));
         event.addProvider(new ModDatapackProvider(packOutput, lookupProvider));
     }

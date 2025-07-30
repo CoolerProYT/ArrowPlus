@@ -4,14 +4,15 @@ import com.coolerpromc.arrowplus.ArrowPlus;
 import com.coolerpromc.arrowplus.item.ModItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.tags.ItemTags;
-import net.neoforged.neoforge.common.data.ItemTagsProvider;
+import net.minecraft.world.level.block.Block;
 
 import java.util.concurrent.CompletableFuture;
 
 public class ModItemTagsProvider extends ItemTagsProvider {
-    public ModItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
-        super(output, lookupProvider, ArrowPlus.MODID);
+    public ModItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockLookupProvider) {
+        super(output, lookupProvider, blockLookupProvider, ArrowPlus.MODID);
     }
 
     @Override
