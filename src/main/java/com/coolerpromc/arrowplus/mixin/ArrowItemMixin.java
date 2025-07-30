@@ -5,10 +5,9 @@ import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.TooltipDisplay;
 import org.spongepowered.asm.mixin.Mixin;
 
-import java.util.function.Consumer;
+import java.util.List;
 
 @Mixin(ArrowItem.class)
 public class ArrowItemMixin extends Item {
@@ -17,7 +16,7 @@ public class ArrowItemMixin extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay tooltipDisplay, Consumer<Component> tooltipAdder, TooltipFlag flag) {
-        tooltipAdder.accept(Component.translatable("tooltip.arrowplus.base_damage", 2.0d).withColor(0xBBBBBB));
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        tooltipComponents.add(Component.translatable("tooltip.arrowplus.base_damage", 2.0d).withColor(0xBBBBBB));
     }
 }
