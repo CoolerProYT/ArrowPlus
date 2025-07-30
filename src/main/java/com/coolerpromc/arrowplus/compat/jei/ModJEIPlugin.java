@@ -18,7 +18,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
-import net.minecraft.world.item.crafting.display.SlotDisplay;
+
+import java.util.List;
 
 @JeiPlugin
 public class ModJEIPlugin implements IModPlugin {
@@ -39,18 +40,16 @@ public class ModJEIPlugin implements IModPlugin {
             output.set(ModDataComponents.ARROW_DATA, data);
 
             if (data.material().left().isPresent()){
-                ingredient = Ingredient.of(BuiltInRegistries.ITEM.getValue(data.material().left().get()));
+                ingredient = Ingredient.of(BuiltInRegistries.ITEM.get(data.material().left().get()));
                 materialLocation = data.material().left().get();
             }
             else if (data.material().right().isPresent()){
-                ingredient = Ingredient.of(BuiltInRegistries.ITEM.getOrThrow(data.material().right().get()));
+                ingredient = Ingredient.of(data.material().right().get());
                 materialLocation = data.material().right().get().location();
             }
 
             ResourceLocation id = ResourceLocation.fromNamespaceAndPath(ArrowPlus.MODID, "arrowplus.arrow." + materialLocation.getPath());
-            ResourceKey<Recipe<?>> resourceKey = ResourceKey.create(Registries.RECIPE, id);
-            SlotDisplay slotDisplay = new SlotDisplay.ItemStackSlotDisplay(output);
-            CraftingRecipe recipe = vanillaRecipeFactory.createShapedRecipeBuilder(CraftingBookCategory.MISC, slotDisplay)
+            CraftingRecipe recipe = vanillaRecipeFactory.createShapedRecipeBuilder(CraftingBookCategory.MISC, List.of(output))
                     .group(group)
                     .define('m', ingredient)
                     .define('s', Ingredient.of(Items.STICK))
@@ -59,7 +58,7 @@ public class ModJEIPlugin implements IModPlugin {
                     .pattern(" s ")
                     .pattern(" f ")
                     .build();
-            return new RecipeHolder<>(resourceKey, recipe);
+            return new RecipeHolder<>(id, recipe);
         }).toList();
 
         registration.addRecipes(RecipeTypes.CRAFTING, arrowRecipes);
@@ -67,6 +66,6 @@ public class ModJEIPlugin implements IModPlugin {
 
     @Override
     public void registerItemSubtypes(ISubtypeRegistration registration) {
-        registration.registerFromDataComponentTypes(ModItems.ARROW_PLUS.get(), ModDataComponents.ARROW_DATA.get());
+        registration.registerSubtypeInterpreter(ModItems.ARROW_PLUS.get(), ArrowSubtypeInterpreter.INSTANCE);
     }
 }

@@ -6,6 +6,7 @@ import com.coolerpromc.arrowplus.registry.ModRegistries;
 import com.coolerpromc.arrowplus.util.ArrowData;
 import com.coolerpromc.arrowplus.util.ModRecipeSerializer;
 import com.mojang.datafixers.util.Either;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -23,6 +24,7 @@ import net.minecraft.world.level.Level;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Stream;
 
 public class ArrowRecipe extends CustomRecipe {
 
@@ -33,11 +35,10 @@ public class ArrowRecipe extends CustomRecipe {
     @Override
     public boolean matches(CraftingInput craftingInput, Level level) {
         if (craftingInput.width() == 1 && craftingInput.height() == 3 && craftingInput.ingredientCount() == 3){
-            Registry<ArrowData> registry = level.registryAccess().lookupOrThrow(ModRegistries.ARROW_DATA_KEY);
             List<Either<ResourceLocation, TagKey<Item>>> materialList = new ArrayList<>();
-            for (ArrowData data : registry) {
-                materialList.add(data.material());
-            }
+            level.registryAccess().lookupOrThrow(ModRegistries.ARROW_DATA_KEY).listElements().map(Holder.Reference::value).forEach(arrowData -> {
+                materialList.add(arrowData.material());
+            });
 
             boolean hasMaterial = false;
             boolean hasStick = false;
@@ -94,6 +95,11 @@ public class ArrowRecipe extends CustomRecipe {
         else{
             return ItemStack.EMPTY;
         }
+    }
+
+    @Override
+    public boolean canCraftInDimensions(int width, int height) {
+        return width >= 1 && height >= 3;
     }
 
     @Override

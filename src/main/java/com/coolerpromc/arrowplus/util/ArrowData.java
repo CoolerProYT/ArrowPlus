@@ -30,7 +30,7 @@ public record ArrowData(Either<ResourceLocation, TagKey<Item>> material, double 
 
     public static final StreamCodec<ByteBuf, Either<ResourceLocation, TagKey<Item>>> MATERIAL_STREAM_CODEC = ByteBufCodecs.either(
             ResourceLocation.STREAM_CODEC,
-            TagKey.streamCodec(Registries.ITEM)
+            ResourceLocation.STREAM_CODEC.map(p_372701_ -> TagKey.create(Registries.ITEM, p_372701_), TagKey::location)
     );
 
     public static final Codec<ArrowData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
