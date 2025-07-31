@@ -78,16 +78,21 @@ repositories {
             includeGroupAndSubgroups('org.spongepowered')
         }
     }
+    maven {
+        name = "Jared's maven"
+        url = "https://maven.blamejared.com/"
+    }
+    maven {
+        url "https://cursemaven.com"
+    }
 }
 
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    /*implementation "dev.architectury:architectury-neoforge:${architectury_version}"
-    implementation "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
-    compileOnly "me.shedaniel:RoughlyEnoughItems-api-neoforge:${rei_version}"
-    implementation  "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"*/
+    compileOnly("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
+    implementation("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
 }
 
 tasks.named('processResources', ProcessResources) {

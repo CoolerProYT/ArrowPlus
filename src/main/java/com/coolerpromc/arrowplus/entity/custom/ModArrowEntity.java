@@ -2,6 +2,7 @@ package com.coolerpromc.arrowplus.entity.custom;
 
 import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
 import com.coolerpromc.arrowplus.util.ArrowData;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -33,12 +34,12 @@ public class ModArrowEntity extends AbstractArrow {
         this.pickup = Pickup.ALLOWED;
 
         if (firedFromWeapon != null && firedFromWeapon.getItem() instanceof BowItem){
-            int powerLevel = EnchantmentHelper.getItemEnchantmentLevel(level.registryAccess().get(Enchantments.POWER).orElseThrow(), firedFromWeapon);
+            int powerLevel = EnchantmentHelper.getItemEnchantmentLevel(level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.POWER), firedFromWeapon);
             if (powerLevel > 0) {
                 baseDamage += (baseDamage * 0.25D) * (powerLevel + 1);
             }
 
-            int infinityLevel = EnchantmentHelper.getItemEnchantmentLevel(level.registryAccess().get(Enchantments.INFINITY).orElseThrow(), firedFromWeapon);
+            int infinityLevel = EnchantmentHelper.getItemEnchantmentLevel(level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.INFINITY), firedFromWeapon);
             this.pickup = infinityLevel > 0 ? Pickup.DISALLOWED : Pickup.ALLOWED;
         }
         this.setBaseDamage(baseDamage);

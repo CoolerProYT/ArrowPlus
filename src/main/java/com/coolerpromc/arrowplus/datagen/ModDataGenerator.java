@@ -26,7 +26,7 @@ public class ModDataGenerator {
 
 //        generator.addProvider(event.includeClient(), new ModModelProvider(packOutput));
         generator.addProvider(event.includeServer(), new ModItemTagsProvider(packOutput, lookupProvider, blockTagsProvider.contentsGetter()));
-        generator.addProvider(event.includeServer(), new ModRecipeProvider.Runner(packOutput, lookupProvider));
+        generator.addProvider(event.includeServer(), new ModRecipeProvider(packOutput, lookupProvider));
         generator.addProvider(event.includeServer(), new ModDatapackProvider(packOutput, lookupProvider));
     }
 

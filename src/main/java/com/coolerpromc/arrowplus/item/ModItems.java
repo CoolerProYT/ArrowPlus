@@ -1,11 +1,7 @@
 package com.coolerpromc.arrowplus.item;
 
 import com.coolerpromc.arrowplus.ArrowPlus;
-import com.coolerpromc.arrowplus.entity.ModEntities;
 import com.coolerpromc.arrowplus.item.custom.ModArrowItem;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -17,10 +13,10 @@ import java.util.function.Function;
 public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ArrowPlus.MODID);
 
-    public static final RegistryObject<ModArrowItem> ARROW_PLUS = registerItem("arrow_plus", properties -> new ModArrowItem(properties, ModEntities.ARROW_PLUS.get()));
+    public static final RegistryObject<ModArrowItem> ARROW_PLUS = registerItem("arrow_plus", ModArrowItem::new);
 
     private static <T extends Item> RegistryObject<T> registerItem(String name, Function<Item.Properties, ? extends T> item){
-        return ITEMS.register(name, () -> item.apply(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(ArrowPlus.MODID, name)))));
+        return ITEMS.register(name, () -> item.apply(new Item.Properties()));
     }
 
     public static void register(IEventBus eventBus) {

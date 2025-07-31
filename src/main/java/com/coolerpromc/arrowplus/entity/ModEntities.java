@@ -22,7 +22,7 @@ public class ModEntities {
     public static RegistryObject<EntityType<ModArrowEntity>> registerArrow(String name, RegistryObject<ModArrowItem> item) {
         return ENTITIES.register(name, () -> EntityType.Builder.<ModArrowEntity>of((entityType, level) ->
                 new ModArrowEntity(entityType, level, item.get().getDefaultInstance()), MobCategory.MISC)
-                .sized(0.5f, 0.5f).clientTrackingRange(4).updateInterval(20).build(ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(ArrowPlus.MODID, name))));
+                .sized(0.5f, 0.5f).clientTrackingRange(4).updateInterval(20).build(name));
     }
 
     public static void register(IEventBus eventBus) {

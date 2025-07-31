@@ -14,28 +14,13 @@ import net.minecraft.resources.ResourceLocation;
 import java.util.concurrent.CompletableFuture;
 
 public class ModRecipeProvider extends RecipeProvider {
-    protected ModRecipeProvider(HolderLookup.Provider registries, RecipeOutput output) {
-        super(registries, output);
+    protected ModRecipeProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> registries) {
+        super(packOutput, registries);
     }
 
     @Override
-    protected void buildRecipes() {
-        SpecialRecipeBuilder.special(ArrowRecipe::new).save(this.output, ResourceKey.create(Registries.RECIPE, ResourceLocation.fromNamespaceAndPath(ArrowPlus.MODID, "arrow_recipe")));
+    protected void buildRecipes(RecipeOutput recipeOutput) {
+        SpecialRecipeBuilder.special(ArrowRecipe::new).save(recipeOutput, ResourceLocation.fromNamespaceAndPath(ArrowPlus.MODID, "arrow_recipe"));
     }
 
-    public static class Runner extends RecipeProvider.Runner {
-        protected Runner(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> registries) {
-            super(packOutput, registries);
-        }
-
-        @Override
-        protected RecipeProvider createRecipeProvider(HolderLookup.Provider provider, RecipeOutput recipeOutput) {
-            return new ModRecipeProvider(provider, recipeOutput);
-        }
-
-        @Override
-        public String getName() {
-            return "Arrow+ Recipes";
-        }
-    }
 }
