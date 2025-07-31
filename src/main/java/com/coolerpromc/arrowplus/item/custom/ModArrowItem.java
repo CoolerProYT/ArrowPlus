@@ -14,6 +14,7 @@ import net.minecraft.item.ArrowItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Position;
@@ -34,8 +35,8 @@ public class ModArrowItem extends ArrowItem implements InfiniteArrow {
 
     @Override
     public boolean isInfinite(ItemStack ammo, ItemStack bow, LivingEntity livingEntity) {
-        if (livingEntity.getWorld().getRegistryManager().getOptionalEntry(Enchantments.POWER).isPresent())
-            return EnchantmentHelper.getLevel(livingEntity.getWorld().getRegistryManager().getOptionalEntry(Enchantments.POWER).orElseThrow(), bow) > 0;
+        if (livingEntity.getWorld().getRegistryManager().get(RegistryKeys.ENCHANTMENT).getEntry(Enchantments.POWER).isPresent())
+            return EnchantmentHelper.getLevel(livingEntity.getWorld().getRegistryManager().get(RegistryKeys.ENCHANTMENT).getEntry(Enchantments.POWER).orElseThrow(), bow) > 0;
         return false;
     }
 

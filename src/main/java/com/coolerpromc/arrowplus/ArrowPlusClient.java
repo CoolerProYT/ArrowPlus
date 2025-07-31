@@ -1,20 +1,44 @@
 package com.coolerpromc.arrowplus;
 
-import com.coolerpromc.arrowplus.datagen.model.ArrowTintSource;
-import com.coolerpromc.arrowplus.datagen.model.BowTintSource;
+import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
 import com.coolerpromc.arrowplus.entity.ModEntities;
 import com.coolerpromc.arrowplus.entity.renderer.ModArrowRenderer;
+import com.coolerpromc.arrowplus.item.ModItems;
+import com.coolerpromc.arrowplus.util.ArrowData;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
-import net.minecraft.client.render.item.tint.TintSourceTypes;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Items;
 
 public class ArrowPlusClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        TintSourceTypes.ID_MAPPER.put(Identifier.of(ArrowPlus.MODID, "arrow_tint"), ArrowTintSource.MAP_CODEC);
-        TintSourceTypes.ID_MAPPER.put(Identifier.of(ArrowPlus.MODID, "bow_tint"), BowTintSource.MAP_CODEC);
-
         EntityRendererRegistry.register(ModEntities.ARROW_PLUS, context -> new ModArrowRenderer(context, ModArrowRenderer.getTextureLocation("arrow_plus")));
+
+        ColorProviderRegistry.ITEM.register((itemStack, tintIndex) -> {
+            if (itemStack.getItem() == ModItems.ARROW_PLUS) {
+                ArrowData arrowData = itemStack.get(ModDataComponents.ARROW_DATA);
+                if (arrowData != null && tintIndex == 1){
+                    return arrowData.color();
+                }
+            }
+            return -1;
+        }, ModItems.ARROW_PLUS);
+
+        ColorProviderRegistry.ITEM.register((itemStack, tintIndex) -> {
+            if (itemStack.isOf(Items.BOW)){
+                MinecraftClient minecraft = MinecraftClient.getInstance();
+                PlayerEntity player = minecraft.player;
+                if (player != null) {
+                    ArrowData arrowData = player.getProjectileType(itemStack).get(ModDataComponents.ARROW_DATA);
+                    if (arrowData != null && tintIndex == 1) {
+                        return arrowData.color();
+                    }
+                }
+            }
+            return -1;
+        }, Items.BOW);
     }
 }

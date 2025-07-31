@@ -1,13 +1,13 @@
 package com.coolerpromc.arrowplus.compat.rei;
 
 import com.coolerpromc.arrowplus.item.ModItems;
+import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
+import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import me.shedaniel.rei.api.common.entry.comparison.ItemComparatorRegistry;
-import me.shedaniel.rei.api.common.plugins.REICommonPlugin;
-import me.shedaniel.rei.api.common.registry.display.ServerDisplayRegistry;
 
-public class ModREIPlugin implements REICommonPlugin {
+public class ModREIPlugin implements REIClientPlugin {
     @Override
-    public void registerDisplays(ServerDisplayRegistry registry) {
+    public void registerDisplays(DisplayRegistry registry) {
         new ArrowRecipeFiller().registerDisplays(registry);
     }
 

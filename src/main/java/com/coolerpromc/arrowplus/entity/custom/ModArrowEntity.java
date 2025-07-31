@@ -14,6 +14,7 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -34,13 +35,13 @@ public class ModArrowEntity extends PersistentProjectileEntity {
         this.pickupType = PickupPermission.ALLOWED;
 
         if (firedFromWeapon != null && firedFromWeapon.getItem() instanceof BowItem){
-            int powerLevel = EnchantmentHelper.getLevel(level.getRegistryManager().getOptionalEntry(Enchantments.POWER).orElseThrow(), firedFromWeapon);
+            int powerLevel = EnchantmentHelper.getLevel(level.getRegistryManager().get(RegistryKeys.ENCHANTMENT).getEntry(Enchantments.POWER).orElseThrow(), firedFromWeapon);
 
             if (powerLevel > 0) {
                 baseDamage += (baseDamage * 0.25D) * (powerLevel + 1);
             }
 
-            int infinityLevel = EnchantmentHelper.getLevel(level.getRegistryManager().getOptionalEntry(Enchantments.INFINITY).orElseThrow(), firedFromWeapon);
+            int infinityLevel = EnchantmentHelper.getLevel(level.getRegistryManager().get(RegistryKeys.ENCHANTMENT).getEntry(Enchantments.INFINITY).orElseThrow(), firedFromWeapon);
             this.pickupType = infinityLevel > 0 ? PickupPermission.DISALLOWED : PickupPermission.ALLOWED;
         }
         this.setDamage(baseDamage);

@@ -18,7 +18,7 @@ public class ModCreativeTabs {
             FabricItemGroup.builder().icon(() -> new ItemStack(Items.ARROW))
                     .displayName(Text.translatable("creativetab.arrowplus"))
                     .entries((itemDisplayParameters, output) -> {
-                        itemDisplayParameters.lookup().getOptional(ModRegistries.ARROW_DATA_KEY).ifPresent(impl ->
+                        itemDisplayParameters.lookup().getOptionalWrapper(ModRegistries.ARROW_DATA_KEY).ifPresent(impl ->
                                 impl.streamEntries().map(RegistryEntry.Reference::value).forEach(arrowData -> {
                                     ItemStack arrow = ModItems.ARROW_PLUS.getDefaultStack();
                                     arrow.set(ModDataComponents.ARROW_DATA, arrowData);

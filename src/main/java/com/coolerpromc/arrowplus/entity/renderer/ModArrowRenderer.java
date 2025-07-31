@@ -8,26 +8,19 @@ import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.ProjectileEntityRenderer;
-import net.minecraft.client.render.entity.model.ArrowEntityModel;
-import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
 
-public class ModArrowRenderer extends ProjectileEntityRenderer<ModArrowEntity, ModArrowRenderState> {
-    private final ArrowEntityModel model;
+public class ModArrowRenderer extends ProjectileEntityRenderer<ModArrowEntity> {
     public final Identifier arrowTexture;
     public static final Identifier BODY_TEXTURE = getTextureLocation("arrow_plus");
     public static final Identifier HEAD_TEXTURE = getTextureLocation("arrow_plus_head");
 
-    public ModArrowRenderer(EntityRendererFactory.Context p_174399_, Identifier arrowTexture) {
-        super(p_174399_);
+    public ModArrowRenderer(EntityRendererFactory.Context context, Identifier arrowTexture) {
+        super(context);
         this.arrowTexture = arrowTexture;
-        this.model = new ArrowEntityModel(p_174399_.getPart(EntityModelLayers.ARROW));
-    }
-
-    public ModArrowRenderState createRenderState() {
-        return new ModArrowRenderState();
     }
 
     public static Identifier getTextureLocation(String textureName) {
@@ -35,25 +28,48 @@ public class ModArrowRenderer extends ProjectileEntityRenderer<ModArrowEntity, M
     }
 
     @Override
-    public void render(ModArrowRenderState p_361021_, MatrixStack p_113822_, VertexConsumerProvider p_113823_, int p_113824_) {
-        p_113822_.push();
-        p_113822_.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(p_361021_.yaw - 90.0F));
-        p_113822_.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(p_361021_.pitch));
-        VertexConsumer head = p_113823_.getBuffer(RenderLayer.getEntityCutout(HEAD_TEXTURE));
-        this.model.setAngles(p_361021_);
-        this.model.render(p_113822_, head, p_113824_, OverlayTexture.DEFAULT_UV, p_361021_.color);
-        p_113822_.pop();
-        super.render(p_361021_, p_113822_, p_113823_, p_113824_);
+    public void render(ModArrowEntity entity, float entityYaw, float partialTicks, MatrixStack poseStack, VertexConsumerProvider buffer, int packedLight) {
+        poseStack.push();
+        poseStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(MathHelper.lerp(partialTicks, entity.prevYaw, entity.getYaw()) - 90.0F));
+        poseStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(MathHelper.lerp(partialTicks, entity.prevPitch, entity.getPitch())));
+        float f9 = (float)entity.shake - partialTicks;
+        if (f9 > 0.0F) {
+            float f10 = -MathHelper.sin(f9 * 3.0F) * f9;
+            poseStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(f10));
+        }
+
+        poseStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(45.0F));
+        poseStack.scale(0.05625F, 0.05625F, 0.05625F);
+        poseStack.translate(-4.0F, 0.0F, 0.0F);
+        VertexConsumer vertexconsumer = buffer.getBuffer(RenderLayer.getEntityCutout(HEAD_TEXTURE));
+        MatrixStack.Entry posestack$pose = poseStack.peek();
+        this.setVertex(posestack$pose, vertexconsumer, -7, -2, -2, 0.0F, 0.15625F, -1, 0, 0, packedLight, entity.getColor());
+        this.setVertex(posestack$pose, vertexconsumer, -7, -2, 2, 0.15625F, 0.15625F, -1, 0, 0, packedLight, entity.getColor());
+        this.setVertex(posestack$pose, vertexconsumer, -7, 2, 2, 0.15625F, 0.3125F, -1, 0, 0, packedLight, entity.getColor());
+        this.setVertex(posestack$pose, vertexconsumer, -7, 2, -2, 0.0F, 0.3125F, -1, 0, 0, packedLight, entity.getColor());
+        this.setVertex(posestack$pose, vertexconsumer, -7, 2, -2, 0.0F, 0.15625F, 1, 0, 0, packedLight, entity.getColor());
+        this.setVertex(posestack$pose, vertexconsumer, -7, 2, 2, 0.15625F, 0.15625F, 1, 0, 0, packedLight, entity.getColor());
+        this.setVertex(posestack$pose, vertexconsumer, -7, -2, 2, 0.15625F, 0.3125F, 1, 0, 0, packedLight, entity.getColor());
+        this.setVertex(posestack$pose, vertexconsumer, -7, -2, -2, 0.0F, 0.3125F, 1, 0, 0, packedLight, entity.getColor());
+
+        for(int j = 0; j < 4; ++j) {
+            poseStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(90.0F));
+            this.setVertex(posestack$pose, vertexconsumer, -8, -2, 0, 0.0F, 0.0F, 0, 1, 0, packedLight, entity.getColor());
+            this.setVertex(posestack$pose, vertexconsumer, 8, -2, 0, 0.5F, 0.0F, 0, 1, 0, packedLight, entity.getColor());
+            this.setVertex(posestack$pose, vertexconsumer, 8, 2, 0, 0.5F, 0.15625F, 0, 1, 0, packedLight, entity.getColor());
+            this.setVertex(posestack$pose, vertexconsumer, -8, 2, 0, 0.0F, 0.15625F, 0, 1, 0, packedLight, entity.getColor());
+        }
+
+        poseStack.pop();
+        super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight);
+    }
+
+    public void setVertex(MatrixStack.Entry pose, VertexConsumer consumer, int x, int y, int z, float u, float v, int normalX, int normalY, int normalZ, int packedLight, int color) {
+        consumer.vertex(pose, (float)x, (float)y, (float)z).color(color).texture(u, v).overlay(OverlayTexture.DEFAULT_UV).light(packedLight).normal(pose, (float)normalX, (float)normalZ, (float)normalY);
     }
 
     @Override
-    protected Identifier getTexture(ModArrowRenderState state) {
+    public Identifier getTexture(ModArrowEntity entity) {
         return BODY_TEXTURE;
-    }
-
-    @Override
-    public void updateRenderState(ModArrowEntity arrowEntity, ModArrowRenderState renderState, float p_360538_) {
-        super.updateRenderState(arrowEntity, renderState, p_360538_);
-        renderState.color = arrowEntity.getColor();
     }
 }

@@ -23,7 +23,7 @@
 		"fabric-datagen": [
 			"com.coolerpromc.arrowplus.ArrowDataGenerator"
 		],
-		"rei_common": [
+		"rei_client": [
 			"com.coolerpromc.arrowplus.compat.rei.ModREIPlugin"
 		]
 	},
@@ -32,7 +32,7 @@
 	],
 	"depends": {
 		"fabricloader": ">=0.16.13",
-		"minecraft": "1.21.4",
+		"minecraft": "1.21.1",
 		"java": ">=21",
 		"fabric-api": "*"
 	},

@@ -30,7 +30,7 @@ public record ArrowData(Either<Identifier, TagKey<Item>> material, double baseDa
 
     public static final PacketCodec<ByteBuf, Either<Identifier, TagKey<Item>>> MATERIAL_STREAM_CODEC = PacketCodecs.either(
             Identifier.PACKET_CODEC,
-            TagKey.packetCodec(RegistryKeys.ITEM)
+            Identifier.PACKET_CODEC.xmap(identifier -> TagKey.of(RegistryKeys.ITEM, identifier), TagKey::id)
     );
 
     public static final Codec<ArrowData> CODEC = RecordCodecBuilder.create(instance -> instance.group(

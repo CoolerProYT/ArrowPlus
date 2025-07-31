@@ -32,7 +32,7 @@ public class ArrowRecipe extends SpecialCraftingRecipe {
     @Override
     public boolean matches(CraftingRecipeInput craftingInput, World level) {
         if (craftingInput.getWidth() == 1 && craftingInput.getHeight() == 3 && craftingInput.getStackCount() == 3){
-            Registry<ArrowData> registry = level.getRegistryManager().getOrThrow(ModRegistries.ARROW_DATA_KEY);
+            Registry<ArrowData> registry = level.getRegistryManager().get(ModRegistries.ARROW_DATA_KEY);
             List<Either<Identifier, TagKey<Item>>> materialList = new ArrayList<>();
             for (ArrowData data : registry) {
                 materialList.add(data.material());
@@ -75,7 +75,7 @@ public class ArrowRecipe extends SpecialCraftingRecipe {
         AtomicReference<ArrowData> arrowData = new AtomicReference<>(ArrowData.EMPTY);
         ItemStack materialStack = craftingInput.getStackInSlot(0);
 
-        provider.getOrThrow(ModRegistries.ARROW_DATA_KEY).streamEntries().forEach(holder ->{
+        provider.getWrapperOrThrow(ModRegistries.ARROW_DATA_KEY).streamEntries().forEach(holder ->{
             materialList.add(holder.value().material());
             if (holder.value().material().left().isPresent() && holder.value().material().left().get().equals(Registries.ITEM.getId(materialStack.getItem()))) {
                 arrowData.set(holder.value());
@@ -93,6 +93,11 @@ public class ArrowRecipe extends SpecialCraftingRecipe {
         else{
             return ItemStack.EMPTY;
         }
+    }
+
+    @Override
+    public boolean fits(int width, int height) {
+        return width >= 1 && height >= 3;
     }
 
     @Override
