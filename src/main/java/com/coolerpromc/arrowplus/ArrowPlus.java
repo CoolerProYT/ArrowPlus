@@ -1,6 +1,5 @@
 package com.coolerpromc.arrowplus;
 
-import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
 import com.coolerpromc.arrowplus.entity.ModEntities;
 import com.coolerpromc.arrowplus.item.ModCreativeTabs;
 import com.coolerpromc.arrowplus.item.ModItems;
@@ -19,7 +18,6 @@ public class ArrowPlus implements ModInitializer {
 		ModItems.register();
 		ModRecipeSerializer.register();
 		ModCreativeTabs.register();
-		ModDataComponents.register();
 
 		DynamicRegistries.registerSynced(ModRegistries.ARROW_DATA_KEY, ArrowData.CODEC, ArrowData.CODEC);
 	}

@@ -1,6 +1,5 @@
 package com.coolerpromc.arrowplus.entity.custom;
 
-import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
 import com.coolerpromc.arrowplus.entity.ModEntities;
 import com.coolerpromc.arrowplus.util.ArrowData;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -14,10 +13,7 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class ModArrowEntity extends PersistentProjectileEntity {
     private final ItemStack stack;
@@ -29,40 +25,36 @@ public class ModArrowEntity extends PersistentProjectileEntity {
         this.updateColor();
     }
 
-    public ModArrowEntity(LivingEntity owner, World level, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, double baseDamage) {
-        super(ModEntities.ARROW_PLUS, owner, level, pickupItemStack.copyWithCount(1), firedFromWeapon);
+    public ModArrowEntity(LivingEntity owner, World level, ItemStack pickupItemStack, double baseDamage) {
+        super(ModEntities.ARROW_PLUS, owner, level);
         this.stack = pickupItemStack;
         this.pickupType = PickupPermission.ALLOWED;
+        ItemStack firedFromWeapon = owner.getActiveItem();
 
         if (firedFromWeapon != null && firedFromWeapon.getItem() instanceof BowItem){
-            int powerLevel = EnchantmentHelper.getLevel(level.getRegistryManager().get(RegistryKeys.ENCHANTMENT).getEntry(Enchantments.POWER).orElseThrow(), firedFromWeapon);
+            int powerLevel = EnchantmentHelper.getLevel(Enchantments.POWER, firedFromWeapon);
 
             if (powerLevel > 0) {
                 baseDamage += (baseDamage * 0.25D) * (powerLevel + 1);
             }
 
-            int infinityLevel = EnchantmentHelper.getLevel(level.getRegistryManager().get(RegistryKeys.ENCHANTMENT).getEntry(Enchantments.INFINITY).orElseThrow(), firedFromWeapon);
+            int infinityLevel = EnchantmentHelper.getLevel(Enchantments.INFINITY, firedFromWeapon);
             this.pickupType = infinityLevel > 0 ? PickupPermission.DISALLOWED : PickupPermission.ALLOWED;
         }
         this.setDamage(baseDamage);
         this.updateColor();
     }
 
-    public ModArrowEntity(double x, double y, double z, World level, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon) {
-        super(ModEntities.ARROW_PLUS, x, y, z, level, pickupItemStack, firedFromWeapon);
+    public ModArrowEntity(double x, double y, double z, World level, ItemStack pickupItemStack) {
+        super(ModEntities.ARROW_PLUS, x, y, z, level);
         this.stack = pickupItemStack;
         this.updateColor();
     }
 
     @Override
-    protected @NotNull ItemStack getDefaultItemStack() {
-        return stack;
-    }
-
-    @Override
-    protected void initDataTracker(DataTracker.Builder builder) {
-        super.initDataTracker(builder);
-        builder.add(COLOR, -1);
+    protected void initDataTracker() {
+        super.initDataTracker();
+        this.dataTracker.startTracking(COLOR, -1);
     }
 
     @Override
@@ -77,8 +69,13 @@ public class ModArrowEntity extends PersistentProjectileEntity {
         this.dataTracker.set(COLOR, nbt.getInt("color"));
     }
 
+    @Override
+    protected ItemStack asItemStack() {
+        return stack;
+    }
+
     public void updateColor() {
-        this.dataTracker.set(COLOR, stack.getOrDefault(ModDataComponents.ARROW_DATA, ArrowData.EMPTY).color());
+        this.dataTracker.set(COLOR, ArrowData.load(stack.getOrCreateNbt()).color());
     }
 
     public int getColor() {

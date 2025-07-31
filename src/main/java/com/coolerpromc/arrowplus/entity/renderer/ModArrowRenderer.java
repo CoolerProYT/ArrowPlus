@@ -65,7 +65,7 @@ public class ModArrowRenderer extends ProjectileEntityRenderer<ModArrowEntity> {
     }
 
     public void setVertex(MatrixStack.Entry pose, VertexConsumer consumer, int x, int y, int z, float u, float v, int normalX, int normalY, int normalZ, int packedLight, int color) {
-        consumer.vertex(pose, (float)x, (float)y, (float)z).color(color).texture(u, v).overlay(OverlayTexture.DEFAULT_UV).light(packedLight).normal(pose, (float)normalX, (float)normalZ, (float)normalY);
+        consumer.vertex(pose.getPositionMatrix(), (float)x, (float)y, (float)z).color(color).texture(u, v).overlay(OverlayTexture.DEFAULT_UV).light(packedLight).normal(pose.getNormalMatrix(), (float)normalX, (float)normalZ, (float)normalY).next();
     }
 
     @Override

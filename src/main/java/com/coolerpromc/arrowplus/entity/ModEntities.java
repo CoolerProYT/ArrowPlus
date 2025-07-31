@@ -15,7 +15,7 @@ public class ModEntities {
 
     public static EntityType<ModArrowEntity> registerArrow(String name, ModArrowItem item) {
         return Registry.register(Registries.ENTITY_TYPE, Identifier.of(ArrowPlus.MODID, name), EntityType.Builder.<ModArrowEntity>create((type, world) -> new ModArrowEntity(type, world, item.getDefaultStack()), SpawnGroup.MISC)
-                .dimensions(0.5f, 0.5f).maxTrackingRange(4).trackingTickInterval(20).build(name));
+                .setDimensions(0.5f, 0.5f).maxTrackingRange(4).trackingTickInterval(20).build(name));
     }
 
     public static void register() {

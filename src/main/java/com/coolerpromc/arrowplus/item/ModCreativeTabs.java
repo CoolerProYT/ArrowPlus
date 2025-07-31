@@ -1,7 +1,6 @@
 package com.coolerpromc.arrowplus.item;
 
 import com.coolerpromc.arrowplus.ArrowPlus;
-import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
 import com.coolerpromc.arrowplus.registry.ModRegistries;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.item.ItemGroup;
@@ -21,7 +20,7 @@ public class ModCreativeTabs {
                         itemDisplayParameters.lookup().getOptionalWrapper(ModRegistries.ARROW_DATA_KEY).ifPresent(impl ->
                                 impl.streamEntries().map(RegistryEntry.Reference::value).forEach(arrowData -> {
                                     ItemStack arrow = ModItems.ARROW_PLUS.getDefaultStack();
-                                    arrow.set(ModDataComponents.ARROW_DATA, arrowData);
+                                    arrowData.save(arrow.getOrCreateNbt());
                                     output.add(arrow);
                                 })
                         );

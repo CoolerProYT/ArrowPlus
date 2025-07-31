@@ -1,23 +1,19 @@
 package com.coolerpromc.arrowplus.item.custom;
 
-import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
 import com.coolerpromc.arrowplus.entity.custom.ModArrowEntity;
 import com.coolerpromc.arrowplus.util.ArrowData;
 import com.coolerpromc.arrowplus.util.InfiniteArrow;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ArrowItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.registry.RegistryKeys;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Position;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,40 +25,22 @@ public class ModArrowItem extends ArrowItem implements InfiniteArrow {
     }
 
     @Override
-    public PersistentProjectileEntity createArrow(World level, ItemStack ammo, LivingEntity shooter, @Nullable ItemStack weapon) {
-        return new ModArrowEntity(shooter, level, ammo.copyWithCount(1), weapon, ammo.getOrDefault(ModDataComponents.ARROW_DATA, ArrowData.EMPTY).baseDamage());
+    public PersistentProjectileEntity createArrow(World level, ItemStack ammo, LivingEntity shooter) {
+        return new ModArrowEntity(shooter, level, ammo.copyWithCount(1), ArrowData.load(ammo.getOrCreateNbt()).baseDamage());
     }
 
     @Override
     public boolean isInfinite(ItemStack ammo, ItemStack bow, LivingEntity livingEntity) {
-        if (livingEntity.getWorld().getRegistryManager().get(RegistryKeys.ENCHANTMENT).getEntry(Enchantments.POWER).isPresent())
-            return EnchantmentHelper.getLevel(livingEntity.getWorld().getRegistryManager().get(RegistryKeys.ENCHANTMENT).getEntry(Enchantments.POWER).orElseThrow(), bow) > 0;
-        return false;
+        return EnchantmentHelper.getLevel(Enchantments.INFINITY, bow) > 0;
     }
 
     @Override
-    public ProjectileEntity createEntity(World level, Position location, ItemStack stack, Direction p_338469_) {
-        ModArrowEntity arrow = new ModArrowEntity(
-                location.getX(),
-                location.getY(),
-                location.getZ(),
-                level,
-                stack.copyWithCount(1),
-                null
-        );
-        arrow.setDamage(stack.getOrDefault(ModDataComponents.ARROW_DATA, ArrowData.EMPTY).baseDamage());
-        arrow.pickupType = PersistentProjectileEntity.PickupPermission.ALLOWED;
-        return arrow;
-    }
-
-    @Override
-    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
-        tooltip.add(Text.translatable("tooltip.arrowplus.base_damage", stack.getOrDefault(ModDataComponents.ARROW_DATA, ArrowData.EMPTY).baseDamage()).withColor(0xBBBBBB));
-
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        tooltip.add(Text.translatable("tooltip.arrowplus.base_damage", ArrowData.load(stack.getOrCreateNbt()).baseDamage()).fillStyle(Style.EMPTY.withColor(0xBBBBBB)));
     }
 
     @Override
     public Text getName(ItemStack stack) {
-        return Text.translatable(stack.getOrDefault(ModDataComponents.ARROW_DATA, ArrowData.EMPTY).translationKey());
+        return Text.translatable(ArrowData.load(stack.getOrCreateNbt()).translationKey());
     }
 }

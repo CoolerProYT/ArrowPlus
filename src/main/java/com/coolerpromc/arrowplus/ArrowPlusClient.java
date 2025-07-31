@@ -1,6 +1,5 @@
 package com.coolerpromc.arrowplus;
 
-import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
 import com.coolerpromc.arrowplus.entity.ModEntities;
 import com.coolerpromc.arrowplus.entity.renderer.ModArrowRenderer;
 import com.coolerpromc.arrowplus.item.ModItems;
@@ -19,7 +18,7 @@ public class ArrowPlusClient implements ClientModInitializer {
 
         ColorProviderRegistry.ITEM.register((itemStack, tintIndex) -> {
             if (itemStack.getItem() == ModItems.ARROW_PLUS) {
-                ArrowData arrowData = itemStack.get(ModDataComponents.ARROW_DATA);
+                ArrowData arrowData = ArrowData.load(itemStack.getOrCreateNbt());
                 if (arrowData != null && tintIndex == 1){
                     return arrowData.color();
                 }
@@ -32,7 +31,7 @@ public class ArrowPlusClient implements ClientModInitializer {
                 MinecraftClient minecraft = MinecraftClient.getInstance();
                 PlayerEntity player = minecraft.player;
                 if (player != null) {
-                    ArrowData arrowData = player.getProjectileType(itemStack).get(ModDataComponents.ARROW_DATA);
+                    ArrowData arrowData = ArrowData.load(player.getProjectileType(itemStack).getOrCreateNbt());
                     if (arrowData != null && tintIndex == 1) {
                         return arrowData.color();
                     }

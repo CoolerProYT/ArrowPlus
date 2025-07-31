@@ -3,12 +3,11 @@ package com.coolerpromc.arrowplus.util;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
@@ -28,11 +27,6 @@ public record ArrowData(Either<Identifier, TagKey<Item>> material, double baseDa
             TagKey.codec(RegistryKeys.ITEM)
     );
 
-    public static final PacketCodec<ByteBuf, Either<Identifier, TagKey<Item>>> MATERIAL_STREAM_CODEC = PacketCodecs.either(
-            Identifier.PACKET_CODEC,
-            Identifier.PACKET_CODEC.xmap(identifier -> TagKey.of(RegistryKeys.ITEM, identifier), TagKey::id)
-    );
-
     public static final Codec<ArrowData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             MATERIAL_CODEC.fieldOf("material").forGetter(ArrowData::material),
             Codec.DOUBLE.fieldOf("baseDamage").forGetter(ArrowData::baseDamage),
@@ -40,17 +34,18 @@ public record ArrowData(Either<Identifier, TagKey<Item>> material, double baseDa
             Codec.STRING.fieldOf("translationKey").forGetter(ArrowData::translationKey)
     ).apply(instance, ArrowData::new));
 
-    public static final PacketCodec<PacketByteBuf, ArrowData> STREAM_CODEC = PacketCodec.tuple(
-            MATERIAL_STREAM_CODEC,
-            ArrowData::material,
-            PacketCodecs.DOUBLE,
-            ArrowData::baseDamage,
-            PacketCodecs.INTEGER,
-            ArrowData::color,
-            PacketCodecs.STRING,
-            ArrowData::translationKey,
-            ArrowData::new
-    );
+    public NbtCompound save(NbtCompound existingTag) {
+        existingTag.put("arrow_data", CODEC.encodeStart(NbtOps.INSTANCE, this).getOrThrow(false, System.err::println));
+        return existingTag;
+    }
+
+    public static ArrowData load(NbtCompound tag) {
+        if (!tag.contains("arrow_data", NbtElement.COMPOUND_TYPE)) {
+            return ArrowData.EMPTY;
+        }
+
+        return CODEC.parse(NbtOps.INSTANCE, tag.get("arrow_data")).getOrThrow(false, System.err::println);
+    }
 
     public static final ArrowData EMPTY = new ArrowData(Items.AIR, 0.0, 0xFF141414, "item.arrowplus.cheated_item");
 }
