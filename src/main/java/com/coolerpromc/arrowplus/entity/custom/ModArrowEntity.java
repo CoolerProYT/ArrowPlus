@@ -33,12 +33,12 @@ public class ModArrowEntity extends AbstractArrow {
         this.pickup = Pickup.ALLOWED;
 
         if (firedFromWeapon != null && firedFromWeapon.getItem() instanceof BowItem){
-            int powerLevel = EnchantmentHelper.getItemEnchantmentLevel(level.registryAccess().getOrThrow(Enchantments.POWER), firedFromWeapon);
+            int powerLevel = EnchantmentHelper.getItemEnchantmentLevel(level.registryAccess().get(Enchantments.POWER).orElseThrow(), firedFromWeapon);
             if (powerLevel > 0) {
                 baseDamage += (baseDamage * 0.25D) * (powerLevel + 1);
             }
 
-            int infinityLevel = EnchantmentHelper.getItemEnchantmentLevel(level.registryAccess().getOrThrow(Enchantments.INFINITY), firedFromWeapon);
+            int infinityLevel = EnchantmentHelper.getItemEnchantmentLevel(level.registryAccess().get(Enchantments.INFINITY).orElseThrow(), firedFromWeapon);
             this.pickup = infinityLevel > 0 ? Pickup.DISALLOWED : Pickup.ALLOWED;
         }
         this.setBaseDamage(baseDamage);
@@ -71,7 +71,7 @@ public class ModArrowEntity extends AbstractArrow {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        this.entityData.set(COLOR, tag.getIntOr("color", -1));
+        this.entityData.set(COLOR, tag.getInt("color"));
     }
 
     public void updateColor() {

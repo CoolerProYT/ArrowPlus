@@ -13,13 +13,12 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.function.Consumer;
+import java.util.List;
 
 public class ModArrowItem extends ArrowItem {
     private final EntityType<? extends AbstractArrow> entityType;
@@ -36,7 +35,7 @@ public class ModArrowItem extends ArrowItem {
 
     @Override
     public boolean isInfinite(ItemStack ammo, ItemStack bow, LivingEntity livingEntity) {
-        return EnchantmentHelper.getItemEnchantmentLevel(livingEntity.level().registryAccess().getOrThrow(Enchantments.INFINITY), bow) > 0;
+        return EnchantmentHelper.getItemEnchantmentLevel(livingEntity.level().registryAccess().get(Enchantments.INFINITY).orElseThrow(), bow) > 0;
     }
 
     @Override
@@ -56,8 +55,8 @@ public class ModArrowItem extends ArrowItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay tooltipDisplay, Consumer<Component> tooltipAdder, TooltipFlag flag) {
-        tooltipAdder.accept(Component.translatable("tooltip.arrowplus.base_damage", stack.getOrDefault(ModDataComponents.ARROW_DATA.get(), ArrowData.EMPTY).baseDamage()).withColor(0xBBBBBB));
+    public void appendHoverText(ItemStack stack, TooltipContext p_333372_, List<Component> p_41423_, TooltipFlag p_41424_) {
+        p_41423_.add(Component.translatable("tooltip.arrowplus.base_damage", stack.getOrDefault(ModDataComponents.ARROW_DATA.get(), ArrowData.EMPTY).baseDamage()).withColor(0xBBBBBB));
     }
 
     @Override
