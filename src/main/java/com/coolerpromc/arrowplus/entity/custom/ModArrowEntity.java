@@ -13,8 +13,7 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -66,15 +65,15 @@ public class ModArrowEntity extends PersistentProjectileEntity {
     }
 
     @Override
-    protected void writeCustomData(WriteView valueOutput) {
-        super.writeCustomData(valueOutput);
-        valueOutput.putInt("color", this.getColor());
+    public void writeCustomDataToNbt(NbtCompound nbt) {
+        super.writeCustomDataToNbt(nbt);
+        nbt.putInt("color", this.getColor());
     }
 
     @Override
-    protected void readCustomData(ReadView valueInput) {
-        super.readCustomData(valueInput);
-        this.dataTracker.set(COLOR, valueInput.getInt("color", -1));
+    public void readCustomDataFromNbt(NbtCompound nbt) {
+        super.readCustomDataFromNbt(nbt);
+        this.dataTracker.set(COLOR, nbt.getInt("color", -1));
     }
 
     public void updateColor() {

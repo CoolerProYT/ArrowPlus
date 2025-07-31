@@ -51,7 +51,7 @@ public class ArrowRecipeFiller implements Function<RecipeEntry<ArrowRecipe>, Col
                 materialLocation = data.material().left().get();
             }
             else if (data.material().right().isPresent()){
-                ingredient = Ingredient.ofTag(Registries.ITEM.getOrThrow(data.material().right().get()));
+                ingredient = Ingredient.fromTag(Registries.ITEM.getOrThrow(data.material().right().get()));
                 materialLocation = data.material().right().get().id();
             }
 
