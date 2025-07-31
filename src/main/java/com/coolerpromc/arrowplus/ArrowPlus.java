@@ -13,8 +13,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
-import net.minecraftforge.eventbus.api.bus.BusGroup;
-import net.minecraftforge.eventbus.api.listener.SubscribeEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -23,7 +23,7 @@ public class ArrowPlus {
     public static final String MODID = "arrowplus";
 
     public ArrowPlus(FMLJavaModLoadingContext context) {
-        BusGroup modEventBus = context.getModBusGroup();
+        IEventBus modEventBus = context.getModEventBus();
 
         ModItems.register(modEventBus);
         ModEntities.register(modEventBus);

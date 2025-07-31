@@ -5,7 +5,7 @@ import com.coolerpromc.arrowplus.datagen.datapack.ArrowRecipe;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraftforge.eventbus.api.bus.BusGroup;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -14,7 +14,7 @@ public class ModRecipeSerializer {
 
     public static final RegistryObject<RecipeSerializer<ArrowRecipe>> ARROW_RECIPE_SERIALIZER = SERIALIZERS.register("arrow_recipe", () -> new CustomRecipe.Serializer<>(ArrowRecipe::new));
 
-    public static void register(BusGroup eventBus){
+    public static void register(IEventBus eventBus){
         SERIALIZERS.register(eventBus);
     }
 }

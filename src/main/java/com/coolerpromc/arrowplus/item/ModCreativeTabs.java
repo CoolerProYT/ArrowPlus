@@ -9,7 +9,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.eventbus.api.bus.BusGroup;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -29,7 +29,7 @@ public class ModCreativeTabs {
                     .build()
     );
 
-    public static void register(BusGroup eventBus) {
+    public static void register(IEventBus eventBus) {
         CREATIVE_MOD_TABS.register(eventBus);
     }
 }
