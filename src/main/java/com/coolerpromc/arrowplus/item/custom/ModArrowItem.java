@@ -4,7 +4,6 @@ import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
 import com.coolerpromc.arrowplus.entity.custom.ModArrowEntity;
 import com.coolerpromc.arrowplus.util.ArrowData;
 import com.coolerpromc.arrowplus.util.InfiniteArrow;
-import net.minecraft.component.type.TooltipDisplayComponent;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EntityType;
@@ -21,7 +20,7 @@ import net.minecraft.util.math.Position;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.function.Consumer;
+import java.util.List;
 
 public class ModArrowItem extends ArrowItem implements InfiniteArrow {
     public ModArrowItem(Item.Settings p_40512_, EntityType<? extends PersistentProjectileEntity> entityType) {
@@ -35,7 +34,9 @@ public class ModArrowItem extends ArrowItem implements InfiniteArrow {
 
     @Override
     public boolean isInfinite(ItemStack ammo, ItemStack bow, LivingEntity livingEntity) {
-        return EnchantmentHelper.getLevel(livingEntity.getWorld().getRegistryManager().getEntryOrThrow(Enchantments.POWER), bow) > 0;
+        if (livingEntity.getWorld().getRegistryManager().getOptionalEntry(Enchantments.POWER).isPresent())
+            return EnchantmentHelper.getLevel(livingEntity.getWorld().getRegistryManager().getOptionalEntry(Enchantments.POWER).orElseThrow(), bow) > 0;
+        return false;
     }
 
     @Override
@@ -54,8 +55,9 @@ public class ModArrowItem extends ArrowItem implements InfiniteArrow {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, TooltipContext context, TooltipDisplayComponent displayComponent, Consumer<Text> textConsumer, TooltipType type) {
-        textConsumer.accept(Text.translatable("tooltip.arrowplus.base_damage", stack.getOrDefault(ModDataComponents.ARROW_DATA, ArrowData.EMPTY).baseDamage()).withColor(0xBBBBBB));
+    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
+        tooltip.add(Text.translatable("tooltip.arrowplus.base_damage", stack.getOrDefault(ModDataComponents.ARROW_DATA, ArrowData.EMPTY).baseDamage()).withColor(0xBBBBBB));
+
     }
 
     @Override

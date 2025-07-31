@@ -34,13 +34,13 @@ public class ModArrowEntity extends PersistentProjectileEntity {
         this.pickupType = PickupPermission.ALLOWED;
 
         if (firedFromWeapon != null && firedFromWeapon.getItem() instanceof BowItem){
-            int powerLevel = EnchantmentHelper.getLevel(level.getRegistryManager().getEntryOrThrow(Enchantments.POWER), firedFromWeapon);
+            int powerLevel = EnchantmentHelper.getLevel(level.getRegistryManager().getOptionalEntry(Enchantments.POWER).orElseThrow(), firedFromWeapon);
 
             if (powerLevel > 0) {
                 baseDamage += (baseDamage * 0.25D) * (powerLevel + 1);
             }
 
-            int infinityLevel = EnchantmentHelper.getLevel(level.getRegistryManager().getEntryOrThrow(Enchantments.INFINITY), firedFromWeapon);
+            int infinityLevel = EnchantmentHelper.getLevel(level.getRegistryManager().getOptionalEntry(Enchantments.INFINITY).orElseThrow(), firedFromWeapon);
             this.pickupType = infinityLevel > 0 ? PickupPermission.DISALLOWED : PickupPermission.ALLOWED;
         }
         this.setDamage(baseDamage);
@@ -73,7 +73,7 @@ public class ModArrowEntity extends PersistentProjectileEntity {
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
-        this.dataTracker.set(COLOR, nbt.getInt("color", -1));
+        this.dataTracker.set(COLOR, nbt.getInt("color"));
     }
 
     public void updateColor() {
