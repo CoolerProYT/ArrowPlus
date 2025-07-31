@@ -9,7 +9,6 @@ import com.mojang.datafixers.util.Either;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -89,7 +88,7 @@ public class ArrowRecipe extends CustomRecipe {
 
         if (materialList.contains(arrowData.get().material())){
             ItemStack stack = new ItemStack(ModItems.ARROW_PLUS.get(), 4);
-            stack.set(ModDataComponents.ARROW_DATA, arrowData.get());
+            stack.set(ModDataComponents.ARROW_DATA.get(), arrowData.get());
             return stack;
         }
         else{

@@ -19,7 +19,7 @@ public record ArrowTintSource(int defaultColor) implements ItemTintSource {
 
     @Override
     public int calculate(ItemStack itemStack, @Nullable ClientLevel clientLevel, @Nullable LivingEntity livingEntity) {
-        ArrowData arrowData = itemStack.get(ModDataComponents.ARROW_DATA);
+        ArrowData arrowData = itemStack.get(ModDataComponents.ARROW_DATA.get());
         if (arrowData != null){
             return ARGB.opaque(arrowData.color());
         }

@@ -14,6 +14,7 @@ import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
@@ -30,12 +31,12 @@ public class ModArrowItem extends ArrowItem {
 
     @Override
     public AbstractArrow createArrow(Level level, ItemStack ammo, LivingEntity shooter, @Nullable ItemStack weapon) {
-        return new ModArrowEntity(entityType, shooter, level, ammo.copyWithCount(1), weapon, ammo.getOrDefault(ModDataComponents.ARROW_DATA, ArrowData.EMPTY).baseDamage());
+        return new ModArrowEntity(entityType, shooter, level, ammo.copyWithCount(1), weapon, ammo.getOrDefault(ModDataComponents.ARROW_DATA.get(), ArrowData.EMPTY).baseDamage());
     }
 
     @Override
     public boolean isInfinite(ItemStack ammo, ItemStack bow, LivingEntity livingEntity) {
-        return bow.getEnchantmentLevel(livingEntity.level().registryAccess().getOrThrow(Enchantments.INFINITY)) > 0;
+        return EnchantmentHelper.getItemEnchantmentLevel(livingEntity.level().registryAccess().getOrThrow(Enchantments.INFINITY), bow) > 0;
     }
 
     @Override
@@ -49,18 +50,18 @@ public class ModArrowItem extends ArrowItem {
                 stack.copyWithCount(1),
                 null
         );
-        arrow.setBaseDamage(stack.getOrDefault(ModDataComponents.ARROW_DATA, ArrowData.EMPTY).baseDamage());
+        arrow.setBaseDamage(stack.getOrDefault(ModDataComponents.ARROW_DATA.get(), ArrowData.EMPTY).baseDamage());
         arrow.pickup = AbstractArrow.Pickup.ALLOWED;
         return arrow;
     }
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay tooltipDisplay, Consumer<Component> tooltipAdder, TooltipFlag flag) {
-        tooltipAdder.accept(Component.translatable("tooltip.arrowplus.base_damage", stack.getOrDefault(ModDataComponents.ARROW_DATA, ArrowData.EMPTY).baseDamage()).withColor(0xBBBBBB));
+        tooltipAdder.accept(Component.translatable("tooltip.arrowplus.base_damage", stack.getOrDefault(ModDataComponents.ARROW_DATA.get(), ArrowData.EMPTY).baseDamage()).withColor(0xBBBBBB));
     }
 
     @Override
     public Component getName(ItemStack stack) {
-        return Component.translatable(stack.getOrDefault(ModDataComponents.ARROW_DATA, ArrowData.EMPTY).translationKey());
+        return Component.translatable(stack.getOrDefault(ModDataComponents.ARROW_DATA.get(), ArrowData.EMPTY).translationKey());
     }
 }

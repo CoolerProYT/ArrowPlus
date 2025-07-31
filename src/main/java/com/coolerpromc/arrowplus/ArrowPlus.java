@@ -8,21 +8,23 @@ import com.coolerpromc.arrowplus.entity.renderer.ModArrowRenderer;
 import com.coolerpromc.arrowplus.item.ModCreativeTabs;
 import com.coolerpromc.arrowplus.item.ModItems;
 import com.coolerpromc.arrowplus.util.ModRecipeSerializer;
+import net.minecraft.client.color.item.ItemTintSources;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
+import net.minecraftforge.eventbus.api.bus.BusGroup;
+import net.minecraftforge.eventbus.api.listener.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(ArrowPlus.MODID)
 public class ArrowPlus {
     public static final String MODID = "arrowplus";
 
-    public ArrowPlus(IEventBus modEventBus, ModContainer modContainer) {
+    public ArrowPlus(FMLJavaModLoadingContext context) {
+        BusGroup modEventBus = context.getModBusGroup();
+
         ModItems.register(modEventBus);
         ModEntities.register(modEventBus);
         ModRecipeSerializer.register(modEventBus);
@@ -30,7 +32,7 @@ public class ArrowPlus {
         ModDataComponents.register(modEventBus);
     }
 
-    @EventBusSubscriber(modid = MODID, value = Dist.CLIENT)
+    @Mod.EventBusSubscriber(modid = MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ClientModEvents
     {
         @SubscribeEvent
@@ -39,9 +41,9 @@ public class ArrowPlus {
         }
 
         @SubscribeEvent
-        public static void onRegisterColorHandlersItemTintSources(RegisterColorHandlersEvent.ItemTintSources event) {
-            event.register(ResourceLocation.fromNamespaceAndPath(MODID, "arrow_tint"), ArrowTintSource.MAP_CODEC);
-            event.register(ResourceLocation.fromNamespaceAndPath(MODID, "bow_tint"), BowTintSource.MAP_CODEC);
+        public static void onRegisterColorHandlersItemTintSources(RegisterColorHandlersEvent event) {
+            ItemTintSources.ID_MAPPER.put(ResourceLocation.fromNamespaceAndPath(MODID, "arrow_tint"), ArrowTintSource.MAP_CODEC);
+            ItemTintSources.ID_MAPPER.put(ResourceLocation.fromNamespaceAndPath(MODID, "bow_tint"), BowTintSource.MAP_CODEC);
         }
     }
 }

@@ -24,7 +24,7 @@ public record BowTintSource(int defaultColor) implements ItemTintSource {
             if (arrowStack.getItem() == Items.ARROW){
                 return 0xFF141414;
             }
-            ArrowData data = arrowStack.get(ModDataComponents.ARROW_DATA);
+            ArrowData data = arrowStack.get(ModDataComponents.ARROW_DATA.get());
             if (data != null) {
                 return data.color();
             }
