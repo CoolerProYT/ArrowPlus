@@ -8,16 +8,7 @@ import com.coolerpromc.arrowplus.registry.ModRegistries;
 import com.coolerpromc.arrowplus.util.ArrowData;
 import com.coolerpromc.arrowplus.util.ModRecipeSerializer;
 import net.fabricmc.api.ModInitializer;
-
 import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
-import net.fabricmc.fabric.api.event.registry.DynamicRegistrySetupCallback;
-import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.util.Identifier;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ArrowPlus implements ModInitializer {
 	public static final String MODID = "arrowplus";

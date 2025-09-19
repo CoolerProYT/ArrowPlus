@@ -35,7 +35,7 @@ public class ModArrowItem extends ArrowItem implements InfiniteArrow {
 
     @Override
     public boolean isInfinite(ItemStack ammo, ItemStack bow, LivingEntity livingEntity) {
-        return EnchantmentHelper.getLevel(livingEntity.getWorld().getRegistryManager().getEntryOrThrow(Enchantments.POWER), bow) > 0;
+        return EnchantmentHelper.getLevel(livingEntity.getEntityWorld().getRegistryManager().getEntryOrThrow(Enchantments.POWER), bow) > 0;
     }
 
     @Override

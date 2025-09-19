@@ -6,10 +6,12 @@ import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.command.OrderedRenderCommandQueue;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.ProjectileEntityRenderer;
 import net.minecraft.client.render.entity.model.ArrowEntityModel;
 import net.minecraft.client.render.entity.model.EntityModelLayers;
+import net.minecraft.client.render.state.CameraRenderState;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.RotationAxis;
@@ -35,15 +37,14 @@ public class ModArrowRenderer extends ProjectileEntityRenderer<ModArrowEntity, M
     }
 
     @Override
-    public void render(ModArrowRenderState p_361021_, MatrixStack p_113822_, VertexConsumerProvider p_113823_, int p_113824_) {
-        p_113822_.push();
-        p_113822_.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(p_361021_.yaw - 90.0F));
-        p_113822_.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(p_361021_.pitch));
-        VertexConsumer head = p_113823_.getBuffer(RenderLayer.getEntityCutout(HEAD_TEXTURE));
-        this.model.setAngles(p_361021_);
-        this.model.render(p_113822_, head, p_113824_, OverlayTexture.DEFAULT_UV, p_361021_.color);
-        p_113822_.pop();
-        super.render(p_361021_, p_113822_, p_113823_, p_113824_);
+    public void render(ModArrowRenderState renderState, MatrixStack matrixStack, OrderedRenderCommandQueue orderedRenderCommandQueue, CameraRenderState cameraRenderState) {
+        matrixStack.push();
+        matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(renderState.yaw - 90.0F));
+        matrixStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(renderState.pitch));
+        orderedRenderCommandQueue.submitModel(this.model, renderState, matrixStack, RenderLayer.getEntityCutout(this.getTexture(renderState)), renderState.light, OverlayTexture.DEFAULT_UV, -1, null, renderState.outlineColor, null);
+        orderedRenderCommandQueue.submitModel(this.model, renderState, matrixStack, RenderLayer.getEntityCutout(HEAD_TEXTURE), renderState.light, OverlayTexture.DEFAULT_UV, renderState.color, null, renderState.outlineColor, null);
+        matrixStack.pop();
+        super.render(renderState, matrixStack, orderedRenderCommandQueue, cameraRenderState);
     }
 
     @Override
