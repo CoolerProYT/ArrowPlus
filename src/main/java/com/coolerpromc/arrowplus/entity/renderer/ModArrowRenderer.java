@@ -9,8 +9,10 @@ import net.minecraft.client.model.ArrowModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.ArrowRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
@@ -39,15 +41,14 @@ public class ModArrowRenderer extends ArrowRenderer<ModArrowEntity, ModArrowRend
     }
 
     @Override
-    public void render(ModArrowRenderState p_361021_, PoseStack p_113822_, MultiBufferSource p_113823_, int p_113824_) {
-        p_113822_.pushPose();
-        p_113822_.mulPose(Axis.YP.rotationDegrees(p_361021_.yRot - 90.0F));
-        p_113822_.mulPose(Axis.ZP.rotationDegrees(p_361021_.xRot));
-        VertexConsumer head = p_113823_.getBuffer(RenderType.entityCutout(HEAD_TEXTURE));
-        this.model.setupAnim(p_361021_);
-        this.model.renderToBuffer(p_113822_, head, p_113824_, OverlayTexture.NO_OVERLAY, p_361021_.color);
-        p_113822_.popPose();
-        super.render(p_361021_, p_113822_, p_113823_, p_113824_);
+    public void submit(ModArrowRenderState renderState, PoseStack poseStack, SubmitNodeCollector nodeCollector, CameraRenderState cameraRenderState) {
+        poseStack.pushPose();
+        poseStack.mulPose(Axis.YP.rotationDegrees(renderState.yRot - 90.0F));
+        poseStack.mulPose(Axis.ZP.rotationDegrees(renderState.xRot));
+        nodeCollector.submitModel(this.model, renderState, poseStack, RenderType.entityCutout(this.getTextureLocation(renderState)), renderState.lightCoords, OverlayTexture.NO_OVERLAY, -1, null, renderState.outlineColor, null);
+        nodeCollector.submitModel(this.model, renderState, poseStack, RenderType.entityCutout(HEAD_TEXTURE), renderState.lightCoords, OverlayTexture.NO_OVERLAY, renderState.color, null, renderState.outlineColor, null);
+        poseStack.popPose();
+        super.submit(renderState, poseStack, nodeCollector, cameraRenderState);
     }
 
     @Override
