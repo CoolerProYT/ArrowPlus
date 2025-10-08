@@ -32,16 +32,13 @@ public class ArrowPlus {
         ModDataComponents.register(modEventBus);
     }
 
-    @Mod.EventBusSubscriber(modid = MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+    @Mod.EventBusSubscriber(modid = MODID, value = Dist.CLIENT)
     public static class ClientModEvents
     {
         @SubscribeEvent
         public static void onEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
             event.registerEntityRenderer(ModEntities.ARROW_PLUS.get(), context -> new ModArrowRenderer(context, ModArrowRenderer.getTextureLocation("arrow_plus")));
-        }
 
-        @SubscribeEvent
-        public static void onRegisterColorHandlersItemTintSources(RegisterColorHandlersEvent event) {
             ItemTintSources.ID_MAPPER.put(ResourceLocation.fromNamespaceAndPath(MODID, "arrow_tint"), ArrowTintSource.MAP_CODEC);
             ItemTintSources.ID_MAPPER.put(ResourceLocation.fromNamespaceAndPath(MODID, "bow_tint"), BowTintSource.MAP_CODEC);
         }

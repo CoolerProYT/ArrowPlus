@@ -14,7 +14,7 @@ import net.minecraftforge.registries.DataPackRegistryEvent;
 
 import java.util.concurrent.CompletableFuture;
 
-@Mod.EventBusSubscriber(modid = ArrowPlus.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = ArrowPlus.MODID)
 public class ModDataGenerator {
     @SubscribeEvent
     public static void onGatherData(GatherDataEvent event) {
