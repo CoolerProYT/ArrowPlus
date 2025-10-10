@@ -97,6 +97,8 @@ dependencies {
     implementation "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
     compileOnly "me.shedaniel:RoughlyEnoughItems-api-neoforge:${rei_version}"
     compileOnly  "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"
+
+    implementation "curse.maven:jade-324717:6853386"
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {

@@ -1,11 +1,15 @@
 package com.coolerpromc.arrowplus.entity.custom;
 
 import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
+import com.coolerpromc.arrowplus.entity.ModEntities;
 import com.coolerpromc.arrowplus.util.ArrowData;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -18,12 +22,12 @@ import org.jetbrains.annotations.Nullable;
 
 public class ModArrowEntity extends AbstractArrow {
     private final ItemStack stack;
-    private static final EntityDataAccessor<Integer> COLOR = SynchedEntityData.defineId(ModArrowEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<ArrowData> ARROW_DATA = SynchedEntityData.defineId(ModArrowEntity.class, ModEntities.ARROW_DATA.get());
 
     public ModArrowEntity(EntityType<? extends AbstractArrow> p_331098_, Level p_331626_, ItemStack pickupItemStack) {
         super(p_331098_, p_331626_);
         this.stack = pickupItemStack;
-        this.updateColor();
+        this.updateArrowData();
     }
 
     public ModArrowEntity(EntityType<? extends AbstractArrow> entityType, LivingEntity owner, Level level, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, double baseDamage) {
@@ -41,13 +45,13 @@ public class ModArrowEntity extends AbstractArrow {
             this.pickup = infinityLevel > 0 ? Pickup.DISALLOWED : Pickup.ALLOWED;
         }
         this.setBaseDamage(baseDamage);
-        this.updateColor();
+        this.updateArrowData();
     }
 
     public ModArrowEntity(EntityType<? extends AbstractArrow> entityType, double x, double y, double z, Level level, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon) {
         super(entityType, x, y, z, level, pickupItemStack, firedFromWeapon);
         this.stack = pickupItemStack;
-        this.updateColor();
+        this.updateArrowData();
     }
 
     @Override
@@ -58,26 +62,49 @@ public class ModArrowEntity extends AbstractArrow {
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-        builder.define(COLOR, -1);
+        builder.define(ARROW_DATA, ArrowData.EMPTY);
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.putInt("color", this.getColor());
+        tag.put("arrow_data", ArrowData.CODEC.encodeStart(NbtOps.INSTANCE, this.getArrowData()).getOrThrow());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        this.entityData.set(COLOR, tag.getInt("color"));
+        this.entityData.set(ARROW_DATA, ArrowData.CODEC.parse(NbtOps.INSTANCE, tag.get("arrow_data")).getOrThrow());
     }
 
-    public void updateColor() {
-        this.entityData.set(COLOR, stack.getOrDefault(ModDataComponents.ARROW_DATA, ArrowData.EMPTY).color());
+    public void updateArrowData(){
+        this.entityData.set(ARROW_DATA, stack.getOrDefault(ModDataComponents.ARROW_DATA, ArrowData.EMPTY));
     }
 
-    public int getColor() {
-        return this.entityData.get(COLOR);
+    public ArrowData getArrowData(){
+        return this.entityData.get(ARROW_DATA);
+    }
+
+    @Override
+    public Component getName() {
+        return Component.translatable(getArrowData().translationKey());
+    }
+
+    @Override
+    protected double getDefaultGravity() {
+        return getArrowData().gravity();
+    }
+
+    @Override
+    protected void doPostHurtEffects(LivingEntity entity) {
+        super.doPostHurtEffects(entity);
+        getArrowData().effects().forEach((resourceLocation, integer) -> BuiltInRegistries.POTION.getOptional(resourceLocation).ifPresent(potionReference -> potionReference.getEffects().forEach(instance -> entity.addEffect(
+                new MobEffectInstance(instance.getEffect(), integer, instance.getAmplifier(), instance.isAmbient(), instance.isVisible(), instance.showIcon(), null)
+        ))));
+    }
+
+    @Override
+    public boolean isOnFire() {
+        return getArrowData().flame();
     }
 }
