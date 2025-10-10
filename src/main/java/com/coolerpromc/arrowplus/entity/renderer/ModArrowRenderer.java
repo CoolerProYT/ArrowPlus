@@ -52,6 +52,6 @@ public class ModArrowRenderer extends ArrowRenderer<ModArrowEntity, ModArrowRend
     @Override
     public void extractRenderState(ModArrowEntity arrowEntity, ModArrowRenderState renderState, float p_360538_) {
         super.extractRenderState(arrowEntity, renderState, p_360538_);
-        renderState.color = arrowEntity.getColor();
+        renderState.color = arrowEntity.getArrowData().color();
     }
 }
