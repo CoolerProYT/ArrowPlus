@@ -44,21 +44,21 @@ public class ModArrowRenderer extends ArrowRenderer<ModArrowEntity> {
         poseStack.translate(-4.0F, 0.0F, 0.0F);
         VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.entityCutout(HEAD_TEXTURE));
         PoseStack.Pose posestack$pose = poseStack.last();
-        this.setVertex(posestack$pose, vertexconsumer, -7, -2, -2, 0.0F, 0.15625F, -1, 0, 0, packedLight, entity.getColor());
-        this.setVertex(posestack$pose, vertexconsumer, -7, -2, 2, 0.15625F, 0.15625F, -1, 0, 0, packedLight, entity.getColor());
-        this.setVertex(posestack$pose, vertexconsumer, -7, 2, 2, 0.15625F, 0.3125F, -1, 0, 0, packedLight, entity.getColor());
-        this.setVertex(posestack$pose, vertexconsumer, -7, 2, -2, 0.0F, 0.3125F, -1, 0, 0, packedLight, entity.getColor());
-        this.setVertex(posestack$pose, vertexconsumer, -7, 2, -2, 0.0F, 0.15625F, 1, 0, 0, packedLight, entity.getColor());
-        this.setVertex(posestack$pose, vertexconsumer, -7, 2, 2, 0.15625F, 0.15625F, 1, 0, 0, packedLight, entity.getColor());
-        this.setVertex(posestack$pose, vertexconsumer, -7, -2, 2, 0.15625F, 0.3125F, 1, 0, 0, packedLight, entity.getColor());
-        this.setVertex(posestack$pose, vertexconsumer, -7, -2, -2, 0.0F, 0.3125F, 1, 0, 0, packedLight, entity.getColor());
+        this.setVertex(posestack$pose, vertexconsumer, -7, -2, -2, 0.0F, 0.15625F, -1, 0, 0, packedLight, entity.getArrowData().color());
+        this.setVertex(posestack$pose, vertexconsumer, -7, -2, 2, 0.15625F, 0.15625F, -1, 0, 0, packedLight, entity.getArrowData().color());
+        this.setVertex(posestack$pose, vertexconsumer, -7, 2, 2, 0.15625F, 0.3125F, -1, 0, 0, packedLight, entity.getArrowData().color());
+        this.setVertex(posestack$pose, vertexconsumer, -7, 2, -2, 0.0F, 0.3125F, -1, 0, 0, packedLight, entity.getArrowData().color());
+        this.setVertex(posestack$pose, vertexconsumer, -7, 2, -2, 0.0F, 0.15625F, 1, 0, 0, packedLight, entity.getArrowData().color());
+        this.setVertex(posestack$pose, vertexconsumer, -7, 2, 2, 0.15625F, 0.15625F, 1, 0, 0, packedLight, entity.getArrowData().color());
+        this.setVertex(posestack$pose, vertexconsumer, -7, -2, 2, 0.15625F, 0.3125F, 1, 0, 0, packedLight, entity.getArrowData().color());
+        this.setVertex(posestack$pose, vertexconsumer, -7, -2, -2, 0.0F, 0.3125F, 1, 0, 0, packedLight, entity.getArrowData().color());
 
         for(int j = 0; j < 4; ++j) {
             poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
-            this.setVertex(posestack$pose, vertexconsumer, -8, -2, 0, 0.0F, 0.0F, 0, 1, 0, packedLight, entity.getColor());
-            this.setVertex(posestack$pose, vertexconsumer, 8, -2, 0, 0.5F, 0.0F, 0, 1, 0, packedLight, entity.getColor());
-            this.setVertex(posestack$pose, vertexconsumer, 8, 2, 0, 0.5F, 0.15625F, 0, 1, 0, packedLight, entity.getColor());
-            this.setVertex(posestack$pose, vertexconsumer, -8, 2, 0, 0.0F, 0.15625F, 0, 1, 0, packedLight, entity.getColor());
+            this.setVertex(posestack$pose, vertexconsumer, -8, -2, 0, 0.0F, 0.0F, 0, 1, 0, packedLight, entity.getArrowData().color());
+            this.setVertex(posestack$pose, vertexconsumer, 8, -2, 0, 0.5F, 0.0F, 0, 1, 0, packedLight, entity.getArrowData().color());
+            this.setVertex(posestack$pose, vertexconsumer, 8, 2, 0, 0.5F, 0.15625F, 0, 1, 0, packedLight, entity.getArrowData().color());
+            this.setVertex(posestack$pose, vertexconsumer, -8, 2, 0, 0.0F, 0.15625F, 0, 1, 0, packedLight, entity.getArrowData().color());
         }
 
         poseStack.popPose();
