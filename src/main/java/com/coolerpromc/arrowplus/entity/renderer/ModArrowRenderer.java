@@ -3,11 +3,9 @@ package com.coolerpromc.arrowplus.entity.renderer;
 import com.coolerpromc.arrowplus.ArrowPlus;
 import com.coolerpromc.arrowplus.entity.custom.ModArrowEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.ArrowModel;
 import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.ArrowRenderer;
@@ -54,6 +52,6 @@ public class ModArrowRenderer extends ArrowRenderer<ModArrowEntity, ModArrowRend
     @Override
     public void extractRenderState(ModArrowEntity arrowEntity, ModArrowRenderState renderState, float p_360538_) {
         super.extractRenderState(arrowEntity, renderState, p_360538_);
-        renderState.color = arrowEntity.getColor();
+        renderState.color = arrowEntity.getArrowData().color();
     }
 }

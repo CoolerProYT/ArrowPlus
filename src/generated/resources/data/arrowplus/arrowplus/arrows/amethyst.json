@@ -1,6 +1,9 @@
 {
   "baseDamage": 3.2,
   "color": -6543440,
+  "effects": {},
+  "flame": false,
+  "gravity": 0.05,
   "material": "minecraft:amethyst_shard",
   "translationKey": "item.arrowplus.amethyst_arrow"
 }

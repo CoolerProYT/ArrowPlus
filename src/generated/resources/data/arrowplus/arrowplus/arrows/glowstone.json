@@ -1,6 +1,9 @@
 {
   "baseDamage": 2.0,
   "color": -3722,
+  "effects": {},
+  "flame": false,
+  "gravity": 0.05,
   "material": "minecraft:glowstone_dust",
   "translationKey": "item.arrowplus.glowstone_arrow"
 }
