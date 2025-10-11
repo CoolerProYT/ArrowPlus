@@ -4,8 +4,6 @@ import com.coolerpromc.arrowplus.ArrowPlus;
 import com.coolerpromc.arrowplus.entity.custom.ModArrowEntity;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.command.OrderedRenderCommandQueue;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.ProjectileEntityRenderer;
@@ -55,6 +53,6 @@ public class ModArrowRenderer extends ProjectileEntityRenderer<ModArrowEntity, M
     @Override
     public void updateRenderState(ModArrowEntity arrowEntity, ModArrowRenderState renderState, float p_360538_) {
         super.updateRenderState(arrowEntity, renderState, p_360538_);
-        renderState.color = arrowEntity.getColor();
+        renderState.color = arrowEntity.getArrowData().color();
     }
 }
