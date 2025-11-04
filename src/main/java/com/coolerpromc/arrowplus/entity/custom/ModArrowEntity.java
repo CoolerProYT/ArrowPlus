@@ -63,13 +63,15 @@ public class ModArrowEntity extends AbstractArrow {
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.put("arrow_data", ArrowData.CODEC.encodeStart(NbtOps.INSTANCE, this.getArrowData()).getOrThrow(false, System.err::println));
+        this.getArrowData().save(tag, this.level().registryAccess());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        this.entityData.set(ARROW_DATA, ArrowData.CODEC.parse(NbtOps.INSTANCE, tag.get("arrow_data")).getOrThrow(false, System.err::println));
+        if (this.getArrowData() != null){
+            this.entityData.set(ARROW_DATA, ArrowData.load(tag, this.level().registryAccess()));
+        }
     }
 
     @Override
