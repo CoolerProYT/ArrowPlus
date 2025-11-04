@@ -29,7 +29,7 @@ public class ModArrowItem extends ArrowItem {
 
     @Override
     public AbstractArrow createArrow(Level level, ItemStack ammo, LivingEntity shooter) {
-        return new ModArrowEntity(entityType.get(), shooter, level, ammo.copyWithCount(1), ArrowData.load(ammo.getOrCreateTag()).baseDamage());
+        return new ModArrowEntity(entityType.get(), shooter, level, ammo.copyWithCount(1), ArrowData.load(ammo.getOrCreateTag(), level.registryAccess()).baseDamage());
     }
 
     @Override
@@ -48,18 +48,18 @@ public class ModArrowItem extends ArrowItem {
                 stack.copyWithCount(1),
                 null
         );
-        arrow.setBaseDamage(ArrowData.load(stack.getOrCreateTag()).baseDamage());
+        arrow.setBaseDamage(ArrowData.load(stack.getOrCreateTag(), level.registryAccess()).baseDamage());
         arrow.pickup = AbstractArrow.Pickup.ALLOWED;
         return arrow;
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level p_41422_, List<Component> tooltipComponents, TooltipFlag p_41424_) {
-        tooltipComponents.add(Component.translatable("tooltip.arrowplus.base_damage", ArrowData.load(stack.getOrCreateTag()).baseDamage()).withStyle(Style.EMPTY.withColor(0xBBBBBB)));
-    }
-
-    @Override
-    public Component getName(ItemStack stack) {
-        return Component.translatable(ArrowData.load(stack.getOrCreateTag()).translationKey());
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag p_41424_) {
+        if (level == null) return;
+        ArrowData data = ArrowData.load(stack.getOrCreateTag(), level.registryAccess());
+        if (data != null){
+            tooltipComponents.set(0, Component.translatable(data.translationKey()));
+            tooltipComponents.add(Component.translatable("tooltip.arrowplus.base_damage", data.baseDamage()).withStyle(Style.EMPTY.withColor(0xBBBBBB)));
+        }
     }
 }

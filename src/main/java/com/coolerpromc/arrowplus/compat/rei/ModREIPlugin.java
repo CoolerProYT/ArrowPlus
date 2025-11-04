@@ -1,8 +1,10 @@
 package com.coolerpromc.arrowplus.compat.rei;
 
+import com.coolerpromc.arrowplus.config.ArrowPlusConfig;
 import com.coolerpromc.arrowplus.datagen.datapack.ArrowRecipe;
 import com.coolerpromc.arrowplus.item.ModItems;
 import com.coolerpromc.arrowplus.registry.ModRegistries;
+import com.coolerpromc.arrowplus.util.ArrowData;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
@@ -27,10 +29,11 @@ import java.util.Optional;
 public class ModREIPlugin implements REIClientPlugin {
     @Override
     public void registerDisplays(DisplayRegistry registry) {
-        BasicDisplay.registryAccess().lookupOrThrow(ModRegistries.ARROW_DATA_KEY).listElements().map(Holder.Reference::value).forEach(data -> {
+        BasicDisplay.registryAccess().lookupOrThrow(ModRegistries.ARROW_DATA_KEY).listElements().filter(reference -> !ArrowPlusConfig.CONFIG.getRemoval().contains(reference.key().location().getPath())).forEach(reference -> {
+            ArrowData data = reference.value();
             Ingredient ingredient = Ingredient.of(Items.FLINT);
             ItemStack output = new ItemStack(ModItems.ARROW_PLUS.get(), 4);
-            data.save(output.getOrCreateTag());
+            data.save(output.getOrCreateTag(), BasicDisplay.registryAccess());
 
             if (data.material().left().isPresent()){
                 ingredient = Ingredient.of(BuiltInRegistries.ITEM.get(data.material().left().get()));

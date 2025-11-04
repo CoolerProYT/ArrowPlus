@@ -1,19 +1,20 @@
 package com.coolerpromc.arrowplus.util;
 
+import com.coolerpromc.arrowplus.registry.ModRegistries;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public record ArrowData(Either<ResourceLocation, TagKey<Item>> material, double baseDamage, int color, String translationKey, boolean flame, double gravity, Map<ResourceLocation, Integer> effects) {
@@ -40,17 +41,25 @@ public record ArrowData(Either<ResourceLocation, TagKey<Item>> material, double 
             Codec.unboundedMap(ResourceLocation.CODEC, Codec.INT).fieldOf("effects").forGetter(ArrowData::effects)
     ).apply(instance, ArrowData::new));
 
-    public CompoundTag save(CompoundTag existingTag) {
-        existingTag.put("arrow_data", CODEC.encodeStart(NbtOps.INSTANCE, this).getOrThrow(false, System.err::println));
+    public CompoundTag save(CompoundTag existingTag, @Nullable ResourceLocation rl){
+        if (rl != null){
+            existingTag.putString("arrow_data", rl.toString());
+        }
         return existingTag;
     }
 
-    public static ArrowData load(CompoundTag tag) {
-        if (!tag.contains("arrow_data", CompoundTag.TAG_COMPOUND)) {
+    public CompoundTag save(CompoundTag existingTag, RegistryAccess registryAccess) {
+        ResourceLocation rl =registryAccess.registryOrThrow(ModRegistries.ARROW_DATA_KEY).getKey(this);
+        return save(existingTag, rl);
+    }
+
+    public static ArrowData load(CompoundTag tag, RegistryAccess registryAccess) {
+        if (!tag.contains("arrow_data")) {
             return ArrowData.EMPTY;
         }
 
-        return CODEC.parse(NbtOps.INSTANCE, tag.get("arrow_data")).getOrThrow(false, System.err::println);
+        ResourceLocation rl = ResourceLocation.tryParse(tag.getString("arrow_data"));
+        return registryAccess.registryOrThrow(ModRegistries.ARROW_DATA_KEY).get(rl);
     }
 
     public static void encode(FriendlyByteBuf buf, ArrowData data){

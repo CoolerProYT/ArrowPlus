@@ -1,8 +1,10 @@
 package com.coolerpromc.arrowplus.compat.jei;
 
 import com.coolerpromc.arrowplus.ArrowPlus;
+import com.coolerpromc.arrowplus.config.ArrowPlusConfig;
 import com.coolerpromc.arrowplus.item.ModItems;
 import com.coolerpromc.arrowplus.registry.ModRegistries;
+import com.coolerpromc.arrowplus.util.ArrowData;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
@@ -35,35 +37,38 @@ public class ModJEIPlugin implements IModPlugin {
         IVanillaRecipeFactory vanillaRecipeFactory = registration.getJeiHelpers().getVanillaRecipeFactory();
         String group = "arrowplus.arrow";
 
-        List<CraftingRecipe> arrowRecipes = RegistryUtil.getRegistry(ModRegistries.ARROW_DATA_KEY).stream().map(data -> {
-            Ingredient ingredient = Ingredient.of(Items.FLINT);
-            ResourceLocation materialLocation = ResourceLocation.parse("invalid");
-            ItemStack output = new ItemStack(ModItems.ARROW_PLUS.get(), 4);
-            data.save(output.getOrCreateTag());
+        List<CraftingRecipe> arrowRecipes = RegistryUtil.getRegistryAccess().lookupOrThrow(ModRegistries.ARROW_DATA_KEY).listElements()
+                .filter(reference -> !ArrowPlusConfig.CONFIG.getRemoval().contains(reference.key().location().getPath()))
+                .map(lookup -> {
+                    System.out.println(lookup.key());
+                    ArrowData data = lookup.value();
+                    Ingredient ingredient = Ingredient.of(Items.FLINT);
+                    ResourceLocation materialLocation = ResourceLocation.parse("invalid");
+                    ItemStack output = new ItemStack(ModItems.ARROW_PLUS.get(), 4);
+                    data.save(output.getOrCreateTag(), RegistryUtil.getRegistryAccess());
 
-            if (data.material().left().isPresent()){
-                ingredient = Ingredient.of(BuiltInRegistries.ITEM.get(data.material().left().get()));
-                materialLocation = data.material().left().get();
-            }
-            else if (data.material().right().isPresent()){
-                ingredient = Ingredient.of(data.material().right().get());
-                materialLocation = data.material().right().get().location();
-            }
+                    if (data.material().left().isPresent()) {
+                        ingredient = Ingredient.of(BuiltInRegistries.ITEM.get(data.material().left().get()));
+                        materialLocation = data.material().left().get();
+                    } else if (data.material().right().isPresent()) {
+                        ingredient = Ingredient.of(data.material().right().get());
+                        materialLocation = data.material().right().get().location();
+                    }
 
-            ResourceLocation id = ResourceLocation.fromNamespaceAndPath(ArrowPlus.MODID, "arrowplus.arrow." + materialLocation.getPath());
-            NonNullList<Ingredient> inputs = NonNullList.of(
-                Ingredient.EMPTY,
-                ingredient,
-                Ingredient.EMPTY,
-                Ingredient.EMPTY,
-                Ingredient.of(Items.STICK),
-                Ingredient.EMPTY,
-                Ingredient.EMPTY,
-                Ingredient.of(Items.FEATHER),
-                Ingredient.EMPTY
-            );
-            return (new ShapedRecipe(id, group, CraftingBookCategory.MISC, 3, 3, inputs, output));
-        }).collect(Collectors.toUnmodifiableList());
+                    ResourceLocation id = ResourceLocation.fromNamespaceAndPath(ArrowPlus.MODID, "arrowplus.arrow." + materialLocation.getPath());
+                    NonNullList<Ingredient> inputs = NonNullList.of(
+                            Ingredient.EMPTY,
+                            ingredient,
+                            Ingredient.EMPTY,
+                            Ingredient.EMPTY,
+                            Ingredient.of(Items.STICK),
+                            Ingredient.EMPTY,
+                            Ingredient.EMPTY,
+                            Ingredient.of(Items.FEATHER),
+                            Ingredient.EMPTY
+                    );
+                    return (new ShapedRecipe(id, group, CraftingBookCategory.MISC, 3, 3, inputs, output));
+                }).collect(Collectors.toUnmodifiableList());
 
         registration.addRecipes(RecipeTypes.CRAFTING, arrowRecipes);
     }

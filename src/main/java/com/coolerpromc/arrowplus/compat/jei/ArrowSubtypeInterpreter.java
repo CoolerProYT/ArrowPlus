@@ -10,11 +10,11 @@ public class ArrowSubtypeInterpreter implements IIngredientSubtypeInterpreter<It
 
 
     public String getStringName(ItemStack itemStack) {
-        if (!itemStack.hasTag()) {
+        if (itemStack.getTag() != null && !itemStack.getTag().contains("arrow_data")) {
             return "";
         }
-        ArrowData arrowData = ArrowData.load(itemStack.getOrCreateTag());
-        return arrowData.translationKey();
+
+        return itemStack.getTag().getString("arrow_data");
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.coolerpromc.arrowplus.datagen.datapack;
 
+import com.coolerpromc.arrowplus.config.ArrowPlusConfig;
 import com.coolerpromc.arrowplus.item.ModItems;
 import com.coolerpromc.arrowplus.registry.ModRegistries;
 import com.coolerpromc.arrowplus.util.ArrowData;
@@ -32,7 +33,8 @@ public class ArrowRecipe extends CustomRecipe {
     public boolean matches(CraftingContainer craftingInput, Level level) {
         if (craftingInput.getWidth() == 3 && craftingInput.getHeight() == 3){
             List<Either<ResourceLocation, TagKey<Item>>> materialList = new ArrayList<>();
-            level.registryAccess().lookupOrThrow(ModRegistries.ARROW_DATA_KEY).listElements().map(Holder.Reference::value).forEach(arrowData -> {
+            level.registryAccess().lookupOrThrow(ModRegistries.ARROW_DATA_KEY).listElements().filter(reference -> !ArrowPlusConfig.CONFIG.getRemoval().contains(reference.key().location().getPath())).forEach(reference -> {
+                ArrowData arrowData = reference.value();
                 materialList.add(arrowData.material());
             });
 
@@ -111,7 +113,7 @@ public class ArrowRecipe extends CustomRecipe {
 
         if (materialList.contains(arrowData.get().material())){
             ItemStack stack = new ItemStack(ModItems.ARROW_PLUS.get(), 4);
-            arrowData.get().save(stack.getOrCreateTag());
+            arrowData.get().save(stack.getOrCreateTag(), provider);
             return stack;
         }
         else{

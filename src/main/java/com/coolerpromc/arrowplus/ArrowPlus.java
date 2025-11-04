@@ -1,5 +1,6 @@
 package com.coolerpromc.arrowplus;
 
+import com.coolerpromc.arrowplus.config.ArrowPlusConfig;
 import com.coolerpromc.arrowplus.entity.ModEntities;
 import com.coolerpromc.arrowplus.entity.renderer.ModArrowRenderer;
 import com.coolerpromc.arrowplus.item.ModCreativeTabs;
@@ -16,7 +17,9 @@ import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @SuppressWarnings("removal")
@@ -30,6 +33,8 @@ public class ArrowPlus {
         ModEntities.register(modEventBus);
         ModRecipeSerializer.register(modEventBus);
         ModCreativeTabs.register(modEventBus);
+
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ArrowPlusConfig.CONFIG_SPEC);
     }
 
     @Mod.EventBusSubscriber(modid = MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -43,8 +48,8 @@ public class ArrowPlus {
         @SubscribeEvent
         public static void onRegisterColorHandlers(RegisterColorHandlersEvent.Item event) {
             event.register((itemStack, i) -> {
-                if (itemStack.getItem() == ModItems.ARROW_PLUS.get()) {
-                    ArrowData arrowData = ArrowData.load(itemStack.getOrCreateTag());
+                if (itemStack.getItem() == ModItems.ARROW_PLUS.get() && Minecraft.getInstance().level != null) {
+                    ArrowData arrowData = ArrowData.load(itemStack.getOrCreateTag(), Minecraft.getInstance().level.registryAccess());
                     if (arrowData != null && i == 1){
                         return arrowData.color();
                     }
@@ -56,11 +61,11 @@ public class ArrowPlus {
                 if (itemStack.is(Items.BOW)){
                     Minecraft minecraft = Minecraft.getInstance();
                     Player player = minecraft.player;
-                    if (player != null) {
+                    if (player != null && Minecraft.getInstance().level != null) {
                         ItemStack projectile = player.getProjectile(itemStack);
                         CompoundTag projectileTag = projectile.getOrCreateTag();
 
-                        ArrowData arrowData = ArrowData.load(projectileTag);
+                        ArrowData arrowData = ArrowData.load(projectileTag, Minecraft.getInstance().level.registryAccess());
 
                         if (arrowData != null && i == 1) {
                             return arrowData.color();

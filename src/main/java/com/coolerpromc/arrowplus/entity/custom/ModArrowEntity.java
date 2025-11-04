@@ -78,7 +78,7 @@ public class ModArrowEntity extends AbstractArrow {
     }
 
     public void updateArrowData(){
-        this.entityData.set(ARROW_DATA, ArrowData.load(stack.getOrCreateTag()));
+        this.entityData.set(ARROW_DATA, ArrowData.load(stack.getOrCreateTag(), this.level().registryAccess()));
     }
 
     public ArrowData getArrowData(){
