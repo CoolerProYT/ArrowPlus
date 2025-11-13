@@ -1,5 +1,6 @@
 package com.coolerpromc.arrowplus.compat.rei;
 
+import com.coolerpromc.arrowplus.config.ArrowPlusConfig;
 import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
 import com.coolerpromc.arrowplus.datagen.datapack.ArrowRecipe;
 import com.coolerpromc.arrowplus.item.ModItems;
@@ -30,16 +31,16 @@ public class ArrowRecipeFiller implements CraftingRecipeFiller<ArrowRecipe> {
     public Collection<Display> apply(RecipeHolder<ArrowRecipe> recipeHolder) {
         List<Display> displays = new ArrayList<>();
 
-        BasicDisplay.registryAccess().lookupOrThrow(ModRegistries.ARROW_DATA_KEY).listElements().map(Holder.Reference::value).forEach(data -> {
+        BasicDisplay.registryAccess().lookupOrThrow(ModRegistries.ARROW_DATA_KEY).listElements().filter(reference -> !ArrowPlusConfig.CONFIG.getRemoval().contains(reference.key().location().getPath())).forEach(data -> {
             Ingredient ingredient = Ingredient.of(Items.FLINT);
             ItemStack output = new ItemStack(ModItems.ARROW_PLUS.get(), 4);
             output.set(ModDataComponents.ARROW_DATA, data);
 
-            if (data.material().left().isPresent()){
-                ingredient = Ingredient.of(BuiltInRegistries.ITEM.get(data.material().left().get()));
+            if (data.value().material().left().isPresent()){
+                ingredient = Ingredient.of(BuiltInRegistries.ITEM.get(data.value().material().left().get()));
             }
-            else if (data.material().right().isPresent()){
-                ingredient = Ingredient.of(data.material().right().get());
+            else if (data.value().material().right().isPresent()){
+                ingredient = Ingredient.of(data.value().material().right().get());
             }
 
             List<EntryIngredient> inputEntries = List.of(

@@ -4,6 +4,7 @@ import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
 import com.coolerpromc.arrowplus.util.ArrowData;
 import mezz.jei.api.ingredients.subtypes.ISubtypeInterpreter;
 import mezz.jei.api.ingredients.subtypes.UidContext;
+import net.minecraft.core.Holder;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,7 +25,7 @@ public class ArrowSubtypeInterpreter implements ISubtypeInterpreter<ItemStack> {
         if (itemStack.getComponentsPatch().isEmpty()) {
             return "";
         }
-        ArrowData arrowData = itemStack.getOrDefault(ModDataComponents.ARROW_DATA, ArrowData.EMPTY);
+        ArrowData arrowData = itemStack.getOrDefault(ModDataComponents.ARROW_DATA, Holder.direct(ArrowData.EMPTY)).value();
         return arrowData.translationKey();
     }
 }
