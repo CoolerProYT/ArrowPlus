@@ -1,5 +1,6 @@
 package com.coolerpromc.arrowplus;
 
+import com.coolerpromc.arrowplus.config.ArrowPlusConfig;
 import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
 import com.coolerpromc.arrowplus.datagen.model.ArrowTintSource;
 import com.coolerpromc.arrowplus.datagen.model.BowTintSource;
@@ -15,6 +16,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 
@@ -28,6 +30,8 @@ public class ArrowPlus {
         ModRecipeSerializer.register(modEventBus);
         ModCreativeTabs.register(modEventBus);
         ModDataComponents.register(modEventBus);
+
+        modContainer.registerConfig(ModConfig.Type.COMMON, ArrowPlusConfig.CONFIG_SPEC);
     }
 
     @EventBusSubscriber(modid = MODID, value = Dist.CLIENT)

@@ -1,6 +1,7 @@
 package com.coolerpromc.arrowplus.compat.rei;
 
 import com.coolerpromc.arrowplus.ArrowPlus;
+import com.coolerpromc.arrowplus.config.ArrowPlusConfig;
 import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
 import com.coolerpromc.arrowplus.datagen.datapack.ArrowRecipe;
 import com.coolerpromc.arrowplus.item.ModItems;
@@ -40,19 +41,19 @@ public class ArrowRecipeFiller implements Function<RecipeHolder<ArrowRecipe>, Co
     public Collection<Display> apply(RecipeHolder<ArrowRecipe> recipeHolder) {
         List<Display> displays = new ArrayList<>();
 
-        BasicDisplay.registryAccess().lookupOrThrow(ModRegistries.ARROW_DATA_KEY).stream().forEach(data -> {
+        BasicDisplay.registryAccess().lookupOrThrow(ModRegistries.ARROW_DATA_KEY).listElements().filter(reference -> !ArrowPlusConfig.CONFIG.getRemoval().contains(reference.key().location().getPath())).forEach(data -> {
             Ingredient ingredient = Ingredient.of(Items.FLINT);
             ResourceLocation materialLocation = ResourceLocation.parse("invalid");
             ItemStack output = new ItemStack(ModItems.ARROW_PLUS.get(), 4);
             output.set(ModDataComponents.ARROW_DATA, data);
 
-            if (data.material().left().isPresent()){
-                ingredient = Ingredient.of(BuiltInRegistries.ITEM.getValue(data.material().left().get()));
-                materialLocation = data.material().left().get();
+            if (data.value().material().left().isPresent()){
+                ingredient = Ingredient.of(BuiltInRegistries.ITEM.getValue(data.value().material().left().get()));
+                materialLocation = data.value().material().left().get();
             }
-            else if (data.material().right().isPresent()){
-                ingredient = Ingredient.of(BuiltInRegistries.ITEM.getOrThrow(data.material().right().get()));
-                materialLocation = data.material().right().get().location();
+            else if (data.value().material().right().isPresent()){
+                ingredient = Ingredient.of(BuiltInRegistries.ITEM.getOrThrow(data.value().material().right().get()));
+                materialLocation = data.value().material().right().get().location();
             }
 
             ResourceLocation id = ResourceLocation.fromNamespaceAndPath(ArrowPlus.MODID, "arrowplus.arrow." + materialLocation.getPath());

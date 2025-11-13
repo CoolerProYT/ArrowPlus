@@ -3,6 +3,7 @@ package com.coolerpromc.arrowplus.entity.custom;
 import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
 import com.coolerpromc.arrowplus.entity.ModEntities;
 import com.coolerpromc.arrowplus.util.ArrowData;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -78,7 +79,7 @@ public class ModArrowEntity extends AbstractArrow {
     }
 
     public void updateArrowData(){
-        this.entityData.set(ARROW_DATA, stack.getOrDefault(ModDataComponents.ARROW_DATA, ArrowData.EMPTY));
+        this.entityData.set(ARROW_DATA, stack.getOrDefault(ModDataComponents.ARROW_DATA, Holder.direct(ArrowData.EMPTY)).value());
     }
 
     public ArrowData getArrowData(){

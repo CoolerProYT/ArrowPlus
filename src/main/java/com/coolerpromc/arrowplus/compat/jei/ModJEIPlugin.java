@@ -1,6 +1,7 @@
 package com.coolerpromc.arrowplus.compat.jei;
 
 import com.coolerpromc.arrowplus.ArrowPlus;
+import com.coolerpromc.arrowplus.config.ArrowPlusConfig;
 import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
 import com.coolerpromc.arrowplus.item.ModItems;
 import com.coolerpromc.arrowplus.registry.ModRegistries;
@@ -32,19 +33,19 @@ public class ModJEIPlugin implements IModPlugin {
         IVanillaRecipeFactory vanillaRecipeFactory = registration.getJeiHelpers().getVanillaRecipeFactory();
         String group = "arrowplus.arrow";
 
-        var arrowRecipes = RegistryUtil.getRegistry(ModRegistries.ARROW_DATA_KEY).stream().map(data -> {
+        var arrowRecipes = RegistryUtil.getRegistryAccess().lookupOrThrow(ModRegistries.ARROW_DATA_KEY).listElements().filter(reference -> !ArrowPlusConfig.CONFIG.getRemoval().contains(reference.key().location().getPath())).map(data -> {
             Ingredient ingredient = Ingredient.of(Items.FLINT);
             ResourceLocation materialLocation = ResourceLocation.parse("invalid");
             ItemStack output = new ItemStack(ModItems.ARROW_PLUS.get(), 4);
             output.set(ModDataComponents.ARROW_DATA, data);
 
-            if (data.material().left().isPresent()){
-                ingredient = Ingredient.of(BuiltInRegistries.ITEM.getValue(data.material().left().get()));
-                materialLocation = data.material().left().get();
+            if (data.value().material().left().isPresent()){
+                ingredient = Ingredient.of(BuiltInRegistries.ITEM.getValue(data.value().material().left().get()));
+                materialLocation = data.value().material().left().get();
             }
-            else if (data.material().right().isPresent()){
-                ingredient = Ingredient.of(BuiltInRegistries.ITEM.getOrThrow(data.material().right().get()));
-                materialLocation = data.material().right().get().location();
+            else if (data.value().material().right().isPresent()){
+                ingredient = Ingredient.of(BuiltInRegistries.ITEM.getOrThrow(data.value().material().right().get()));
+                materialLocation = data.value().material().right().get().location();
             }
 
             ResourceLocation id = ResourceLocation.fromNamespaceAndPath(ArrowPlus.MODID, "arrowplus.arrow." + materialLocation.getPath());

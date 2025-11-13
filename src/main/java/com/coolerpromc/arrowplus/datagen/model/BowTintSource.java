@@ -7,6 +7,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.color.item.ItemTintSource;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.Holder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -24,9 +25,9 @@ public record BowTintSource(int defaultColor) implements ItemTintSource {
             if (arrowStack.getItem() == Items.ARROW){
                 return 0xFF141414;
             }
-            ArrowData data = arrowStack.get(ModDataComponents.ARROW_DATA);
+            Holder<ArrowData> data = arrowStack.get(ModDataComponents.ARROW_DATA);
             if (data != null) {
-                return data.color();
+                return data.value().color();
             }
         }
         return -1;
