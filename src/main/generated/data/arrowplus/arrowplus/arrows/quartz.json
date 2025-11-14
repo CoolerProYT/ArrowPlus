@@ -2,8 +2,11 @@
   "baseDamage": 2.7,
   "color": -657931,
   "effects": {},
+  "feather": "minecraft:feather",
   "flame": false,
   "gravity": 0.05,
   "material": "minecraft:quartz",
+  "outputAmount": 6,
+  "stick": "minecraft:stick",
   "translationKey": "item.arrowplus.quartz_arrow"
 }

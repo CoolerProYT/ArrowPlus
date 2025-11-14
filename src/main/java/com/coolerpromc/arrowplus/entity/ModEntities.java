@@ -1,10 +1,10 @@
 package com.coolerpromc.arrowplus.entity;
 
 import com.coolerpromc.arrowplus.ArrowPlus;
+import com.coolerpromc.arrowplus.arrow.ArrowData;
 import com.coolerpromc.arrowplus.entity.custom.ModArrowEntity;
 import com.coolerpromc.arrowplus.item.ModItems;
 import com.coolerpromc.arrowplus.item.custom.ModArrowItem;
-import com.coolerpromc.arrowplus.util.ArrowData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.entity.data.TrackedDataHandler;

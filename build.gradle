@@ -1,6 +1,7 @@
 plugins {
 	id 'fabric-loom' version "${loom_version}"
 	id 'maven-publish'
+    id "me.modmuss50.mod-publish-plugin" version "1.1.0"
 }
 
 version = project.mod_version
@@ -11,10 +12,14 @@ base {
 }
 
 repositories {
+    mavenLocal()
 	maven { url "https://maven.shedaniel.me" }
 	maven {
 		url 'https://maven.blamejared.com'
 	}
+    maven {
+        url "https://cursemaven.com"
+    }
 }
 
 fabricApi {
@@ -33,7 +38,19 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:${rei_version}"
-	modImplementation "me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}"
+    modImplementation "me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}"
+
+	modImplementation include("com.electronwill.night-config:core:3.8.1")
+	modImplementation include("com.electronwill.night-config:toml:3.8.1")
+
+    modCompileOnly("mezz.jei:jei-${minecraft_version}-fabric-api:${jei_version}")
+//    modRuntimeOnly("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}")
+
+    modImplementation "curse.maven:fletching-recipe-1364606:7384665"
+}
+
+loom {
+    accessWidenerPath = file("src/main/resources/arrowplus.classtweaker");
 }
 
 processResources {
@@ -70,16 +87,41 @@ jar {
 publishing {
 	publications {
 		create("mavenJava", MavenPublication) {
-			artifactId = project.archives_base_name
+            groupId = maven_group
+            artifactId = archives_base_name
+            version = mod_version
 			from components.java
 		}
 	}
 
-	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
 	repositories {
-		// Add repositories to publish to here.
-		// Notice: This block does NOT have the same function as the block in the top level.
-		// The repositories here will be used for publishing your artifact, not for
-		// retrieving dependencies.
+        mavenLocal()
+        maven {
+            url = findProperty("repsy_url")
+            credentials {
+                username = findProperty("repsy_username")
+                password = findProperty("repsy_password")
+            }
+        }
 	}
+}
+
+publishMods {
+    file.set(remapJar.archiveFile)
+    type = STABLE
+    modLoaders.add("fabric")
+    changelog = file("changelog.md").text
+    displayName = "arrowplus-" + mod_version
+
+    curseforge {
+        projectId = "1317209"
+        accessToken = findProperty("CF_TOKEN")
+        minecraftVersions.add(minecraft_version)
+    }
+
+    modrinth {
+        projectId = 'srzQqcGY'
+        accessToken = findProperty("MODRINTH_TOKEN")
+        minecraftVersions.add(minecraft_version)
+    }
 }

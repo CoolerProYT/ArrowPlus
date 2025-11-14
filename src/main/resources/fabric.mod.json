@@ -11,6 +11,7 @@
 		"homepage": "https://fabricmc.net/",
 		"sources": "https://github.com/FabricMC/fabric-example-mod"
 	},
+  "accessWidener": "arrowplus.classtweaker",
 	"license": "CC0-1.0",
 	"environment": "*",
 	"entrypoints": {
@@ -25,7 +26,10 @@
 		],
 		"rei_client": [
 			"com.coolerpromc.arrowplus.compat.rei.ModREIPlugin"
-		]
+		],
+    "jei_mod_plugin": [
+      "com.coolerpromc.arrowplus.compat.jei.ModJEIPlugin"
+    ]
 	},
 	"mixins": [
 		"arrowplus.mixins.json"
