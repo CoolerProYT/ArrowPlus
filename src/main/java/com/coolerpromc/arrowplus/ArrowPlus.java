@@ -1,5 +1,6 @@
 package com.coolerpromc.arrowplus;
 
+import com.coolerpromc.arrowplus.config.ArrowPlusConfig;
 import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
 import com.coolerpromc.arrowplus.datagen.model.ArrowTintSource;
 import com.coolerpromc.arrowplus.datagen.model.BowTintSource;
@@ -12,10 +13,10 @@ import net.minecraft.client.color.item.ItemTintSources;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.eventbus.api.bus.BusGroup;
 import net.minecraftforge.eventbus.api.listener.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(ArrowPlus.MODID)
@@ -30,6 +31,8 @@ public class ArrowPlus {
         ModRecipeSerializer.register(modEventBus);
         ModCreativeTabs.register(modEventBus);
         ModDataComponents.register(modEventBus);
+
+        context.registerConfig(ModConfig.Type.COMMON, ArrowPlusConfig.CONFIG_SPEC);
     }
 
     @Mod.EventBusSubscriber(modid = MODID, value = Dist.CLIENT)
