@@ -8,6 +8,7 @@ import net.minecraft.client.render.item.tint.TintSource;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.dynamic.Codecs;
 import net.minecraft.util.math.ColorHelper;
 import org.jetbrains.annotations.Nullable;
@@ -19,9 +20,9 @@ public record ArrowTintSource(int defaultColor) implements TintSource {
 
     @Override
     public int getTint(ItemStack itemStack, @Nullable ClientWorld clientLevel, @Nullable LivingEntity livingEntity) {
-        ArrowData arrowData = itemStack.get(ModDataComponents.ARROW_DATA);
+        RegistryEntry<ArrowData> arrowData = itemStack.get(ModDataComponents.ARROW_DATA);
         if (arrowData != null){
-            return ColorHelper.fullAlpha(arrowData.color());
+            return ColorHelper.fullAlpha(arrowData.value().color());
         }
         return defaultColor;
     }

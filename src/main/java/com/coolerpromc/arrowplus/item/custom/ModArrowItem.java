@@ -15,6 +15,7 @@ import net.minecraft.item.ArrowItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Position;
@@ -30,7 +31,7 @@ public class ModArrowItem extends ArrowItem implements InfiniteArrow {
 
     @Override
     public PersistentProjectileEntity createArrow(World level, ItemStack ammo, LivingEntity shooter, @Nullable ItemStack weapon) {
-        return new ModArrowEntity(shooter, level, ammo.copyWithCount(1), weapon, ammo.getOrDefault(ModDataComponents.ARROW_DATA, ArrowData.EMPTY).baseDamage());
+        return new ModArrowEntity(shooter, level, ammo.copyWithCount(1), weapon, ammo.getOrDefault(ModDataComponents.ARROW_DATA, RegistryEntry.of(ArrowData.EMPTY)).value().baseDamage());
     }
 
     @Override
@@ -48,18 +49,18 @@ public class ModArrowItem extends ArrowItem implements InfiniteArrow {
                 stack.copyWithCount(1),
                 null
         );
-        arrow.setDamage(stack.getOrDefault(ModDataComponents.ARROW_DATA, ArrowData.EMPTY).baseDamage());
+        arrow.setDamage(stack.getOrDefault(ModDataComponents.ARROW_DATA, RegistryEntry.of(ArrowData.EMPTY)).value().baseDamage());
         arrow.pickupType = PersistentProjectileEntity.PickupPermission.ALLOWED;
         return arrow;
     }
 
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, TooltipDisplayComponent displayComponent, Consumer<Text> textConsumer, TooltipType type) {
-        textConsumer.accept(Text.translatable("tooltip.arrowplus.base_damage", stack.getOrDefault(ModDataComponents.ARROW_DATA, ArrowData.EMPTY).baseDamage()).withColor(0xBBBBBB));
+        textConsumer.accept(Text.translatable("tooltip.arrowplus.base_damage", stack.getOrDefault(ModDataComponents.ARROW_DATA, RegistryEntry.of(ArrowData.EMPTY)).value().baseDamage()).withColor(0xBBBBBB));
     }
 
     @Override
     public Text getName(ItemStack stack) {
-        return Text.translatable(stack.getOrDefault(ModDataComponents.ARROW_DATA, ArrowData.EMPTY).translationKey());
+        return Text.translatable(stack.getOrDefault(ModDataComponents.ARROW_DATA, RegistryEntry.of(ArrowData.EMPTY)).value().translationKey());
     }
 }

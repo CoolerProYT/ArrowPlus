@@ -10,6 +10,7 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.registry.entry.RegistryEntry;
 import org.jetbrains.annotations.Nullable;
 
 public record BowTintSource(int defaultColor) implements TintSource {
@@ -24,9 +25,9 @@ public record BowTintSource(int defaultColor) implements TintSource {
             if (arrowStack.getItem() == Items.ARROW){
                 return 0xFF141414;
             }
-            ArrowData data = arrowStack.get(ModDataComponents.ARROW_DATA);
+            RegistryEntry<ArrowData> data = arrowStack.get(ModDataComponents.ARROW_DATA);
             if (data != null) {
-                return data.color();
+                return data.value().color();
             }
         }
         return -1;

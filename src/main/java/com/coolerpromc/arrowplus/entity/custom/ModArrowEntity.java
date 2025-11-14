@@ -14,6 +14,7 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.storage.ReadView;
 import net.minecraft.storage.WriteView;
 import net.minecraft.text.Text;
@@ -80,7 +81,7 @@ public class ModArrowEntity extends PersistentProjectileEntity {
     }
 
     public void updateArrowData() {
-        this.dataTracker.set(ARROW_DATA, stack.getOrDefault(ModDataComponents.ARROW_DATA, ArrowData.EMPTY));
+        this.dataTracker.set(ARROW_DATA, stack.getOrDefault(ModDataComponents.ARROW_DATA, RegistryEntry.of(ArrowData.EMPTY)).value());
     }
 
     public ArrowData getArrowData(){

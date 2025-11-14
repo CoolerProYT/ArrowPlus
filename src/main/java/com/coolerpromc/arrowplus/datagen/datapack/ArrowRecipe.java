@@ -1,5 +1,6 @@
 package com.coolerpromc.arrowplus.datagen.datapack;
 
+import com.coolerpromc.arrowplus.config.ArrowPlusConfig;
 import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
 import com.coolerpromc.arrowplus.item.ModItems;
 import com.coolerpromc.arrowplus.registry.ModRegistries;
@@ -14,8 +15,8 @@ import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.recipe.input.CraftingRecipeInput;
 import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
@@ -32,11 +33,11 @@ public class ArrowRecipe extends SpecialCraftingRecipe {
     @Override
     public boolean matches(CraftingRecipeInput craftingInput, World level) {
         if (craftingInput.getWidth() == 1 && craftingInput.getHeight() == 3 && craftingInput.getStackCount() == 3){
-            Registry<ArrowData> registry = level.getRegistryManager().getOrThrow(ModRegistries.ARROW_DATA_KEY);
             List<Either<Identifier, TagKey<Item>>> materialList = new ArrayList<>();
-            for (ArrowData data : registry) {
-                materialList.add(data.material());
-            }
+
+            level.getRegistryManager().getOrThrow(ModRegistries.ARROW_DATA_KEY).streamEntries().filter(reference -> !ArrowPlusConfig.CONFIG.getRemoval().contains(reference.registryKey().getValue().getPath())).forEach(arrowData -> {
+                materialList.add(arrowData.value().material());
+            });
 
             boolean hasMaterial = false;
             boolean hasStick = false;
@@ -72,20 +73,20 @@ public class ArrowRecipe extends SpecialCraftingRecipe {
     @Override
     public ItemStack craft(CraftingRecipeInput craftingInput, RegistryWrapper.WrapperLookup provider) {
         List<Either<Identifier, TagKey<Item>>> materialList = new ArrayList<>();
-        AtomicReference<ArrowData> arrowData = new AtomicReference<>(ArrowData.EMPTY);
+        AtomicReference<RegistryEntry<ArrowData>> arrowData = new AtomicReference<>();
         ItemStack materialStack = craftingInput.getStackInSlot(0);
 
-        provider.getOrThrow(ModRegistries.ARROW_DATA_KEY).streamEntries().forEach(holder ->{
+        provider.getOrThrow(ModRegistries.ARROW_DATA_KEY).streamEntries().filter(reference -> !ArrowPlusConfig.CONFIG.getRemoval().contains(reference.registryKey().getValue().getPath())).forEach(holder ->{
             materialList.add(holder.value().material());
             if (holder.value().material().left().isPresent() && holder.value().material().left().get().equals(Registries.ITEM.getId(materialStack.getItem()))) {
-                arrowData.set(holder.value());
+                arrowData.set(holder);
             }
             else if (holder.value().material().right().isPresent() && materialStack.isIn(holder.value().material().right().get())) {
-                arrowData.set(holder.value());
+                arrowData.set(holder);
             }
         });
 
-        if (materialList.contains(arrowData.get().material())){
+        if (materialList.contains(arrowData.get().value().material())){
             ItemStack stack = new ItemStack(ModItems.ARROW_PLUS, 4);
             stack.set(ModDataComponents.ARROW_DATA, arrowData.get());
             return stack;
