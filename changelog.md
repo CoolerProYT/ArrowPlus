@@ -1,0 +1,1 @@
+- Fixed some vanilla arrow unable to stack together
