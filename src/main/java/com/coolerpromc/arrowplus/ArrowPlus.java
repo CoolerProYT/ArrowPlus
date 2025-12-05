@@ -15,6 +15,8 @@ import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.living.LivingGetProjectileEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -35,6 +37,15 @@ public class ArrowPlus {
         ModCreativeTabs.register(modEventBus);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ArrowPlusConfig.CONFIG_SPEC);
+
+        MinecraftForge.EVENT_BUS.addListener(this::onLivingGetProjectile);
+    }
+
+    @SubscribeEvent
+    public void onLivingGetProjectile(LivingGetProjectileEvent event) {
+        if (event.getProjectileItemStack().is(Items.ARROW)){
+            event.setProjectileItemStack(new ItemStack(event.getProjectileItemStack().getItem(), event.getProjectileItemStack().getCount()));
+        }
     }
 
     @Mod.EventBusSubscriber(modid = MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
