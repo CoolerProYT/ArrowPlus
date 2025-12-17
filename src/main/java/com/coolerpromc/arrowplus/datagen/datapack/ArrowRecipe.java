@@ -10,7 +10,7 @@ import com.mojang.datafixers.util.Either;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -34,9 +34,9 @@ public class ArrowRecipe extends CustomRecipe {
     @Override
     public boolean matches(CraftingInput craftingInput, Level level) {
         if (craftingInput.width() == 1 && craftingInput.height() == 3 && craftingInput.ingredientCount() == 3){
-            List<Either<ResourceLocation, TagKey<Item>>> materialList = new ArrayList<>();
+            List<Either<Identifier, TagKey<Item>>> materialList = new ArrayList<>();
 
-            level.registryAccess().lookupOrThrow(ModRegistries.ARROW_DATA_KEY).listElements().filter(reference -> !ArrowPlusConfig.CONFIG.getRemoval().contains(reference.key().location().getPath())).forEach(arrowData -> {
+            level.registryAccess().lookupOrThrow(ModRegistries.ARROW_DATA_KEY).listElements().filter(reference -> !ArrowPlusConfig.CONFIG.getRemoval().contains(reference.key().identifier().getPath())).forEach(arrowData -> {
                 materialList.add(arrowData.value().material());
             });
 
@@ -46,7 +46,7 @@ public class ArrowRecipe extends CustomRecipe {
 
             ItemStack materialStack = craftingInput.getItem(0);
 
-            for (Either<ResourceLocation, TagKey<Item>> material : materialList){
+            for (Either<Identifier, TagKey<Item>> material : materialList){
                 if (material.left().isPresent() && material.left().get().equals(BuiltInRegistries.ITEM.getKey(materialStack.getItem()))) {
                     hasMaterial = true;
                     break;
@@ -73,11 +73,11 @@ public class ArrowRecipe extends CustomRecipe {
 
     @Override
     public ItemStack assemble(CraftingInput craftingInput, HolderLookup.Provider provider) {
-        List<Either<ResourceLocation, TagKey<Item>>> materialList = new ArrayList<>();
+        List<Either<Identifier, TagKey<Item>>> materialList = new ArrayList<>();
         AtomicReference<Holder<ArrowData>> arrowData = new AtomicReference<>();
         ItemStack materialStack = craftingInput.getItem(0);
 
-        provider.lookupOrThrow(ModRegistries.ARROW_DATA_KEY).listElements().filter(reference -> !ArrowPlusConfig.CONFIG.getRemoval().contains(reference.key().location().getPath())).forEach(holder ->{
+        provider.lookupOrThrow(ModRegistries.ARROW_DATA_KEY).listElements().filter(reference -> !ArrowPlusConfig.CONFIG.getRemoval().contains(reference.key().identifier().getPath())).forEach(holder ->{
             materialList.add(holder.value().material());
             if (holder.value().material().left().isPresent() && holder.value().material().left().get().equals(BuiltInRegistries.ITEM.getKey(materialStack.getItem()))) {
                 arrowData.set(holder);

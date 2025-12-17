@@ -5,7 +5,7 @@ import com.coolerpromc.arrowplus.entity.ModEntities;
 import com.coolerpromc.arrowplus.item.custom.ModArrowItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.bus.BusGroup;
 import net.minecraftforge.registries.DeferredRegister;
@@ -20,7 +20,7 @@ public class ModItems {
     public static final RegistryObject<ModArrowItem> ARROW_PLUS = registerItem("arrow_plus", properties -> new ModArrowItem(properties, ModEntities.ARROW_PLUS.get()));
 
     private static <T extends Item> RegistryObject<T> registerItem(String name, Function<Item.Properties, ? extends T> item){
-        return ITEMS.register(name, () -> item.apply(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(ArrowPlus.MODID, name)))));
+        return ITEMS.register(name, () -> item.apply(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(ArrowPlus.MODID, name)))));
     }
 
     public static void register(BusGroup eventBus) {

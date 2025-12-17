@@ -10,7 +10,7 @@ import com.coolerpromc.arrowplus.item.ModCreativeTabs;
 import com.coolerpromc.arrowplus.item.ModItems;
 import com.coolerpromc.arrowplus.util.ModRecipeSerializer;
 import net.minecraft.client.color.item.ItemTintSources;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.bus.BusGroup;
@@ -42,8 +42,8 @@ public class ArrowPlus {
         public static void onEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
             event.registerEntityRenderer(ModEntities.ARROW_PLUS.get(), context -> new ModArrowRenderer(context, ModArrowRenderer.getTextureLocation("arrow_plus")));
 
-            ItemTintSources.ID_MAPPER.put(ResourceLocation.fromNamespaceAndPath(MODID, "arrow_tint"), ArrowTintSource.MAP_CODEC);
-            ItemTintSources.ID_MAPPER.put(ResourceLocation.fromNamespaceAndPath(MODID, "bow_tint"), BowTintSource.MAP_CODEC);
+            ItemTintSources.ID_MAPPER.put(Identifier.fromNamespaceAndPath(MODID, "arrow_tint"), ArrowTintSource.MAP_CODEC);
+            ItemTintSources.ID_MAPPER.put(Identifier.fromNamespaceAndPath(MODID, "bow_tint"), BowTintSource.MAP_CODEC);
         }
     }
 }

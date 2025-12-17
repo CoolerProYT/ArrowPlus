@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.properties.numeric.UseDuration;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.NotNull;
@@ -48,14 +48,14 @@ public class ModModelProvider extends ModelProvider {
                         ItemModelUtils.conditional(ItemModelUtils.isUsingItem(), ItemModelUtils.rangeSelect(new UseDuration(false), 0.05F, itemmodel$unbaked1, ItemModelUtils.override(itemmodel$unbaked2, 0.65F), ItemModelUtils.override(itemmodel$unbaked3, 0.9F)), itemmodel$unbaked));
             }
 
-            private ResourceLocation createLayeredItemModel(ItemModelGenerators itemModels, Item item, String suffix) {
+            private Identifier createLayeredItemModel(ItemModelGenerators itemModels, Item item, String suffix) {
                 return ModelTemplates.TWO_LAYERED_ITEM.create(TextureMapping.getItemTexture(item, suffix), TextureMapping.layered(getModelLocation(item, suffix), getModelLocation(item, suffix + "_head")), this.modelOutput);
             }
         };
     }
 
-    private ResourceLocation getModelLocation(Item item, String suffix) {
-        return ResourceLocation.fromNamespaceAndPath(ArrowPlus.MODID, "item/" + BuiltInRegistries.ITEM.getKey(item).getPath() + suffix);
+    private Identifier getModelLocation(Item item, String suffix) {
+        return Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "item/" + BuiltInRegistries.ITEM.getKey(item).getPath() + suffix);
     }
 
 

@@ -20,7 +20,7 @@ public class ModCreativeTabs {
             () -> CreativeModeTab.builder().icon(() -> new ItemStack(Items.ARROW))
                     .title(Component.translatable("creativetab.arrowplus"))
                     .displayItems((itemDisplayParameters, output) -> {
-                        itemDisplayParameters.holders().lookupOrThrow(ModRegistries.ARROW_DATA_KEY).listElements().filter(reference -> !ArrowPlusConfig.CONFIG.getRemoval().contains(reference.key().location().getPath())).forEach(arrowData -> {
+                        itemDisplayParameters.holders().lookupOrThrow(ModRegistries.ARROW_DATA_KEY).listElements().filter(reference -> !ArrowPlusConfig.CONFIG.getRemoval().contains(reference.key().identifier().getPath())).forEach(arrowData -> {
                             ItemStack arrow = ModItems.ARROW_PLUS.get().getDefaultInstance();
                             arrow.set(ModDataComponents.ARROW_DATA.get(), arrowData);
                             output.accept(arrow);
