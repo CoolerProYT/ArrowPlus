@@ -3,7 +3,7 @@ package com.coolerpromc.arrowplus.entity.renderer;
 import com.coolerpromc.arrowplus.ArrowPlus;
 import com.coolerpromc.arrowplus.entity.custom.ModArrowEntity;
 import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.command.OrderedRenderCommandQueue;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.ProjectileEntityRenderer;
@@ -39,8 +39,8 @@ public class ModArrowRenderer extends ProjectileEntityRenderer<ModArrowEntity, M
         matrixStack.push();
         matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(renderState.yaw - 90.0F));
         matrixStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(renderState.pitch));
-        orderedRenderCommandQueue.submitModel(this.model, renderState, matrixStack, RenderLayer.getEntityCutout(this.getTexture(renderState)), renderState.light, OverlayTexture.DEFAULT_UV, -1, null, renderState.outlineColor, null);
-        orderedRenderCommandQueue.submitModel(this.model, renderState, matrixStack, RenderLayer.getEntityCutout(HEAD_TEXTURE), renderState.light, OverlayTexture.DEFAULT_UV, renderState.color, null, renderState.outlineColor, null);
+        orderedRenderCommandQueue.submitModel(this.model, renderState, matrixStack, RenderLayers.entityCutout(this.getTexture(renderState)), renderState.light, OverlayTexture.DEFAULT_UV, -1, null, renderState.outlineColor, null);
+        orderedRenderCommandQueue.submitModel(this.model, renderState, matrixStack, RenderLayers.entityCutout(HEAD_TEXTURE), renderState.light, OverlayTexture.DEFAULT_UV, renderState.color, null, renderState.outlineColor, null);
         matrixStack.pop();
         super.render(renderState, matrixStack, orderedRenderCommandQueue, cameraRenderState);
     }
