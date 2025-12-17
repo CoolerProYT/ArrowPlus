@@ -1,3 +1,4 @@
+/*
 package com.coolerpromc.arrowplus.compat.rei;
 
 import com.coolerpromc.arrowplus.ArrowPlus;
@@ -13,7 +14,7 @@ import me.shedaniel.rei.api.common.registry.display.ServerDisplayRegistry;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.plugin.common.displays.crafting.DefaultCustomDisplay;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -41,9 +42,9 @@ public class ArrowRecipeFiller implements Function<RecipeHolder<ArrowRecipe>, Co
     public Collection<Display> apply(RecipeHolder<ArrowRecipe> recipeHolder) {
         List<Display> displays = new ArrayList<>();
 
-        BasicDisplay.registryAccess().lookupOrThrow(ModRegistries.ARROW_DATA_KEY).listElements().filter(reference -> !ArrowPlusConfig.CONFIG.getRemoval().contains(reference.key().location().getPath())).forEach(data -> {
+        BasicDisplay.registryAccess().lookupOrThrow(ModRegistries.ARROW_DATA_KEY).listElements().filter(reference -> !ArrowPlusConfig.CONFIG.getRemoval().contains(reference.key().identifier().getPath())).forEach(data -> {
             Ingredient ingredient = Ingredient.of(Items.FLINT);
-            ResourceLocation materialLocation = ResourceLocation.parse("invalid");
+            Identifier materialLocation = Identifier.parse("invalid");
             ItemStack output = new ItemStack(ModItems.ARROW_PLUS.get(), 4);
             output.set(ModDataComponents.ARROW_DATA, data);
 
@@ -56,7 +57,7 @@ public class ArrowRecipeFiller implements Function<RecipeHolder<ArrowRecipe>, Co
                 materialLocation = data.value().material().right().get().location();
             }
 
-            ResourceLocation id = ResourceLocation.fromNamespaceAndPath(ArrowPlus.MODID, "arrowplus.arrow." + materialLocation.getPath());
+            Identifier id = Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "arrowplus.arrow." + materialLocation.getPath());
 
             List<EntryIngredient> inputEntries = List.of(
                     EntryIngredient.empty(),
@@ -74,3 +75,4 @@ public class ArrowRecipeFiller implements Function<RecipeHolder<ArrowRecipe>, Co
         return displays;
     }
 }
+*/

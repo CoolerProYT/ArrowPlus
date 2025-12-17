@@ -11,7 +11,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -99,7 +99,7 @@ public class ModArrowEntity extends AbstractArrow {
     @Override
     protected void doPostHurtEffects(LivingEntity entity) {
         super.doPostHurtEffects(entity);
-        getArrowData().effects().forEach((resourceLocation, integer) -> BuiltInRegistries.POTION.get(resourceLocation).ifPresent(potionReference -> potionReference.value().getEffects().forEach(instance -> entity.addEffect(
+        getArrowData().effects().forEach((Identifier, integer) -> BuiltInRegistries.POTION.get(Identifier).ifPresent(potionReference -> potionReference.value().getEffects().forEach(instance -> entity.addEffect(
                 new MobEffectInstance(instance.getEffect(), integer, instance.getAmplifier(), instance.isAmbient(), instance.isVisible(), instance.showIcon(), null)
         ))));
     }

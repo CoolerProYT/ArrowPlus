@@ -4,8 +4,8 @@ import com.coolerpromc.arrowplus.ArrowPlus;
 import com.coolerpromc.arrowplus.util.ArrowData;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class ModRegistries {
-    public static final ResourceKey<Registry<ArrowData>> ARROW_DATA_KEY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(ArrowPlus.MODID, "arrows"));
+    public static final ResourceKey<Registry<ArrowData>> ARROW_DATA_KEY = ResourceKey.createRegistryKey(Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "arrows"));
 }

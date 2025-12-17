@@ -9,7 +9,7 @@ import com.coolerpromc.arrowplus.entity.renderer.ModArrowRenderer;
 import com.coolerpromc.arrowplus.item.ModCreativeTabs;
 import com.coolerpromc.arrowplus.item.ModItems;
 import com.coolerpromc.arrowplus.util.ModRecipeSerializer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -44,8 +44,8 @@ public class ArrowPlus {
 
         @SubscribeEvent
         public static void onRegisterColorHandlersItemTintSources(RegisterColorHandlersEvent.ItemTintSources event) {
-            event.register(ResourceLocation.fromNamespaceAndPath(MODID, "arrow_tint"), ArrowTintSource.MAP_CODEC);
-            event.register(ResourceLocation.fromNamespaceAndPath(MODID, "bow_tint"), BowTintSource.MAP_CODEC);
+            event.register(Identifier.fromNamespaceAndPath(MODID, "arrow_tint"), ArrowTintSource.MAP_CODEC);
+            event.register(Identifier.fromNamespaceAndPath(MODID, "bow_tint"), BowTintSource.MAP_CODEC);
         }
     }
 }

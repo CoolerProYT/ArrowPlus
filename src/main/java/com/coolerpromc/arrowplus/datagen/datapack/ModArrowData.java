@@ -5,31 +5,31 @@ import com.coolerpromc.arrowplus.registry.ModRegistries;
 import com.coolerpromc.arrowplus.util.ArrowData;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 
 import java.util.Map;
 
 public class ModArrowData {
-    public static final ResourceKey<ArrowData> STONE = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, ResourceLocation.fromNamespaceAndPath(ArrowPlus.MODID, "stone"));
-    public static final ResourceKey<ArrowData> IRON = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, ResourceLocation.fromNamespaceAndPath(ArrowPlus.MODID, "iron"));
-    public static final ResourceKey<ArrowData> COPPER = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, ResourceLocation.fromNamespaceAndPath(ArrowPlus.MODID, "copper"));
-    public static final ResourceKey<ArrowData> GOLD = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, ResourceLocation.fromNamespaceAndPath(ArrowPlus.MODID, "gold"));
-    public static final ResourceKey<ArrowData> LAPIS = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, ResourceLocation.fromNamespaceAndPath(ArrowPlus.MODID, "lapis"));
-    public static final ResourceKey<ArrowData> EMERALD = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, ResourceLocation.fromNamespaceAndPath(ArrowPlus.MODID, "emerald"));
-    public static final ResourceKey<ArrowData> DIAMOND = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, ResourceLocation.fromNamespaceAndPath(ArrowPlus.MODID, "diamond"));
-    public static final ResourceKey<ArrowData> OBSIDIAN = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, ResourceLocation.fromNamespaceAndPath(ArrowPlus.MODID, "obsidian"));
-    public static final ResourceKey<ArrowData> AMETHYST = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, ResourceLocation.fromNamespaceAndPath(ArrowPlus.MODID, "amethyst"));
-    public static final ResourceKey<ArrowData> NETHERITE = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, ResourceLocation.fromNamespaceAndPath(ArrowPlus.MODID, "netherite"));
-    public static final ResourceKey<ArrowData> WOOD = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, ResourceLocation.fromNamespaceAndPath(ArrowPlus.MODID, "wood"));
-    public static final ResourceKey<ArrowData> BONE = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, ResourceLocation.fromNamespaceAndPath(ArrowPlus.MODID, "bone"));
-    public static final ResourceKey<ArrowData> BRICK = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, ResourceLocation.fromNamespaceAndPath(ArrowPlus.MODID, "brick"));
-    public static final ResourceKey<ArrowData> QUARTZ = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, ResourceLocation.fromNamespaceAndPath(ArrowPlus.MODID, "quartz"));
-    public static final ResourceKey<ArrowData> PRISMARINE = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, ResourceLocation.fromNamespaceAndPath(ArrowPlus.MODID, "prismarine"));
-    public static final ResourceKey<ArrowData> GLOWSTONE = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, ResourceLocation.fromNamespaceAndPath(ArrowPlus.MODID, "glowstone"));
-    public static final ResourceKey<ArrowData> REDSTONE = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, ResourceLocation.fromNamespaceAndPath(ArrowPlus.MODID, "redstone"));
-    public static final ResourceKey<ArrowData> CHARCOAL = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, ResourceLocation.fromNamespaceAndPath(ArrowPlus.MODID, "charcoal"));
+    public static final ResourceKey<ArrowData> STONE = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "stone"));
+    public static final ResourceKey<ArrowData> IRON = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "iron"));
+    public static final ResourceKey<ArrowData> COPPER = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "copper"));
+    public static final ResourceKey<ArrowData> GOLD = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "gold"));
+    public static final ResourceKey<ArrowData> LAPIS = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "lapis"));
+    public static final ResourceKey<ArrowData> EMERALD = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "emerald"));
+    public static final ResourceKey<ArrowData> DIAMOND = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "diamond"));
+    public static final ResourceKey<ArrowData> OBSIDIAN = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "obsidian"));
+    public static final ResourceKey<ArrowData> AMETHYST = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "amethyst"));
+    public static final ResourceKey<ArrowData> NETHERITE = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "netherite"));
+    public static final ResourceKey<ArrowData> WOOD = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "wood"));
+    public static final ResourceKey<ArrowData> BONE = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "bone"));
+    public static final ResourceKey<ArrowData> BRICK = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "brick"));
+    public static final ResourceKey<ArrowData> QUARTZ = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "quartz"));
+    public static final ResourceKey<ArrowData> PRISMARINE = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "prismarine"));
+    public static final ResourceKey<ArrowData> GLOWSTONE = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "glowstone"));
+    public static final ResourceKey<ArrowData> REDSTONE = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "redstone"));
+    public static final ResourceKey<ArrowData> CHARCOAL = ResourceKey.create(ModRegistries.ARROW_DATA_KEY, Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "charcoal"));
 
     public static void bootstrap(BootstrapContext<ArrowData> context){
         context.register(STONE, new ArrowData(ItemTags.STONE_CRAFTING_MATERIALS, 1.5d, 0xFF4D4B49, "item.arrowplus.stone_arrow", false, 0.05, Map.of()));

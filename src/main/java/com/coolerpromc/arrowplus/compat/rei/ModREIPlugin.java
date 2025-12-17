@@ -1,3 +1,4 @@
+/*
 package com.coolerpromc.arrowplus.compat.rei;
 
 import com.coolerpromc.arrowplus.item.ModItems;
@@ -18,3 +19,4 @@ public class ModREIPlugin implements REICommonPlugin {
         registry.registerComponents(ModItems.ARROW_PLUS.get());
     }
 }
+*/
