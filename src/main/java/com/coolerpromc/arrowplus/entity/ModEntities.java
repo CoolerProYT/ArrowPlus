@@ -4,7 +4,7 @@ import com.coolerpromc.arrowplus.ArrowPlus;
 import com.coolerpromc.arrowplus.entity.custom.ModArrowEntity;
 import com.coolerpromc.arrowplus.item.ModItems;
 import com.coolerpromc.arrowplus.item.custom.ModArrowItem;
-import com.coolerpromc.arrowplus.util.ArrowData;
+import com.coolerpromc.arrowplus.arrow.ArrowData;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.resources.ResourceKey;

@@ -2,7 +2,7 @@ package com.coolerpromc.arrowplus.datagen;
 
 import com.coolerpromc.arrowplus.ArrowPlus;
 import com.coolerpromc.arrowplus.registry.ModRegistries;
-import com.coolerpromc.arrowplus.util.ArrowData;
+import com.coolerpromc.arrowplus.arrow.ArrowData;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -22,11 +22,12 @@ public class ModDataGenerator {
         PackOutput packOutput = generator.getPackOutput();
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
+        ModDatapackProvider datapackProvider = new ModDatapackProvider(packOutput, lookupProvider);
 
 //        generator.addProvider(event.includeClient(), new ModModelProvider(packOutput));
         generator.addProvider(event.includeServer(), new ModItemTagsProvider(packOutput, lookupProvider, existingFileHelper));
-        generator.addProvider(event.includeServer(), new ModRecipeProvider.Runner(packOutput, lookupProvider));
-        generator.addProvider(event.includeServer(), new ModDatapackProvider(packOutput, lookupProvider));
+        generator.addProvider(event.includeServer(), new ModRecipeProvider.Runner(packOutput, datapackProvider.getRegistryProvider()));
+        generator.addProvider(event.includeServer(), datapackProvider);
     }
 
     @SubscribeEvent

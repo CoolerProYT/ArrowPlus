@@ -1,0 +1,33 @@
+{
+  "type": "forge:conditional",
+  "forge:condition": {
+    "type": "forge:mod_loaded",
+    "modid": "fletchingrecipe"
+  },
+  "recipes": [
+    {
+      "recipe": {
+        "type": "fletchingrecipe:fletching",
+        "bottom": {
+          "count": 1,
+          "ingredient": "minecraft:feather"
+        },
+        "middle": {
+          "count": 1,
+          "ingredient": "arrowplus:iron_stick"
+        },
+        "output": {
+          "components": {
+            "arrowplus:arrow_data": "arrowplus:gold"
+          },
+          "count": 8,
+          "id": "arrowplus:arrow_plus"
+        },
+        "top": {
+          "count": 1,
+          "ingredient": "minecraft:gold_ingot"
+        }
+      }
+    }
+  ]
+}

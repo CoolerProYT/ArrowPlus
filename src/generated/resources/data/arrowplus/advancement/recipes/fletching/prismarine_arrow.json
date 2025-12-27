@@ -1,0 +1,62 @@
+{
+  "forge:conditional": [
+    {
+      "parent": "minecraft:recipes/root",
+      "criteria": {
+        "has_feather": {
+          "conditions": {
+            "items": [
+              {
+                "items": "minecraft:feather"
+              }
+            ]
+          },
+          "trigger": "minecraft:inventory_changed"
+        },
+        "has_prismarine_shard": {
+          "conditions": {
+            "items": [
+              {
+                "items": "minecraft:prismarine_shard"
+              }
+            ]
+          },
+          "trigger": "minecraft:inventory_changed"
+        },
+        "has_stick": {
+          "conditions": {
+            "items": [
+              {
+                "items": "minecraft:stick"
+              }
+            ]
+          },
+          "trigger": "minecraft:inventory_changed"
+        },
+        "has_the_recipe": {
+          "conditions": {
+            "recipe": "arrowplus:arrow_plus"
+          },
+          "trigger": "minecraft:recipe_unlocked"
+        }
+      },
+      "forge:condition": {
+        "type": "forge:mod_loaded",
+        "modid": "fletchingrecipe"
+      },
+      "requirements": [
+        [
+          "has_the_recipe",
+          "has_prismarine_shard",
+          "has_stick",
+          "has_feather"
+        ]
+      ],
+      "rewards": {
+        "recipes": [
+          "arrowplus:arrow_plus"
+        ]
+      }
+    }
+  ]
+}

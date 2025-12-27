@@ -1,7 +1,7 @@
 package com.coolerpromc.arrowplus.datagen.model;
 
 import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
-import com.coolerpromc.arrowplus.util.ArrowData;
+import com.coolerpromc.arrowplus.arrow.ArrowData;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.color.item.ItemTintSource;

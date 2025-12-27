@@ -2,15 +2,15 @@ package com.coolerpromc.arrowplus;
 
 import com.coolerpromc.arrowplus.config.ArrowPlusConfig;
 import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
-import com.coolerpromc.arrowplus.datagen.model.ArrowTintSource;
-import com.coolerpromc.arrowplus.datagen.model.BowTintSource;
+import com.coolerpromc.arrowplus.datagen.model.*;
 import com.coolerpromc.arrowplus.entity.ModEntities;
 import com.coolerpromc.arrowplus.entity.renderer.ModArrowRenderer;
 import com.coolerpromc.arrowplus.item.ModCreativeTabs;
 import com.coolerpromc.arrowplus.item.ModItems;
-import com.coolerpromc.arrowplus.util.ModRecipeSerializer;
+import com.coolerpromc.arrowplus.recipe.ModRecipeSerializer;
 import net.minecraft.client.color.item.ItemTintSources;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.renderer.item.properties.conditional.ConditionalItemModelProperties;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.bus.BusGroup;
@@ -40,10 +40,19 @@ public class ArrowPlus {
     {
         @SubscribeEvent
         public static void onEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-            event.registerEntityRenderer(ModEntities.ARROW_PLUS.get(), context -> new ModArrowRenderer(context, ModArrowRenderer.getTextureLocation("arrow_plus")));
+            event.registerEntityRenderer(ModEntities.ARROW_PLUS.get(), ModArrowRenderer::new);
 
             ItemTintSources.ID_MAPPER.put(ResourceLocation.fromNamespaceAndPath(MODID, "arrow_tint"), ArrowTintSource.MAP_CODEC);
             ItemTintSources.ID_MAPPER.put(ResourceLocation.fromNamespaceAndPath(MODID, "bow_tint"), BowTintSource.MAP_CODEC);
+            ItemTintSources.ID_MAPPER.put(ResourceLocation.fromNamespaceAndPath(MODID, "stick_tint"), StickTintSource.MAP_CODEC);
+            ItemTintSources.ID_MAPPER.put(ResourceLocation.fromNamespaceAndPath(MODID, "bow_stick_tint"), BowStickTintSource.MAP_CODEC);
+            ItemTintSources.ID_MAPPER.put(ResourceLocation.fromNamespaceAndPath(MODID, "feather_tint"), FeatherTintSource.MAP_CODEC);
+
+            ConditionalItemModelProperties.ID_MAPPER.put(ResourceLocation.fromNamespaceAndPath(MODID, "tipped"), TippedCondition.MAP_CODEC);
         }
+    }
+
+    public static ResourceLocation id(String path){
+        return ResourceLocation.fromNamespaceAndPath(MODID, path);
     }
 }

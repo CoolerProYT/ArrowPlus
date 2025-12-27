@@ -2,32 +2,29 @@ package com.coolerpromc.arrowplus.entity.renderer;
 
 import com.coolerpromc.arrowplus.ArrowPlus;
 import com.coolerpromc.arrowplus.entity.custom.ModArrowEntity;
+import com.coolerpromc.arrowplus.item.custom.ModFeatherItem;
+import com.coolerpromc.arrowplus.item.custom.ModStickItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.ArrowModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.entity.ArrowRenderer;
+import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
-public class ModArrowRenderer extends ArrowRenderer<ModArrowEntity, ModArrowRenderState> {
+public class ModArrowRenderer extends EntityRenderer<ModArrowEntity, ModArrowRenderState> {
     private final ArrowModel model;
-    public final ResourceLocation arrowTexture;
     public static final ResourceLocation BODY_TEXTURE = getTextureLocation("arrow_plus");
     public static final ResourceLocation HEAD_TEXTURE = getTextureLocation("arrow_plus_head");
+    public static final ResourceLocation FEATHER_TEXTURE = getTextureLocation("arrow_plus_feather");
 
-    public ModArrowRenderer(EntityRendererProvider.Context p_174399_, ResourceLocation arrowTexture) {
+    public ModArrowRenderer(EntityRendererProvider.Context p_174399_) {
         super(p_174399_);
-        this.arrowTexture = arrowTexture;
         this.model = new ArrowModel(p_174399_.bakeLayer(ModelLayers.ARROW));
-    }
-
-    protected ResourceLocation getTextureLocation(ModArrowRenderState p_364566_) {
-        return BODY_TEXTURE;
     }
 
     public ModArrowRenderState createRenderState() {
@@ -43,8 +40,9 @@ public class ModArrowRenderer extends ArrowRenderer<ModArrowEntity, ModArrowRend
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(renderState.yRot - 90.0F));
         poseStack.mulPose(Axis.ZP.rotationDegrees(renderState.xRot));
-        nodeCollector.submitModel(this.model, renderState, poseStack, RenderType.entityCutout(this.getTextureLocation(renderState)), renderState.lightCoords, OverlayTexture.NO_OVERLAY, -1, null, renderState.outlineColor, null);
-        nodeCollector.submitModel(this.model, renderState, poseStack, RenderType.entityCutout(HEAD_TEXTURE), renderState.lightCoords, OverlayTexture.NO_OVERLAY, renderState.color, null, renderState.outlineColor, null);
+        nodeCollector.submitModel(this.model, renderState, poseStack, RenderType.entityCutout(BODY_TEXTURE), renderState.lightCoords, OverlayTexture.NO_OVERLAY, renderState.bodyColor, null, renderState.outlineColor, null);
+        nodeCollector.submitModel(this.model, renderState, poseStack, RenderType.entityCutout(HEAD_TEXTURE), renderState.lightCoords, OverlayTexture.NO_OVERLAY, renderState.headColor, null, renderState.outlineColor, null);
+        nodeCollector.submitModel(this.model, renderState, poseStack, RenderType.entityCutout(FEATHER_TEXTURE), renderState.lightCoords, OverlayTexture.NO_OVERLAY, renderState.featherColor, null, renderState.outlineColor, null);
         poseStack.popPose();
         super.submit(renderState, poseStack, nodeCollector, cameraRenderState);
     }
@@ -52,6 +50,21 @@ public class ModArrowRenderer extends ArrowRenderer<ModArrowEntity, ModArrowRend
     @Override
     public void extractRenderState(ModArrowEntity arrowEntity, ModArrowRenderState renderState, float p_360538_) {
         super.extractRenderState(arrowEntity, renderState, p_360538_);
-        renderState.color = arrowEntity.getArrowData().color();
+        renderState.headColor = arrowEntity.getArrowData().color();
+        if (arrowEntity.getArrowData().stick().value() instanceof ModStickItem item){
+            renderState.bodyColor = item.getColor();
+        }
+        else{
+            renderState.bodyColor = 0xFF886627;
+        }
+        if (arrowEntity.getArrowData().feather().value() instanceof ModFeatherItem item){
+            renderState.featherColor = item.getColor();
+        }
+        else{
+            renderState.featherColor = -1;
+        }
+        renderState.xRot = arrowEntity.getXRot(p_360538_);
+        renderState.yRot = arrowEntity.getYRot(p_360538_);
+        renderState.shake = (float)arrowEntity.shakeTime - p_360538_;
     }
 }

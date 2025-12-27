@@ -18,6 +18,8 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 minecraft {
     mappings channel: mapping_channel, version: mapping_version
 
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+
     reobf = false
     copyIdeResources = true
 
@@ -79,6 +81,9 @@ repositories {
             includeGroupAndSubgroups('org.spongepowered')
         }
     }
+    maven {
+        url "https://cursemaven.com"
+    }
 }
 
 
@@ -90,6 +95,8 @@ dependencies {
     implementation "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
     compileOnly "me.shedaniel:RoughlyEnoughItems-api-neoforge:${rei_version}"
     implementation  "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"*/
+
+    implementation "curse.maven:fletching-recipe-1364606:7385101"
 }
 
 tasks.named('processResources', ProcessResources) {
@@ -123,12 +130,18 @@ tasks.named('jar', Jar) {
 publishing {
     publications {
         register('mavenJava', MavenPublication) {
+            artifactId = mod_id
             artifact jar
         }
     }
     repositories {
+        mavenLocal()
         maven {
-            url "file://${project.projectDir}/mcmodsrepo"
+            url = findProperty("repsy_url")
+            credentials {
+                username = findProperty("repsy_username")
+                password = findProperty("repsy_password")
+            }
         }
     }
 }

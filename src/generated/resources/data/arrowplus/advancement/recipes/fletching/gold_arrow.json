@@ -1,0 +1,62 @@
+{
+  "forge:conditional": [
+    {
+      "parent": "minecraft:recipes/root",
+      "criteria": {
+        "has_feather": {
+          "conditions": {
+            "items": [
+              {
+                "items": "minecraft:feather"
+              }
+            ]
+          },
+          "trigger": "minecraft:inventory_changed"
+        },
+        "has_gold_ingot": {
+          "conditions": {
+            "items": [
+              {
+                "items": "minecraft:gold_ingot"
+              }
+            ]
+          },
+          "trigger": "minecraft:inventory_changed"
+        },
+        "has_iron_stick": {
+          "conditions": {
+            "items": [
+              {
+                "items": "arrowplus:iron_stick"
+              }
+            ]
+          },
+          "trigger": "minecraft:inventory_changed"
+        },
+        "has_the_recipe": {
+          "conditions": {
+            "recipe": "arrowplus:arrow_plus"
+          },
+          "trigger": "minecraft:recipe_unlocked"
+        }
+      },
+      "forge:condition": {
+        "type": "forge:mod_loaded",
+        "modid": "fletchingrecipe"
+      },
+      "requirements": [
+        [
+          "has_the_recipe",
+          "has_gold_ingot",
+          "has_iron_stick",
+          "has_feather"
+        ]
+      ],
+      "rewards": {
+        "recipes": [
+          "arrowplus:arrow_plus"
+        ]
+      }
+    }
+  ]
+}
