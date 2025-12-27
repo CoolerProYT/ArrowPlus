@@ -2,8 +2,11 @@
   "baseDamage": 1.6,
   "color": -12703965,
   "effects": {},
+  "feather": "minecraft:feather",
   "flame": false,
   "gravity": 0.05,
   "material": "minecraft:charcoal",
+  "outputAmount": 6,
+  "stick": "minecraft:stick",
   "translationKey": "item.arrowplus.charcoal_arrow"
 }

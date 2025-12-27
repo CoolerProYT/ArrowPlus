@@ -2,8 +2,11 @@
   "baseDamage": 2.4,
   "color": -1120086,
   "effects": {},
+  "feather": "minecraft:feather",
   "flame": false,
   "gravity": 0.05,
   "material": "minecraft:bone",
+  "outputAmount": 8,
+  "stick": "minecraft:stick",
   "translationKey": "item.arrowplus.bone_arrow"
 }

@@ -1,0 +1,62 @@
+{
+  "forge:conditional": [
+    {
+      "parent": "minecraft:recipes/root",
+      "criteria": {
+        "has_diamond_stick": {
+          "conditions": {
+            "items": [
+              {
+                "items": "arrowplus:diamond_stick"
+              }
+            ]
+          },
+          "trigger": "minecraft:inventory_changed"
+        },
+        "has_gilded_feather": {
+          "conditions": {
+            "items": [
+              {
+                "items": "arrowplus:gilded_feather"
+              }
+            ]
+          },
+          "trigger": "minecraft:inventory_changed"
+        },
+        "has_netherite_ingot": {
+          "conditions": {
+            "items": [
+              {
+                "items": "minecraft:netherite_ingot"
+              }
+            ]
+          },
+          "trigger": "minecraft:inventory_changed"
+        },
+        "has_the_recipe": {
+          "conditions": {
+            "recipe": "arrowplus:arrow_plus"
+          },
+          "trigger": "minecraft:recipe_unlocked"
+        }
+      },
+      "forge:condition": {
+        "type": "forge:mod_loaded",
+        "modid": "fletchingrecipe"
+      },
+      "requirements": [
+        [
+          "has_the_recipe",
+          "has_netherite_ingot",
+          "has_diamond_stick",
+          "has_gilded_feather"
+        ]
+      ],
+      "rewards": {
+        "recipes": [
+          "arrowplus:arrow_plus"
+        ]
+      }
+    }
+  ]
+}
