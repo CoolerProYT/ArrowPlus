@@ -2,8 +2,11 @@
   "baseDamage": 3.2,
   "color": -6543440,
   "effects": {},
+  "feather": "minecraft:feather",
   "flame": false,
   "gravity": 0.05,
   "material": "minecraft:amethyst_shard",
+  "outputAmount": 4,
+  "stick": "minecraft:stick",
   "translationKey": "item.arrowplus.amethyst_arrow"
 }

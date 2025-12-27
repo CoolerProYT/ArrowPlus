@@ -2,8 +2,11 @@
   "baseDamage": 2.0,
   "color": -10752,
   "effects": {},
+  "feather": "minecraft:feather",
   "flame": false,
   "gravity": 0.05,
   "material": "minecraft:gold_ingot",
+  "outputAmount": 4,
+  "stick": "arrowplus:iron_stick",
   "translationKey": "item.arrowplus.gold_arrow"
 }

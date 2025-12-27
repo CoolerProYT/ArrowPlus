@@ -1,7 +1,15 @@
-// 1.21.1	2025-07-30T16:13:29.0345239	Item Models: arrowplus
-d9f850bb907092d2e6f7fd8bf1959bb35ff7c020 assets/arrowplus/models/item/arrow_plus.json
-12ad2b68ad6572014a8bed80a68ec1cfd1904abd assets/arrowplus/models/item/bow_pulling_0.json
-5d641ffc06aa2ec759d5159f4298ca84e87faad0 assets/arrowplus/models/item/bow_pulling_1.json
-f82527be89a3db7ad8926b9150c0ca51767438dd assets/arrowplus/models/item/bow_pulling_2.json
+// 1.21.1	2025-12-30T14:42:32.8951812	Item Models: arrowplus
+a2f9d48019313b3f5f4e5c82d3df587a27cc4587 assets/arrowplus/models/item/arrow_plus.json
+a89015c420b3bdc9a0f06bd51185f288e043ce67 assets/arrowplus/models/item/arrow_plus_tipped.json
+c50897e2af8fada2c4155bb8751e3f77641c51a9 assets/arrowplus/models/item/bow_pulling_0.json
+22a3475edfb5358404dca7a9d5ea0eeee06c4cd0 assets/arrowplus/models/item/bow_pulling_1.json
+7ba36646b30841fd3f0a73fadb4684c04a550006 assets/arrowplus/models/item/bow_pulling_2.json
+d9efa0d52bf17542f0153cb67df6dee366da46d5 assets/arrowplus/models/item/copper_stick.json
+d9efa0d52bf17542f0153cb67df6dee366da46d5 assets/arrowplus/models/item/diamond_stick.json
+d9efa0d52bf17542f0153cb67df6dee366da46d5 assets/arrowplus/models/item/emerald_stick.json
+bd9c9acd924d79b636eb8afbb7cf0ceae504cf2d assets/arrowplus/models/item/gilded_feather.json
+d9efa0d52bf17542f0153cb67df6dee366da46d5 assets/arrowplus/models/item/gold_stick.json
+d9efa0d52bf17542f0153cb67df6dee366da46d5 assets/arrowplus/models/item/iron_stick.json
+d9efa0d52bf17542f0153cb67df6dee366da46d5 assets/arrowplus/models/item/netherite_stick.json
 5781370e9549c23505d131bab80dda07e641dc77 assets/minecraft/models/item/arrow.json
 66f7fdf58adfbea400acbc655b26554881d79224 assets/minecraft/models/item/bow.json

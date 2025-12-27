@@ -3,6 +3,7 @@ plugins {
     id 'maven-publish'
     id 'net.neoforged.moddev' version '2.0.105'
     id 'idea'
+    id "me.modmuss50.mod-publish-plugin" version "1.1.0"
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -91,14 +92,15 @@ configurations {
 
 dependencies {
     compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
-    implementation "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
+    compileOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 
     implementation "dev.architectury:architectury-neoforge:${architectury_version}"
     implementation "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
     compileOnly "me.shedaniel:RoughlyEnoughItems-api-neoforge:${rei_version}"
-    compileOnly  "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"
+    implementation  "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"
 
     implementation "curse.maven:jade-324717:6853386"
+    implementation "curse.maven:fletching-recipe-1364606:7395179"
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
@@ -128,12 +130,20 @@ neoForge.ideSyncTask generateModMetadata
 publishing {
     publications {
         register('mavenJava', MavenPublication) {
+            groupId = groupId
+            artifactId = mod_id
+            version = mod_version
             from components.java
         }
     }
     repositories {
+        mavenLocal()
         maven {
-            url "file://${project.projectDir}/repo"
+            url = findProperty("repsy_url")
+            credentials {
+                username = findProperty("repsy_username")
+                password = findProperty("repsy_password")
+            }
         }
     }
 }
@@ -146,5 +156,25 @@ idea {
     module {
         downloadSources = true
         downloadJavadoc = true
+    }
+}
+
+publishMods {
+    file.set(jar.archiveFile)
+    type = STABLE
+    modLoaders.add("neoforge")
+    changelog = file("changelog.md").text
+    displayName = mod_id + "-" + mod_version
+
+    curseforge {
+        projectId = "1317209"
+        accessToken = findProperty("CF_TOKEN")
+        minecraftVersions.add(minecraft_version)
+    }
+
+    modrinth {
+        projectId = 'srzQqcGY'
+        accessToken = findProperty("MODRINTH_TOKEN")
+        minecraftVersions.add(minecraft_version)
     }
 }

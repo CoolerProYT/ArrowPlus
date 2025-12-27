@@ -5,7 +5,7 @@ import com.coolerpromc.arrowplus.entity.custom.ModArrowEntity;
 import com.coolerpromc.arrowplus.item.ModItems;
 import com.coolerpromc.arrowplus.item.custom.ModArrowItem;
 import net.minecraft.core.registries.Registries;
-import com.coolerpromc.arrowplus.util.ArrowData;
+import com.coolerpromc.arrowplus.arrow.ArrowData;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -15,8 +15,6 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Supplier;
 
 public class ModEntities {

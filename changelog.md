@@ -1,0 +1,6 @@
+- Arrow from this mod support tipped arrow recipe now
+- Added 3 new field to arrow data `feather`, `stick` and `outputAmount`
+- Arrow Item, Bow, Arrow Entity will use the same color as the stick and feather ingredient for the arrow
+- Changed default feather, stick, output amount for some of the arrow for rebalancing (Ofc it still can be overridden using datapack)
+- Added recipe support for `Fletching Recipe` mod, arrow output amount will be double when crafting with `Fletching Table`
+- Added translation for `zh_cn`, `zh_tw`, and `zh_hk`

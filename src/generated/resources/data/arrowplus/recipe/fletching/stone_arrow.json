@@ -1,0 +1,34 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "fletchingrecipe"
+    }
+  ],
+  "type": "fletchingrecipe:fletching",
+  "bottom": {
+    "count": 1,
+    "ingredient": {
+      "item": "minecraft:feather"
+    }
+  },
+  "middle": {
+    "count": 1,
+    "ingredient": {
+      "item": "minecraft:stick"
+    }
+  },
+  "output": {
+    "components": {
+      "arrowplus:arrow_data": "arrowplus:stone"
+    },
+    "count": 16,
+    "id": "arrowplus:arrow_plus"
+  },
+  "top": {
+    "count": 1,
+    "ingredient": {
+      "tag": "minecraft:stone_crafting_materials"
+    }
+  }
+}

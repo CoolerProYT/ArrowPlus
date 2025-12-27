@@ -2,8 +2,11 @@
   "baseDamage": 2.0,
   "color": -4822448,
   "effects": {},
+  "feather": "minecraft:feather",
   "flame": false,
   "gravity": 0.05,
   "material": "minecraft:brick",
+  "outputAmount": 8,
+  "stick": "minecraft:stick",
   "translationKey": "item.arrowplus.brick_arrow"
 }

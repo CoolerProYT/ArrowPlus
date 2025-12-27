@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": {
+      "item": "minecraft:feather"
+    },
+    "G": {
+      "item": "minecraft:glowstone_dust"
+    }
+  },
+  "pattern": [
+    " G ",
+    "GFG",
+    " G "
+  ],
+  "result": {
+    "count": 4,
+    "id": "arrowplus:gilded_feather"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "fletchingrecipe"
+    }
+  ],
+  "type": "fletchingrecipe:fletching",
+  "bottom": {
+    "count": 1,
+    "ingredient": {
+      "item": "arrowplus:gilded_feather"
+    }
+  },
+  "middle": {
+    "count": 1,
+    "ingredient": {
+      "item": "arrowplus:diamond_stick"
+    }
+  },
+  "output": {
+    "components": {
+      "arrowplus:arrow_data": "arrowplus:netherite"
+    },
+    "count": 4,
+    "id": "arrowplus:arrow_plus"
+  },
+  "top": {
+    "count": 1,
+    "ingredient": {
+      "item": "minecraft:netherite_ingot"
+    }
+  }
+}

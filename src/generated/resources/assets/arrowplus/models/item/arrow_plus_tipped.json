@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "arrowplus:item/arrow_stick",
+    "layer1": "arrowplus:item/arrow_head",
+    "layer2": "arrowplus:item/arrow_feather",
+    "layer3": "arrowplus:item/arrow_tipped"
+  }
+}
