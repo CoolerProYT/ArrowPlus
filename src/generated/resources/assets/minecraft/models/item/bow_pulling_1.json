@@ -2,6 +2,7 @@
   "parent": "minecraft:item/generated",
   "textures": {
     "layer0": "arrowplus:item/bow_pulling_1",
-    "layer1": "arrowplus:item/bow_pulling_1_head"
+    "layer1": "arrowplus:item/bow_pulling_1_head",
+    "layer2": "arrowplus:item/bow_pulling_1_stick"
   }
 }

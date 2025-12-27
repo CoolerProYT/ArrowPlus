@@ -9,11 +9,6 @@ import me.shedaniel.rei.forge.REIPluginCommon;
 @REIPluginCommon
 public class ModREIPlugin implements REICommonPlugin {
     @Override
-    public void registerDisplays(ServerDisplayRegistry registry) {
-        new ArrowRecipeFiller().registerDisplays(registry);
-    }
-
-    @Override
     public void registerItemComparators(ItemComparatorRegistry registry) {
         registry.registerComponents(ModItems.ARROW_PLUS.get());
     }

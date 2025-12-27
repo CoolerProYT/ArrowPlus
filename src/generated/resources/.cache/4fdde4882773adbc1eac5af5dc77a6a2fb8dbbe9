@@ -1,9 +1,24 @@
-// 1.21.10	2025-10-10T20:19:32.2030064	Model Definitions - arrowplus
-1c98de84c6d9ddf052a09de7449bee4408b37a64 assets/arrowplus/items/arrow_plus.json
-d9f850bb907092d2e6f7fd8bf1959bb35ff7c020 assets/arrowplus/models/item/arrow_plus.json
+// 1.21.11	2025-12-24T17:56:27.2963623	Model Definitions - arrowplus
+bd1cf671abe53835efbb90bc71c92dfde0ca593b assets/arrowplus/items/arrow_plus.json
+4673d3427fae69459dbd8d12784fd165db430aa3 assets/arrowplus/items/copper_stick.json
+805e52a384d2cc21f3578171b1d813514fc5bd73 assets/arrowplus/items/diamond_stick.json
+8e92cb8efc37dea2620a88c7fc24decc84388af5 assets/arrowplus/items/emerald_stick.json
+c0a02908034400142811c6a3a7e28563b6b12918 assets/arrowplus/items/gilded_feather.json
+da3a1f1ffe518f0b2a9f9e9e596dd22700cb2351 assets/arrowplus/items/gold_stick.json
+11f20314c7272d369547b5ed0233a5fe7bff9266 assets/arrowplus/items/iron_stick.json
+76a2d6a412319284bebf86633f7bb206523a7ee8 assets/arrowplus/items/netherite_stick.json
+fe37bde3ecb9ae4b55b0bd3caf2336835c29cbd7 assets/arrowplus/models/item/arrow_plus.json
+a89015c420b3bdc9a0f06bd51185f288e043ce67 assets/arrowplus/models/item/arrow_plus_tipped.json
+d9efa0d52bf17542f0153cb67df6dee366da46d5 assets/arrowplus/models/item/copper_stick.json
+d9efa0d52bf17542f0153cb67df6dee366da46d5 assets/arrowplus/models/item/diamond_stick.json
+d9efa0d52bf17542f0153cb67df6dee366da46d5 assets/arrowplus/models/item/emerald_stick.json
+bd9c9acd924d79b636eb8afbb7cf0ceae504cf2d assets/arrowplus/models/item/gilded_feather.json
+d9efa0d52bf17542f0153cb67df6dee366da46d5 assets/arrowplus/models/item/gold_stick.json
+d9efa0d52bf17542f0153cb67df6dee366da46d5 assets/arrowplus/models/item/iron_stick.json
+d9efa0d52bf17542f0153cb67df6dee366da46d5 assets/arrowplus/models/item/netherite_stick.json
 94bc038a5f4745203c544827712ce2d9dd48f3c0 assets/minecraft/items/arrow.json
-6af67ca00ec4f1bd2ffb62703bf11240b688dfe0 assets/minecraft/items/bow.json
+b03afbfd6296b1247a6da0b9eca67c7135164aea assets/minecraft/items/bow.json
 5781370e9549c23505d131bab80dda07e641dc77 assets/minecraft/models/item/arrow.json
-be0e220ff411db09cb56388f489d702143193936 assets/minecraft/models/item/bow_pulling_0.json
-3e280d562331c79eb5bac2134160fbfe72c2dd1e assets/minecraft/models/item/bow_pulling_1.json
-e435a93393ec69c68f3370e35e1a74254072ca92 assets/minecraft/models/item/bow_pulling_2.json
+a7c3254d95cd9002d327bbc2b8509f23e85f7cef assets/minecraft/models/item/bow_pulling_0.json
+6aed5a60d3cbac2d82aa4f0486a288bb54fa15d3 assets/minecraft/models/item/bow_pulling_1.json
+0fb7c0eb2a8f225fb81b4a641927b7169253902f assets/minecraft/models/item/bow_pulling_2.json

@@ -2,8 +2,11 @@
   "baseDamage": 2.0,
   "color": -3722,
   "effects": {},
+  "feather": "minecraft:feather",
   "flame": false,
   "gravity": 0.05,
   "material": "minecraft:glowstone_dust",
+  "outputAmount": 6,
+  "stick": "minecraft:stick",
   "translationKey": "item.arrowplus.glowstone_arrow"
 }

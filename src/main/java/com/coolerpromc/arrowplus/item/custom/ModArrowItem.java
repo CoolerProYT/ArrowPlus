@@ -1,11 +1,12 @@
 package com.coolerpromc.arrowplus.item.custom;
 
+import com.coolerpromc.arrowplus.arrow.ArrowData;
 import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
 import com.coolerpromc.arrowplus.entity.custom.ModArrowEntity;
-import com.coolerpromc.arrowplus.util.ArrowData;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Position;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,6 +15,7 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
@@ -62,6 +64,11 @@ public class ModArrowItem extends ArrowItem {
 
     @Override
     public Component getName(ItemStack stack) {
-        return Component.translatable(stack.getOrDefault(ModDataComponents.ARROW_DATA, Holder.direct(ArrowData.EMPTY)).value().translationKey());
+        Component arrow = Component.translatable(stack.getOrDefault(ModDataComponents.ARROW_DATA, Holder.direct(ArrowData.EMPTY)).value().translationKey());
+        if (stack.has(DataComponents.POTION_CONTENTS)){
+            PotionContents potionContents = stack.get(DataComponents.POTION_CONTENTS);
+            return Component.translatable("item.arrowplus.tipped", arrow, potionContents.getName("effect.minecraft."));
+        }
+        return arrow;
     }
 }

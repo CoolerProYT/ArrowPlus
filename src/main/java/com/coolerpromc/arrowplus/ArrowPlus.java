@@ -2,13 +2,12 @@ package com.coolerpromc.arrowplus;
 
 import com.coolerpromc.arrowplus.config.ArrowPlusConfig;
 import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
-import com.coolerpromc.arrowplus.datagen.model.ArrowTintSource;
-import com.coolerpromc.arrowplus.datagen.model.BowTintSource;
+import com.coolerpromc.arrowplus.datagen.model.*;
 import com.coolerpromc.arrowplus.entity.ModEntities;
 import com.coolerpromc.arrowplus.entity.renderer.ModArrowRenderer;
 import com.coolerpromc.arrowplus.item.ModCreativeTabs;
 import com.coolerpromc.arrowplus.item.ModItems;
-import com.coolerpromc.arrowplus.util.ModRecipeSerializer;
+import com.coolerpromc.arrowplus.recipe.ModRecipeSerializer;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -19,6 +18,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import net.neoforged.neoforge.client.event.RegisterConditionalItemModelPropertyEvent;
 
 @Mod(ArrowPlus.MODID)
 public class ArrowPlus {
@@ -39,13 +39,25 @@ public class ArrowPlus {
     {
         @SubscribeEvent
         public static void onEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-            event.registerEntityRenderer(ModEntities.ARROW_PLUS.get(), context -> new ModArrowRenderer(context, ModArrowRenderer.getTextureLocation("arrow_plus")));
+            event.registerEntityRenderer(ModEntities.ARROW_PLUS.get(), ModArrowRenderer::new);
         }
 
         @SubscribeEvent
         public static void onRegisterColorHandlersItemTintSources(RegisterColorHandlersEvent.ItemTintSources event) {
             event.register(ResourceLocation.fromNamespaceAndPath(MODID, "arrow_tint"), ArrowTintSource.MAP_CODEC);
             event.register(ResourceLocation.fromNamespaceAndPath(MODID, "bow_tint"), BowTintSource.MAP_CODEC);
+            event.register(ResourceLocation.fromNamespaceAndPath(MODID, "stick_tint"), StickTintSource.MAP_CODEC);
+            event.register(ResourceLocation.fromNamespaceAndPath(MODID, "bow_stick_tint"), BowStickTintSource.MAP_CODEC);
+            event.register(ResourceLocation.fromNamespaceAndPath(MODID, "feather_tint"), FeatherTintSource.MAP_CODEC);
         }
+
+        @SubscribeEvent
+        public static void onRegisterConditionalItemModelProperty(RegisterConditionalItemModelPropertyEvent event) {
+            event.register(ResourceLocation.fromNamespaceAndPath(MODID, "tipped"), TippedCondition.MAP_CODEC);
+        }
+    }
+
+    public static ResourceLocation id(String path){
+        return ResourceLocation.fromNamespaceAndPath(MODID, path);
     }
 }
