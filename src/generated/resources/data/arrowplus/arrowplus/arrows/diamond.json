@@ -2,8 +2,11 @@
   "baseDamage": 3.5,
   "color": -12532481,
   "effects": {},
+  "feather": "minecraft:feather",
   "flame": false,
   "gravity": 0.05,
   "material": "minecraft:diamond",
+  "outputAmount": 3,
+  "stick": "arrowplus:gold_stick",
   "translationKey": "item.arrowplus.diamond_arrow"
 }

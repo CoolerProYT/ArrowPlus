@@ -2,7 +2,7 @@ package com.coolerpromc.arrowplus.datacomponent;
 
 import com.coolerpromc.arrowplus.ArrowPlus;
 import com.coolerpromc.arrowplus.registry.ModRegistries;
-import com.coolerpromc.arrowplus.util.ArrowData;
+import com.coolerpromc.arrowplus.arrow.ArrowData;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;

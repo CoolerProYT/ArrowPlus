@@ -1,6 +1,7 @@
 {
   "item.minecraft.arrow": "Flint Arrow",
   "creativetab.arrowplus": "Arrow+",
+  "creativetab.arrowplus.material": "Arrow+ Materials",
   "tooltip.arrowplus.base_damage": "Base Damage: %d",
   "item.arrowplus.cheated_item": "Invalid Arrow+ Item",
 
@@ -21,5 +22,18 @@
   "item.arrowplus.prismarine_arrow": "Prismarine Arrow",
   "item.arrowplus.glowstone_arrow": "Glowstone Arrow",
   "item.arrowplus.redstone_arrow": "Redstone Arrow",
-  "item.arrowplus.charcoal_arrow": "Charcoal Arrow"
+  "item.arrowplus.charcoal_arrow": "Charcoal Arrow",
+  "item.arrowplus.tipped": "%1$s of %2$s",
+
+  "item.arrowplus.copper_stick": "Copper Stick",
+  "item.arrowplus.iron_stick": "Iron Stick",
+  "item.arrowplus.gold_stick": "Gold Stick",
+  "item.arrowplus.diamond_stick": "Diamond Stick",
+  "item.arrowplus.emerald_stick": "Emerald Stick",
+  "item.arrowplus.netherite_stick": "Netherite Stick",
+
+  "effect.minecraft.leaping": "Leaping",
+  "effect.minecraft.turtle_master": "Turtle Master",
+  "effect.minecraft.swiftness": "Swiftness",
+  "effect.minecraft.healing": "Healing"
 }

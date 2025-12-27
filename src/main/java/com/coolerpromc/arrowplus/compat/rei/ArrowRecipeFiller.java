@@ -4,7 +4,7 @@ package com.coolerpromc.arrowplus.compat.rei;
 import com.coolerpromc.arrowplus.ArrowPlus;
 import com.coolerpromc.arrowplus.config.ArrowPlusConfig;
 import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
-import com.coolerpromc.arrowplus.datagen.datapack.ArrowRecipe;
+import com.coolerpromc.arrowplus.recipe.ArrowRecipe;
 import com.coolerpromc.arrowplus.item.ModItems;
 import com.coolerpromc.arrowplus.registry.ModRegistries;
 import me.shedaniel.rei.api.common.display.Display;

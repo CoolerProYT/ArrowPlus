@@ -32,13 +32,6 @@ repositories {
     }
     maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
     maven { url "https://maven.architectury.dev/" }
-    maven {
-        name = "Maven for PR #2639"
-        url = uri("https://prmaven.neoforged.net/NeoForge/pr2639")
-        content {
-            includeModule("net.neoforged", "neoforge")
-        }
-    }
 }
 
 base {
@@ -49,8 +42,6 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 neoForge {
     version = project.neo_version
-
-
 
     runs {
         client {
@@ -104,6 +95,7 @@ dependencies {
     compileOnly  "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"
 
     implementation "curse.maven:jade-324717:7313008"
+    implementation "com.coolerpromc:fletchingrecipe:1.0.0+1.21.11-neoforge"
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
@@ -131,12 +123,20 @@ neoForge.ideSyncTask generateModMetadata
 publishing {
     publications {
         register('mavenJava', MavenPublication) {
+            groupId = groupId
+            artifactId = mod_id
+            version = mod_version
             from components.java
         }
     }
     repositories {
+        mavenLocal()
         maven {
-            url "file://${project.projectDir}/repo"
+            url = findProperty("repsy_url")
+            credentials {
+                username = findProperty("repsy_username")
+                password = findProperty("repsy_password")
+            }
         }
     }
 }
