@@ -2,8 +2,11 @@
   "baseDamage": 2.8,
   "color": -10565432,
   "effects": {},
+  "feather": "minecraft:feather",
   "flame": false,
   "gravity": 0.05,
   "material": "minecraft:prismarine_shard",
+  "outputAmount": 6,
+  "stick": "minecraft:stick",
   "translationKey": "item.arrowplus.prismarine_arrow"
 }

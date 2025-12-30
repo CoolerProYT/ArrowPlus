@@ -2,8 +2,11 @@
   "baseDamage": 3.8,
   "color": -13755833,
   "effects": {},
+  "feather": "arrowplus:gilded_feather",
   "flame": false,
   "gravity": 0.05,
   "material": "minecraft:obsidian",
+  "outputAmount": 2,
+  "stick": "arrowplus:diamond_stick",
   "translationKey": "item.arrowplus.obsidian_arrow"
 }

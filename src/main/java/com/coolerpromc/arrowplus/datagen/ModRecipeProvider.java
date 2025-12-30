@@ -1,12 +1,31 @@
 package com.coolerpromc.arrowplus.datagen;
 
 import com.coolerpromc.arrowplus.ArrowPlus;
-import com.coolerpromc.arrowplus.datagen.datapack.ArrowRecipe;
+import com.coolerpromc.arrowplus.arrow.ArrowData;
+import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
+import com.coolerpromc.arrowplus.item.ModItems;
+import com.coolerpromc.arrowplus.item.custom.ModStickItem;
+import com.coolerpromc.arrowplus.recipe.ArrowRecipe;
+import com.coolerpromc.arrowplus.recipe.TippedArrowRecipe;
+import com.coolerpromc.arrowplus.registry.ModRegistries;
+import com.coolerpromc.fletchingrecipe.datagen.recipebuilder.FletchingRecipeBuilder;
+import com.coolerpromc.fletchingrecipe.util.SizedIngredient;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
+import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions;
+import net.minecraft.advancement.AdvancementCriterion;
+import net.minecraft.advancement.criterion.InventoryChangedCriterion;
+import net.minecraft.component.ComponentChanges;
 import net.minecraft.data.recipe.ComplexRecipeJsonBuilder;
 import net.minecraft.data.recipe.RecipeExporter;
 import net.minecraft.data.recipe.RecipeGenerator;
+import net.minecraft.data.recipe.ShapedRecipeJsonBuilder;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.book.RecipeCategory;
+import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
@@ -21,10 +40,66 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
     @Override
     protected RecipeGenerator getRecipeGenerator(RegistryWrapper.WrapperLookup wrapperLookup, RecipeExporter recipeExporter) {
+        final RegistryEntryLookup<Item> items = wrapperLookup.getOrThrow(RegistryKeys.ITEM);
+        
         return new RecipeGenerator(wrapperLookup, recipeExporter) {
             @Override
             public void generate() {
                 ComplexRecipeJsonBuilder.create(ArrowRecipe::new).offerTo(this.exporter, RegistryKey.of(RegistryKeys.RECIPE, Identifier.of(ArrowPlus.MODID, "arrow_recipe")));
+                ComplexRecipeJsonBuilder.create(TippedArrowRecipe::new).offerTo(this.exporter, RegistryKey.of(RegistryKeys.RECIPE, Identifier.of(ArrowPlus.MODID, "tipped_arrow_recipe")));
+
+                stickRecipe(Items.COPPER_INGOT, ModItems.COPPER_STICK);
+                stickRecipe(Items.IRON_INGOT, ModItems.IRON_STICK);
+                stickRecipe(Items.GOLD_INGOT, ModItems.GOLD_STICK);
+                stickRecipe(Items.DIAMOND, ModItems.DIAMOND_STICK);
+                stickRecipe(Items.EMERALD, ModItems.EMERALD_STICK);
+                stickRecipe(Items.NETHERITE_INGOT, ModItems.NETHERITE_STICK);
+
+                ShapedRecipeJsonBuilder.create(items, RecipeCategory.MISC, ModItems.GILDED_FEATHER, 4)
+                        .pattern(" G ")
+                        .pattern("GFG")
+                        .pattern(" G ")
+                        .input('G', Items.GLOWSTONE_DUST)
+                        .input('F', Items.FEATHER)
+                        .criterion(hasItem(Items.GLOWSTONE_DUST), conditionsFromItem(Items.GLOWSTONE_DUST))
+                        .criterion(hasItem(Items.FEATHER), conditionsFromItem(Items.FEATHER))
+                        .offerTo(exporter);
+
+                registries.getOrThrow(ModRegistries.ARROW_DATA_KEY).streamEntries().forEach(holder -> {
+                    ArrowData arrowData = holder.value();
+                    Ingredient ingredient = null;
+                    AdvancementCriterion<InventoryChangedCriterion.Conditions> hasIngredient = null;
+                    String hasName = "";
+                    if (arrowData.material().left().isPresent()){
+                        ingredient = Ingredient.ofItem(arrowData.material().left().get().value());
+                        hasIngredient = conditionsFromItem(arrowData.material().left().get().value());
+                        hasName = hasItem(arrowData.material().left().get().value());
+                    }
+                    else if (arrowData.material().right().isPresent()){
+                        ingredient = Ingredient.ofTag(items.getOrThrow(arrowData.material().right().get()));
+                        hasIngredient = conditionsFromTag(arrowData.material().right().get());
+                        hasName = "has_" + arrowData.material().right().get().id().getPath();
+                    }
+
+                    FletchingRecipeBuilder.builder()
+                            .top(new SizedIngredient(ingredient, 1))
+                            .middle(new SizedIngredient(Ingredient.ofItem(arrowData.stick().value()), 1))
+                            .bottom(new SizedIngredient(Ingredient.ofItem(arrowData.feather().value()), 1))
+                            .output(new ItemStack(ModItems.ARROW_PLUS.getRegistryEntry(), arrowData.outputAmount() * 2, ComponentChanges.builder().add(ModDataComponents.ARROW_DATA, holder).build()))
+                            .criterion(hasName, hasIngredient)
+                            .criterion(hasItem(arrowData.stick().value()), conditionsFromItem(arrowData.stick().value()))
+                            .criterion(hasItem(arrowData.feather().value()), conditionsFromItem(arrowData.feather().value()))
+                            .offerTo(withConditions(exporter, ResourceConditions.allModsLoaded("fletchingrecipe")), RegistryKey.of(RegistryKeys.RECIPE, Identifier.of(ArrowPlus.MODID, "fletching/" + holder.getKey().get().getValue().getPath() + "_arrow")));
+                });
+            }
+
+            private void stickRecipe(Item item, ModStickItem stickItem) {
+                ShapedRecipeJsonBuilder.create(items, RecipeCategory.MISC, stickItem, 4)
+                        .pattern("S")
+                        .pattern("S")
+                        .input('S', Ingredient.ofItem(item))
+                        .criterion(hasItem(item), conditionsFromItem(item))
+                        .offerTo(exporter);
             }
         };
     }

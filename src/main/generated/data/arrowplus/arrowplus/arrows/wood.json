@@ -2,8 +2,11 @@
   "baseDamage": 1.0,
   "color": -7508381,
   "effects": {},
+  "feather": "minecraft:feather",
   "flame": false,
   "gravity": 0.05,
   "material": "#minecraft:planks",
+  "outputAmount": 8,
+  "stick": "minecraft:stick",
   "translationKey": "item.arrowplus.wood_arrow"
 }

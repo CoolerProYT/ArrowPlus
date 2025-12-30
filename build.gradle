@@ -12,6 +12,7 @@ base {
 }
 
 repositories {
+    mavenLocal()
 	maven { url "https://maven.shedaniel.me" }
 	maven {
 		url 'https://maven.blamejared.com'
@@ -40,6 +41,13 @@ dependencies {
 	modImplementation include("com.electronwill.night-config:toml:3.8.1")
 
     modCompileOnly("mezz.jei:jei-${minecraft_version}-fabric-api:${jei_version}")
+    modRuntimeOnly("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}")
+
+    modCompileOnly "com.coolerpromc:fletchingrecipe:1.2.0+1.21.11-fabric"
+}
+
+loom {
+    accessWidenerPath = file("src/main/resources/arrowplus.classtweaker");
 }
 
 processResources {
@@ -76,17 +84,22 @@ jar {
 publishing {
 	publications {
 		create("mavenJava", MavenPublication) {
-			artifactId = project.archives_base_name
+            groupId = maven_group
+            artifactId = archives_base_name
+            version = mod_version
 			from components.java
 		}
 	}
 
-	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
 	repositories {
-		// Add repositories to publish to here.
-		// Notice: This block does NOT have the same function as the block in the top level.
-		// The repositories here will be used for publishing your artifact, not for
-		// retrieving dependencies.
+        mavenLocal()
+        maven {
+            url = findProperty("repsy_url")
+            credentials {
+                username = findProperty("repsy_username")
+                password = findProperty("repsy_password")
+            }
+        }
 	}
 }
 
@@ -95,6 +108,7 @@ publishMods {
     type = STABLE
     modLoaders.add("fabric")
     changelog = file("changelog.md").text
+    displayName = "arrowplus-" + mod_version
 
     curseforge {
         projectId = "1317209"

@@ -2,8 +2,10 @@ package com.coolerpromc.arrowplus.item.custom;
 
 import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
 import com.coolerpromc.arrowplus.entity.custom.ModArrowEntity;
-import com.coolerpromc.arrowplus.util.ArrowData;
+import com.coolerpromc.arrowplus.arrow.ArrowData;
 import com.coolerpromc.arrowplus.util.InfiniteArrow;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.component.type.TooltipDisplayComponent;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -61,6 +63,11 @@ public class ModArrowItem extends ArrowItem implements InfiniteArrow {
 
     @Override
     public Text getName(ItemStack stack) {
-        return Text.translatable(stack.getOrDefault(ModDataComponents.ARROW_DATA, RegistryEntry.of(ArrowData.EMPTY)).value().translationKey());
+        Text arrow = Text.translatable(stack.getOrDefault(ModDataComponents.ARROW_DATA, RegistryEntry.of(ArrowData.EMPTY)).value().translationKey());
+        if (stack.contains(DataComponentTypes.POTION_CONTENTS)){
+            PotionContentsComponent potionContents = stack.get(DataComponentTypes.POTION_CONTENTS);
+            return Text.translatable("item.arrowplus.tipped", arrow, potionContents.getName("effect.minecraft."));
+        }
+        return arrow;
     }
 }

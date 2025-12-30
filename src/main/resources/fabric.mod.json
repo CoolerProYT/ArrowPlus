@@ -1,42 +1,46 @@
 {
-	"schemaVersion": 1,
-	"id": "arrowplus",
-	"version": "${version}",
-	"name": "Arrow+",
-	"description": "This is an example description! Tell everyone what your mod is about!",
-	"authors": [
-		"Me!"
-	],
-	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
-	},
-	"license": "CC0-1.0",
-	"environment": "*",
-	"entrypoints": {
-		"main": [
-			"com.coolerpromc.arrowplus.ArrowPlus"
-		],
-		"client": [
-			"com.coolerpromc.arrowplus.ArrowPlusClient"
-		],
-		"fabric-datagen": [
-			"com.coolerpromc.arrowplus.ArrowDataGenerator"
-		],
-		"rei_common": [
-			"com.coolerpromc.arrowplus.compat.rei.ModREIPlugin"
-		]
-	},
-	"mixins": [
-		"arrowplus.mixins.json"
-	],
-	"depends": {
-		"fabricloader": ">=0.16.14",
-		"minecraft": "1.21.11",
-		"java": ">=21",
-		"fabric-api": "*"
-	},
-	"suggests": {
-		"another-mod": "*"
-	}
+  "schemaVersion": 1,
+  "id": "arrowplus",
+  "version": "${version}",
+  "name": "Arrow+",
+  "description": "This is an example description! Tell everyone what your mod is about!",
+  "authors": [
+    "Me!"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+  "accessWidener": "arrowplus.classtweaker",
+  "license": "CC0-1.0",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.coolerpromc.arrowplus.ArrowPlus"
+    ],
+    "client": [
+      "com.coolerpromc.arrowplus.ArrowPlusClient"
+    ],
+    "fabric-datagen": [
+      "com.coolerpromc.arrowplus.ArrowDataGenerator"
+    ],
+    "rei_common": [
+      "com.coolerpromc.arrowplus.compat.rei.ModREIPlugin"
+    ],
+    "jei_mod_plugin": [
+      "com.coolerpromc.arrowplus.compat.jei.ModJEIPlugin"
+    ]
+  },
+  "mixins": [
+    "arrowplus.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.14",
+    "minecraft": "1.21.11",
+    "java": ">=21",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
 }

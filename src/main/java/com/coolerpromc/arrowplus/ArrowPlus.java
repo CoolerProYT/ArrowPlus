@@ -6,11 +6,12 @@ import com.coolerpromc.arrowplus.entity.ModEntities;
 import com.coolerpromc.arrowplus.item.ModCreativeTabs;
 import com.coolerpromc.arrowplus.item.ModItems;
 import com.coolerpromc.arrowplus.registry.ModRegistries;
-import com.coolerpromc.arrowplus.util.ArrowData;
-import com.coolerpromc.arrowplus.util.ModRecipeSerializer;
+import com.coolerpromc.arrowplus.arrow.ArrowData;
+import com.coolerpromc.arrowplus.recipe.ModRecipeSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.util.Identifier;
 
 import java.nio.file.Path;
 
@@ -29,4 +30,8 @@ public class ArrowPlus implements ModInitializer {
 		ArrowPlusConfig.load(configPath);
 		DynamicRegistries.registerSynced(ModRegistries.ARROW_DATA_KEY, ArrowData.CODEC, ArrowData.CODEC);
 	}
+
+    public static Identifier id(String path){
+        return Identifier.of(MODID, path);
+    }
 }
