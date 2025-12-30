@@ -1,7 +1,6 @@
-package com.coolerpromc.arrowplus.util;
+package com.coolerpromc.arrowplus.recipe;
 
 import com.coolerpromc.arrowplus.ArrowPlus;
-import com.coolerpromc.arrowplus.datagen.datapack.ArrowRecipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.registry.Registries;
@@ -10,6 +9,7 @@ import net.minecraft.util.Identifier;
 
 public class ModRecipeSerializer {
     public static final RecipeSerializer<ArrowRecipe> ARROW_RECIPE_SERIALIZER = Registry.register(Registries.RECIPE_SERIALIZER, Identifier.of(ArrowPlus.MODID, "arrow_recipe"), new SpecialCraftingRecipe.SpecialRecipeSerializer<>(ArrowRecipe::new));
+    public static final RecipeSerializer<TippedArrowRecipe> TIPPED_ARROW_RECIPE_SERIALIZER = Registry.register(Registries.RECIPE_SERIALIZER, Identifier.of(ArrowPlus.MODID, "tipped_arrow_recipe"), new SpecialCraftingRecipe.SpecialRecipeSerializer<>(TippedArrowRecipe::new));
 
     public static void register(){
 

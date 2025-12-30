@@ -2,8 +2,11 @@
   "baseDamage": 1.5,
   "color": -11711671,
   "effects": {},
+  "feather": "minecraft:feather",
   "flame": false,
   "gravity": 0.05,
   "material": "#minecraft:stone_crafting_materials",
+  "outputAmount": 8,
+  "stick": "minecraft:stick",
   "translationKey": "item.arrowplus.stone_arrow"
 }

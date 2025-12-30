@@ -1,7 +1,7 @@
 package com.coolerpromc.arrowplus.registry;
 
 import com.coolerpromc.arrowplus.ArrowPlus;
-import com.coolerpromc.arrowplus.util.ArrowData;
+import com.coolerpromc.arrowplus.arrow.ArrowData;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;

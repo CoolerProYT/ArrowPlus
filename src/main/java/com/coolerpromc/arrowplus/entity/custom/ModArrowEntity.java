@@ -2,17 +2,24 @@ package com.coolerpromc.arrowplus.entity.custom;
 
 import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
 import com.coolerpromc.arrowplus.entity.ModEntities;
-import com.coolerpromc.arrowplus.util.ArrowData;
+import com.coolerpromc.arrowplus.arrow.ArrowData;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.particle.TintedParticleEffect;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.storage.ReadView;
@@ -25,11 +32,13 @@ import org.jetbrains.annotations.Nullable;
 public class ModArrowEntity extends PersistentProjectileEntity {
     private final ItemStack stack;
     private static final TrackedData<ArrowData> ARROW_DATA = DataTracker.registerData(ModArrowEntity.class, ModEntities.ARROW_DATA);
+    private static final TrackedData<Integer> ID_EFFECT_COLOR  = DataTracker.registerData(ModArrowEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
     public ModArrowEntity(EntityType<? extends PersistentProjectileEntity> p_331098_, World p_331626_, ItemStack pickupItemStack) {
         super(p_331098_, p_331626_);
         this.stack = pickupItemStack;
         this.updateArrowData();
+        this.updateColor();
     }
 
     public ModArrowEntity(LivingEntity owner, World level, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, double baseDamage) {
@@ -49,12 +58,33 @@ public class ModArrowEntity extends PersistentProjectileEntity {
         }
         this.setDamage(baseDamage);
         this.updateArrowData();
+        this.updateColor();
     }
 
     public ModArrowEntity(double x, double y, double z, World level, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon) {
         super(ModEntities.ARROW_PLUS, x, y, z, level, pickupItemStack, firedFromWeapon);
         this.stack = pickupItemStack;
         this.updateArrowData();
+        this.updateColor();
+    }
+
+    private PotionContentsComponent getPotionContents() {
+        return this.stack.getOrDefault(DataComponentTypes.POTION_CONTENTS, PotionContentsComponent.DEFAULT);
+    }
+
+    private float getPotionDurationScale() {
+        return this.stack.getOrDefault(DataComponentTypes.POTION_DURATION_SCALE, 1.0F);
+    }
+
+    @Override
+    protected void setStack(ItemStack stack) {
+        super.setStack(stack);
+        this.updateColor();
+    }
+
+    private void updateColor() {
+        PotionContentsComponent potioncontents = this.getPotionContents();
+        this.dataTracker.set(ID_EFFECT_COLOR, potioncontents.equals(PotionContentsComponent.DEFAULT) ? -1 : potioncontents.getColor());
     }
 
     @Override
@@ -66,18 +96,51 @@ public class ModArrowEntity extends PersistentProjectileEntity {
     protected void initDataTracker(DataTracker.Builder builder) {
         super.initDataTracker(builder);
         builder.add(ARROW_DATA, ArrowData.EMPTY);
+        builder.add(ID_EFFECT_COLOR, -1);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (this.getEntityWorld().isClient()) {
+            if (this.isInGround()) {
+                if (this.inGroundTime % 5 == 0) {
+                    this.makeParticle(1);
+                }
+            } else {
+                this.makeParticle(2);
+            }
+        } else if (this.isInGround() && this.inGroundTime != 0 && !this.getPotionContents().equals(PotionContentsComponent.DEFAULT) && this.inGroundTime >= 600) {
+            this.getEntityWorld().sendEntityStatus(this, (byte)0);
+            this.setStack(new ItemStack(Items.ARROW));
+        }
+    }
+
+    private void makeParticle(int particleAmount) {
+        int i = this.getColor();
+        if (i != -1 && particleAmount > 0) {
+            for(int j = 0; j < particleAmount; ++j) {
+                this.getEntityWorld().addParticleClient(TintedParticleEffect.create(ParticleTypes.ENTITY_EFFECT, i), this.getParticleX(0.5F), this.getRandomBodyY(), this.getParticleZ(0.5F), 0.0F, 0.0F, 0.0F);
+            }
+        }
+    }
+
+    public int getColor() {
+        return this.dataTracker.get(ID_EFFECT_COLOR);
     }
 
     @Override
     protected void writeCustomData(WriteView valueOutput) {
         super.writeCustomData(valueOutput);
         valueOutput.put("arrow_data", ArrowData.CODEC, this.getArrowData());
+        valueOutput.putInt("color", this.getColor());
     }
 
     @Override
     protected void readCustomData(ReadView valueInput) {
         super.readCustomData(valueInput);
         valueInput.read("arrow_data", ArrowData.CODEC).ifPresent(arrowData -> this.dataTracker.set(ARROW_DATA, arrowData));
+        this.dataTracker.set(ID_EFFECT_COLOR, valueInput.getInt("color", -1));
     }
 
     public void updateArrowData() {
@@ -99,15 +162,37 @@ public class ModArrowEntity extends PersistentProjectileEntity {
     }
 
     @Override
-    protected void onHit(LivingEntity entity) {
-        super.onHit(entity);
-        getArrowData().effects().forEach((resourceLocation, integer) -> Registries.POTION.getEntry(resourceLocation).ifPresent(potionReference -> potionReference.value().getEffects().forEach(instance -> entity.addStatusEffect(
+    protected void onHit(LivingEntity livingEntity) {
+        super.onHit(livingEntity);
+        getArrowData().effects().forEach((resourceLocation, integer) -> Registries.POTION.getEntry(resourceLocation).ifPresent(potionReference -> potionReference.value().getEffects().forEach(instance -> livingEntity.addStatusEffect(
                 new StatusEffectInstance(instance.getEffectType(), integer, instance.getAmplifier(), instance.isAmbient(), instance.shouldShowParticles(), instance.shouldShowIcon(), null)
         ))));
+        Entity entity = this.getEffectCause();
+        PotionContentsComponent potioncontents = this.getPotionContents();
+        float f = this.getPotionDurationScale();
+        potioncontents.forEachEffect((p_478604_) -> livingEntity.addStatusEffect(p_478604_, entity), f);
     }
 
     @Override
     public boolean isOnFire() {
         return getArrowData().flame();
+    }
+
+    @Override
+    public void handleStatus(byte b) {
+        if (b == 0) {
+            int i = this.getColor();
+            if (i != -1) {
+                float f = (float)(i >> 16 & 255) / 255.0F;
+                float f1 = (float)(i >> 8 & 255) / 255.0F;
+                float f2 = (float)(i & 255) / 255.0F;
+
+                for(int j = 0; j < 20; ++j) {
+                    this.getEntityWorld().addParticleClient(TintedParticleEffect.create(ParticleTypes.ENTITY_EFFECT, f, f1, f2), this.getParticleX(0.5F), this.getRandomBodyY(), this.getParticleZ(0.5F), 0.0F, 0.0F, 0.0F);
+                }
+            }
+        } else {
+            super.handleStatus(b);
+        }
     }
 }

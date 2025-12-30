@@ -2,8 +2,11 @@
   "baseDamage": 2.3,
   "color": -12627531,
   "effects": {},
+  "feather": "minecraft:feather",
   "flame": false,
   "gravity": 0.05,
   "material": "minecraft:lapis_lazuli",
+  "outputAmount": 4,
+  "stick": "minecraft:stick",
   "translationKey": "item.arrowplus.lapis_arrow"
 }

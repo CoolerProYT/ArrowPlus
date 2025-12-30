@@ -2,8 +2,11 @@
   "baseDamage": 2.5,
   "color": -5194043,
   "effects": {},
+  "feather": "minecraft:feather",
   "flame": false,
   "gravity": 0.05,
   "material": "minecraft:iron_ingot",
+  "outputAmount": 4,
+  "stick": "arrowplus:copper_stick",
   "translationKey": "item.arrowplus.iron_arrow"
 }
