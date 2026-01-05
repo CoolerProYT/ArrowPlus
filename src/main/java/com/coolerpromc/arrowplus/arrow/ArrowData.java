@@ -15,6 +15,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 import java.util.HashMap;
@@ -36,6 +37,18 @@ public record ArrowData(Either<Holder<Item>, TagKey<Item>> material, double base
 
     public ArrowData(TagKey<Item> material, double baseDamage, int color, String translationKey, boolean flame, double gravity, Map<ResourceLocation, Integer> effects, Item feather, Item stick, int outputAmount) {
         this(Either.right(material), baseDamage, color, translationKey, flame, gravity, effects, feather.builtInRegistryHolder(), stick.builtInRegistryHolder(), outputAmount);
+    }
+
+    public boolean isValidMaterial(ItemStack materialStack, ItemStack stickStack, ItemStack featherStack){
+        if (material.left().isPresent() && materialStack.is(material.left().get())){
+            return stickStack.is(stick) && featherStack.is(feather);
+        }
+        else if (material.right().isPresent() && materialStack.is(material.right().get())){
+            return stickStack.is(stick) && featherStack.is(feather);
+        }
+        else {
+            return false;
+        }
     }
 
     public static final Codec<Either<Holder<Item>, TagKey<Item>>> MATERIAL_CODEC = Codec.either(
