@@ -8,6 +8,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
@@ -40,6 +41,19 @@ public record ArrowData(Either<RegistryEntry<Item>, TagKey<Item>> material, doub
     public ArrowData(TagKey<Item> material, double baseDamage, int color, String translationKey, boolean flame, double gravity, Map<Identifier, Integer> effects, Item feather, Item stick, int outputAmount) {
         this(Either.right(material), baseDamage, color, translationKey, flame, gravity, effects, feather.getRegistryEntry(), stick.getRegistryEntry(), outputAmount);
     }
+
+    public boolean isValidMaterial(ItemStack materialStack, ItemStack stickStack, ItemStack featherStack){
+        if (material.left().isPresent() && materialStack.itemMatches(material.left().get())){
+            return stickStack.itemMatches(stick) && featherStack.itemMatches(feather);
+        }
+        else if (material.right().isPresent() && materialStack.isIn(material.right().get())){
+            return stickStack.itemMatches(stick) && featherStack.itemMatches(feather);
+        }
+        else {
+            return false;
+        }
+    }
+
     public static final Codec<Either<RegistryEntry<Item>, TagKey<Item>>> MATERIAL_CODEC = Codec.either(
             ITEM_HOLDER_CODEC,
             TagKey.codec(RegistryKeys.ITEM)
