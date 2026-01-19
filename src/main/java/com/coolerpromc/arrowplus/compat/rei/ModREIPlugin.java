@@ -6,11 +6,11 @@ import me.shedaniel.rei.api.common.plugins.REICommonPlugin;
 import me.shedaniel.rei.api.common.registry.display.ServerDisplayRegistry;
 
 public class ModREIPlugin implements REICommonPlugin {
-    @Override
+    /*@Override
     public void registerDisplays(ServerDisplayRegistry registry) {
         new ArrowRecipeFiller().registerDisplays(registry);
     }
-
+*/
     @Override
     public void registerItemComparators(ItemComparatorRegistry registry) {
         registry.registerComponents(ModItems.ARROW_PLUS);

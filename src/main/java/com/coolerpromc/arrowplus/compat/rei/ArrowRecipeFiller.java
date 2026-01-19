@@ -4,12 +4,10 @@ import com.coolerpromc.arrowplus.ArrowPlus;
 import com.coolerpromc.arrowplus.config.ArrowPlusConfig;
 import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
 import com.coolerpromc.arrowplus.item.ModItems;
-import com.coolerpromc.arrowplus.recipe.ArrowRecipe;
 import com.coolerpromc.arrowplus.registry.ModRegistries;
 import me.shedaniel.rei.api.common.display.Display;
 import me.shedaniel.rei.api.common.display.basic.BasicDisplay;
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
-import me.shedaniel.rei.api.common.registry.display.ServerDisplayRegistry;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import me.shedaniel.rei.plugin.common.displays.crafting.DefaultCustomDisplay;
@@ -19,8 +17,6 @@ import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.RecipeEntry;
-import net.minecraft.recipe.RecipeType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
@@ -29,21 +25,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 
-public class ArrowRecipeFiller implements Function<RecipeEntry<ArrowRecipe>, Collection<Display>> {
-     public void registerDisplays(ServerDisplayRegistry registry) {
-        registry.beginRecipeFiller(getRecipeClass())
-                .filterType(RecipeType.CRAFTING)
-                .fillMultiple(this);
-    }
-
-    Class<ArrowRecipe> getRecipeClass(){
-         return ArrowRecipe.class;
-    }
-
-    @Override
-    public Collection<Display> apply(RecipeEntry<ArrowRecipe> recipeHolder) {
+public class ArrowRecipeFiller {
+    public static Collection<Display> get() {
         List<Display> displays = new ArrayList<>();
 
         BasicDisplay.registryAccess().getOrThrow(ModRegistries.ARROW_DATA_KEY).streamEntries().filter(reference -> !ArrowPlusConfig.CONFIG.getRemoval().contains(reference.registryKey().getValue().getPath())).forEach(data -> {

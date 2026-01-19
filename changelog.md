@@ -1,1 +1,1 @@
-- Fixed a bug where some crafting recipe might be broken or causing duplication
+- Fixed REI not showing arrow crafting recipes

@@ -38,13 +38,13 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:${rei_version}"
-	modCompileOnly "me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}"
+    modImplementation "me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}"
 
 	modImplementation include("com.electronwill.night-config:core:3.8.1")
 	modImplementation include("com.electronwill.night-config:toml:3.8.1")
 
     modCompileOnly("mezz.jei:jei-${minecraft_version}-fabric-api:${jei_version}")
-    modRuntimeOnly("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}")
+//    modRuntimeOnly("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}")
 
     modImplementation "curse.maven:fletching-recipe-1364606:7384475"
 }
