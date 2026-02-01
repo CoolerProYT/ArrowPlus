@@ -181,7 +181,7 @@ public class ModArrowEntity extends PersistentProjectileEntity {
 
     @Override
     public boolean isOnFire() {
-        return getArrowData().flame();
+        return getArrowData().flame() || super.isOnFire();
     }
 
     @Override

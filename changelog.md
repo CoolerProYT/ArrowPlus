@@ -1,1 +1,1 @@
-- Fixed a bug where some crafting recipe might be broken or causing duplication
+- Fixed `Flame` enchantment not applying to Arrow+
