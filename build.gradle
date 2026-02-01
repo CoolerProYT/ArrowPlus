@@ -1,13 +1,10 @@
-import net.darkhax.curseforgegradle.TaskPublishCurseForge
-
 plugins {
     id 'eclipse'
     id 'idea'
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
     id 'org.spongepowered.mixin' version '0.7.+'
-    id "com.modrinth.minotaur" version "2.+"
-    id 'net.darkhax.curseforgegradle' version '1.1.28'
+    id "me.modmuss50.mod-publish-plugin" version "1.1.0"
 }
 
 version = mod_version
@@ -150,20 +147,22 @@ mixin {
     config 'arrowplus.mixins.json'
 }
 
-modrinth {
-    token = System.getenv("MODRINTH_TOKEN")
-    projectId = "srzQqcGY"
-    versionNumber = mod_version
-    versionName = mod_name + " " + mod_version
-    versionType = "release"
-    uploadFile = jar
+publishMods {
+    file.set(jar.archiveFile)
+    type = STABLE
+    modLoaders.add("forge")
     changelog = file("changelog.md").text
-}
+    displayName = mod_id + "-" + mod_version
 
-tasks.register('publishCurseForge', TaskPublishCurseForge) {
-    apiToken = System.getenv("CF_TOKEN")
-    def projectId = "1317209"
-    def mainFile = upload(projectId, jar)
-    mainFile.releaseType = 'release'
-    mainFile.changelog = file("changelog.md")
+    curseforge {
+        projectId = "1317209"
+        accessToken = findProperty("CF_TOKEN")
+        minecraftVersions.add(minecraft_version)
+    }
+
+    modrinth {
+        projectId = 'srzQqcGY'
+        accessToken = findProperty("MODRINTH_TOKEN")
+        minecraftVersions.add(minecraft_version)
+    }
 }

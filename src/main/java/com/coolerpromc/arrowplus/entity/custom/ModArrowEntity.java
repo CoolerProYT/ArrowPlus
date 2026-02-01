@@ -120,6 +120,6 @@ public class ModArrowEntity extends AbstractArrow {
 
     @Override
     public boolean isOnFire() {
-        return getArrowData().flame();
+        return getArrowData().flame() || super.isOnFire();
     }
 }

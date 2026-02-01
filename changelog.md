@@ -1,1 +1,1 @@
-- Fixed some vanilla arrow unable to stack together
+- Fixed `Flame` enchantment not applying to Arrow+
