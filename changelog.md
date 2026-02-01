@@ -1,1 +1,1 @@
-- Fixed REI not showing arrow crafting recipes
+- Fixed `Flame` enchantment not applying to Arrow+
