@@ -88,7 +88,7 @@ public class ModModelProvider extends ModelProvider {
             }
 
             private ResourceLocation createLayeredItemModel(ItemModelGenerators itemModels, Item item, String suffix) {
-                return ModelTemplates.THREE_LAYERED_ITEM.create(TextureMapping.getItemTexture(item, suffix), TextureMapping.layered(getModelLocation(item, suffix), getModelLocation(item, suffix + "_head"), getModelLocation(item, suffix + "_stick")), this.modelOutput);
+                return ModelTemplates.createItem("bow", TextureSlot.LAYER0, TextureSlot.LAYER1, TextureSlot.LAYER2).create(TextureMapping.getItemTexture(item, suffix), TextureMapping.layered(getModelLocation(item, suffix), getModelLocation(item, suffix + "_head"), getModelLocation(item, suffix + "_stick")), this.modelOutput);
             }
         };
     }
