@@ -83,7 +83,7 @@ public class ModModelProvider extends FabricModelProvider {
     }
 
     private Identifier createLayeredItemModel(ItemModelGenerator itemModels, Item item, String suffix) {
-        return Models.GENERATED_THREE_LAYERS.upload(TextureMap.getSubId(item, suffix), TextureMap.layered(getModelLocation(item, suffix), getModelLocation(item, suffix + "_head"), getModelLocation(item, suffix + "_stick")), itemModels.modelCollector);
+        return Models.item("bow", TextureKey.LAYER0, TextureKey.LAYER1, TextureKey.LAYER2).upload(TextureMap.getSubId(item, suffix), TextureMap.layered(getModelLocation(item, suffix), getModelLocation(item, suffix + "_head"), getModelLocation(item, suffix + "_stick")), itemModels.modelCollector);
     }
 
     private Identifier getModelLocation(Item item, String suffix) {
