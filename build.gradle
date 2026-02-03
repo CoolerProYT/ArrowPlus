@@ -17,6 +17,18 @@ repositories {
 	maven {
 		url 'https://maven.blamejared.com'
 	}
+    repositories {
+        exclusiveContent {
+            forRepository {
+                maven {
+                    url "https://cursemaven.com"
+                }
+            }
+            filter {
+                includeGroup "curse.maven"
+            }
+        }
+    }
 }
 
 fabricApi {
@@ -43,7 +55,7 @@ dependencies {
     modCompileOnly("mezz.jei:jei-${minecraft_version}-fabric-api:${jei_version}")
     modRuntimeOnly("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}")
 
-    modCompileOnly "com.coolerpromc:fletchingrecipe:1.2.0+1.21.11-fabric"
+    modImplementation "curse.maven:fletching-recipe-1364606:7384356"
 }
 
 loom {
