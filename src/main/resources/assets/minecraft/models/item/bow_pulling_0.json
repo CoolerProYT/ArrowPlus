@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:item/generated",
+  "parent": "minecraft:item/bow",
   "textures": {
     "layer0": "arrowplus:item/bow_pulling_0",
     "layer1": "arrowplus:item/bow_pulling_0_head",
