@@ -1,1 +1,1 @@
-- Fixed `Flame` enchantment not applying to Arrow+
+- Fixed incorrect bow model on third person view
