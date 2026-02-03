@@ -1,4 +1,4 @@
-// 1.21.11	2025-12-24T17:56:27.2963623	Model Definitions - arrowplus
+// 1.21.11	2026-02-03T21:20:51.2837482	Model Definitions - arrowplus
 bd1cf671abe53835efbb90bc71c92dfde0ca593b assets/arrowplus/items/arrow_plus.json
 4673d3427fae69459dbd8d12784fd165db430aa3 assets/arrowplus/items/copper_stick.json
 805e52a384d2cc21f3578171b1d813514fc5bd73 assets/arrowplus/items/diamond_stick.json
@@ -19,6 +19,6 @@ d9efa0d52bf17542f0153cb67df6dee366da46d5 assets/arrowplus/models/item/netherite_
 94bc038a5f4745203c544827712ce2d9dd48f3c0 assets/minecraft/items/arrow.json
 b03afbfd6296b1247a6da0b9eca67c7135164aea assets/minecraft/items/bow.json
 5781370e9549c23505d131bab80dda07e641dc77 assets/minecraft/models/item/arrow.json
-a7c3254d95cd9002d327bbc2b8509f23e85f7cef assets/minecraft/models/item/bow_pulling_0.json
-6aed5a60d3cbac2d82aa4f0486a288bb54fa15d3 assets/minecraft/models/item/bow_pulling_1.json
-0fb7c0eb2a8f225fb81b4a641927b7169253902f assets/minecraft/models/item/bow_pulling_2.json
+c50897e2af8fada2c4155bb8751e3f77641c51a9 assets/minecraft/models/item/bow_pulling_0.json
+22a3475edfb5358404dca7a9d5ea0eeee06c4cd0 assets/minecraft/models/item/bow_pulling_1.json
+7ba36646b30841fd3f0a73fadb4684c04a550006 assets/minecraft/models/item/bow_pulling_2.json
