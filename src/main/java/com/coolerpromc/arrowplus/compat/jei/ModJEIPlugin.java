@@ -6,28 +6,24 @@ import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
 import com.coolerpromc.arrowplus.item.ModItems;
 import com.coolerpromc.arrowplus.registry.ModRegistries;
 import mezz.jei.api.IModPlugin;
-import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.recipe.vanilla.IVanillaRecipeFactory;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.ISubtypeRegistration;
 import net.fabricmc.fabric.impl.recipe.ingredient.builtin.ComponentsIngredient;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.component.ComponentChanges;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.PotionContentsComponent;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.recipe.CraftingRecipe;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeEntry;
-import net.minecraft.recipe.book.CraftingRecipeCategory;
-import net.minecraft.recipe.display.SlotDisplay;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +31,7 @@ import java.util.List;
 public class ModJEIPlugin implements IModPlugin {
     @Override
     public Identifier getPluginUid() {
-        return Identifier.of(ArrowPlus.MODID, "jei_plugin");
+        return Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "jei_plugin");
     }
 
     @Override
@@ -43,57 +39,57 @@ public class ModJEIPlugin implements IModPlugin {
         IVanillaRecipeFactory vanillaRecipeFactory = registration.getJeiHelpers().getVanillaRecipeFactory();
         String group = "arrowplus.arrow";
 
-        List<RecipeEntry<CraftingRecipe>> recipes = new ArrayList<>();
+        List<RecipeHolder<CraftingRecipe>> recipes = new ArrayList<>();
 
-        MinecraftClient.getInstance().world.getRegistryManager().getOrThrow(ModRegistries.ARROW_DATA_KEY).streamEntries().filter(reference -> !ArrowPlusConfig.CONFIG.getRemoval().contains(reference.registryKey().getValue().getPath())).forEach(data -> {
-            Ingredient ingredient = Ingredient.ofItem(Items.FLINT);
-            Identifier materialLocation = Identifier.of("invalid");
+        Minecraft.getInstance().level.registryAccess().lookupOrThrow(ModRegistries.ARROW_DATA_KEY).listElements().filter(reference -> !ArrowPlusConfig.CONFIG.getRemoval().contains(reference.key().identifier().getPath())).forEach(data -> {
+            Ingredient ingredient = Ingredient.of(Items.FLINT);
+            Identifier materialLocation = Identifier.parse("invalid");
             ItemStack output = new ItemStack(ModItems.ARROW_PLUS, data.value().outputAmount());
             output.set(ModDataComponents.ARROW_DATA, data);
 
             if (data.value().material().left().isPresent()){
-                ingredient = Ingredient.ofItem(data.value().material().left().get().value());
-                materialLocation = data.value().material().left().get().getKey().get().getValue();
+                ingredient = Ingredient.of(data.value().material().left().get().value());
+                materialLocation = data.value().material().left().get().unwrapKey().get().identifier();
             }
             else if (data.value().material().right().isPresent()){
-                ingredient = Ingredient.ofTag(Registries.ITEM.getOrThrow(data.value().material().right().get()));
-                materialLocation = data.value().material().right().get().id();
+                ingredient = Ingredient.of(BuiltInRegistries.ITEM.getOrThrow(data.value().material().right().get()));
+                materialLocation = data.value().material().right().get().location();
             }
 
-            Identifier id = Identifier.of(ArrowPlus.MODID, "arrowplus.arrow." + materialLocation.getPath());
-            RegistryKey<Recipe<?>> resourceKey = RegistryKey.of(RegistryKeys.RECIPE, id);
-            SlotDisplay slotDisplay = new SlotDisplay.StackSlotDisplay(output);
-            CraftingRecipe recipe = vanillaRecipeFactory.createShapedRecipeBuilder(CraftingRecipeCategory.MISC, slotDisplay)
+            Identifier id = Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "arrowplus.arrow." + materialLocation.getPath());
+            ResourceKey<Recipe<?>> resourceKey = ResourceKey.create(Registries.RECIPE, id);
+            SlotDisplay slotDisplay = new SlotDisplay.ItemStackSlotDisplay(ItemStackTemplate.fromNonEmptyStack(output));
+            CraftingRecipe recipe = vanillaRecipeFactory.createShapedRecipeBuilder(CraftingBookCategory.MISC, slotDisplay)
                     .group(group)
                     .define('m', ingredient)
-                    .define('s', Ingredient.ofItem(data.value().stick().value()))
-                    .define('f', Ingredient.ofItem(data.value().feather().value()))
+                    .define('s', Ingredient.of(data.value().stick().value()))
+                    .define('f', Ingredient.of(data.value().feather().value()))
                     .pattern(" m ")
                     .pattern(" s ")
                     .pattern(" f ")
                     .build();
-            recipes.add(new RecipeEntry<>(resourceKey, recipe));
+            recipes.add(new RecipeHolder<>(resourceKey, recipe));
 
-            MinecraftClient.getInstance().world.getRegistryManager().getOrThrow(RegistryKeys.POTION).streamEntries().forEach(potion -> {
+            Minecraft.getInstance().level.registryAccess().lookupOrThrow(Registries.POTION).listElements().forEach(potion -> {
                 if (!potion.value().getEffects().isEmpty()) {
                     ItemStack arrow = output.copyWithCount(1);
-                    ItemStack lingeringPotion = new ItemStack(Items.LINGERING_POTION.getRegistryEntry(), 1, ComponentChanges.builder().add(DataComponentTypes.POTION_CONTENTS, new PotionContentsComponent(potion)).build());
+                    ItemStack lingeringPotion = new ItemStack(Items.LINGERING_POTION.builtInRegistryHolder(), 1, DataComponentPatch.builder().set(DataComponents.POTION_CONTENTS, new PotionContents(potion)).build());
                     ItemStack tippedOutput = arrow.copy();
-                    tippedOutput.set(DataComponentTypes.POTION_CONTENTS, new PotionContentsComponent(potion));
+                    tippedOutput.set(DataComponents.POTION_CONTENTS, new PotionContents(potion));
 
-                    Identifier loc = Identifier.of(ArrowPlus.MODID, "arrowplus.arrow." + arrow.getRegistryEntry().getKey().get().getValue().getPath() + "." + potion.getKey().get().getValue().getPath());
-                    RegistryKey<Recipe<?>> key = RegistryKey.of(RegistryKeys.RECIPE, loc);
-                    SlotDisplay outputDisplay = new SlotDisplay.StackSlotDisplay(tippedOutput);
-                    CraftingRecipe tippedRecipe = vanillaRecipeFactory.createShapedRecipeBuilder(CraftingRecipeCategory.MISC, outputDisplay)
+                    Identifier loc = Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "arrowplus.arrow." + arrow.typeHolder().unwrapKey().get().identifier().getPath() + "." + potion.unwrapKey().get().identifier().getPath());
+                    ResourceKey<Recipe<?>> key = ResourceKey.create(Registries.RECIPE, loc);
+                    SlotDisplay outputDisplay = new SlotDisplay.ItemStackSlotDisplay(ItemStackTemplate.fromNonEmptyStack(tippedOutput));
+                    CraftingRecipe tippedRecipe = vanillaRecipeFactory.createShapedRecipeBuilder(CraftingBookCategory.MISC, outputDisplay)
                             .group(group)
-                            .define('a', new ComponentsIngredient(Ingredient.ofItem(arrow.getItem()), arrow.getComponentChanges()).toVanilla(), new SlotDisplay.StackSlotDisplay(arrow))
-                            .define('l', new ComponentsIngredient(Ingredient.ofItem(lingeringPotion.getItem()), lingeringPotion.getComponentChanges()).toVanilla(), new SlotDisplay.StackSlotDisplay(lingeringPotion))
+                            .define('a', new ComponentsIngredient(Ingredient.of(arrow.getItem()), arrow.getComponentsPatch()).toVanilla(), new SlotDisplay.ItemStackSlotDisplay(ItemStackTemplate.fromNonEmptyStack(arrow)))
+                            .define('l', new ComponentsIngredient(Ingredient.of(lingeringPotion.getItem()), lingeringPotion.getComponentsPatch()).toVanilla(), new SlotDisplay.ItemStackSlotDisplay(ItemStackTemplate.fromNonEmptyStack(lingeringPotion)))
                             .pattern("aaa")
                             .pattern("ala")
                             .pattern("aaa")
                             .build();
 
-                    recipes.add(new RecipeEntry<>(key, tippedRecipe));
+                    recipes.add(new RecipeHolder<>(key, tippedRecipe));
                 }
             });
         });
@@ -103,6 +99,6 @@ public class ModJEIPlugin implements IModPlugin {
 
     @Override
     public void registerItemSubtypes(ISubtypeRegistration registration) {
-        registration.registerFromDataComponentTypes(ModItems.ARROW_PLUS, ModDataComponents.ARROW_DATA, DataComponentTypes.POTION_CONTENTS);
+        registration.registerFromDataComponentTypes(ModItems.ARROW_PLUS, ModDataComponents.ARROW_DATA, DataComponents.POTION_CONTENTS);
     }
 }

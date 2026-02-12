@@ -6,58 +6,56 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.Identifier;
-
 import java.util.HashMap;
 import java.util.Map;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.Identifier;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
-public record ArrowData(Either<RegistryEntry<Item>, TagKey<Item>> material, double baseDamage, int color, String translationKey, boolean flame, double gravity, Map<Identifier, Integer> effects, RegistryEntry<Item> feather, RegistryEntry<Item> stick, int outputAmount) {
+public record ArrowData(Either<Holder<Item>, TagKey<Item>> material, double baseDamage, int color, String translationKey, boolean flame, double gravity, Map<Identifier, Integer> effects, Holder<Item> feather, Holder<Item> stick, int outputAmount) {
     public ArrowData(Item material, double baseDamage, int color, String translationKey, boolean flame, double gravity, Map<Identifier, Integer> effects) {
-        this(Either.left(material.getRegistryEntry()), baseDamage, color, translationKey, flame, gravity, effects, Items.FEATHER.getRegistryEntry(), Items.STICK.getRegistryEntry(), 4);
+        this(Either.left(material.builtInRegistryHolder()), baseDamage, color, translationKey, flame, gravity, effects, Items.FEATHER.builtInRegistryHolder(), Items.STICK.builtInRegistryHolder(), 4);
     }
 
     public ArrowData(TagKey<Item> material, double baseDamage, int color, String translationKey, boolean flame, double gravity, Map<Identifier, Integer> effects) {
-        this(Either.right(material), baseDamage, color, translationKey, flame, gravity, effects, Items.FEATHER.getRegistryEntry(), Items.STICK.getRegistryEntry(), 4);
+        this(Either.right(material), baseDamage, color, translationKey, flame, gravity, effects, Items.FEATHER.builtInRegistryHolder(), Items.STICK.builtInRegistryHolder(), 4);
     }
 
     public ArrowData(Item material, double baseDamage, int color, String translationKey, boolean flame, double gravity, Map<Identifier, Integer> effects, Item feather, Item stick, int outputAmount) {
-        this(Either.left(material.getRegistryEntry()), baseDamage, color, translationKey, flame, gravity, effects, feather.getRegistryEntry(), stick.getRegistryEntry(), outputAmount);
+        this(Either.left(material.builtInRegistryHolder()), baseDamage, color, translationKey, flame, gravity, effects, feather.builtInRegistryHolder(), stick.builtInRegistryHolder(), outputAmount);
     }
 
     public ArrowData(TagKey<Item> material, double baseDamage, int color, String translationKey, boolean flame, double gravity, Map<Identifier, Integer> effects, Item feather, Item stick, int outputAmount) {
-        this(Either.right(material), baseDamage, color, translationKey, flame, gravity, effects, feather.getRegistryEntry(), stick.getRegistryEntry(), outputAmount);
+        this(Either.right(material), baseDamage, color, translationKey, flame, gravity, effects, feather.builtInRegistryHolder(), stick.builtInRegistryHolder(), outputAmount);
     }
 
     public boolean isValidMaterial(ItemStack materialStack, ItemStack stickStack, ItemStack featherStack){
-        if (material.left().isPresent() && materialStack.itemMatches(material.left().get())){
-            return stickStack.itemMatches(stick) && featherStack.itemMatches(feather);
+        if (material.left().isPresent() && materialStack.is(material.left().get())){
+            return stickStack.is(stick) && featherStack.is(feather);
         }
-        else if (material.right().isPresent() && materialStack.isIn(material.right().get())){
-            return stickStack.itemMatches(stick) && featherStack.itemMatches(feather);
+        else if (material.right().isPresent() && materialStack.is(material.right().get())){
+            return stickStack.is(stick) && featherStack.is(feather);
         }
         else {
             return false;
         }
     }
 
-    public static final Codec<Either<RegistryEntry<Item>, TagKey<Item>>> MATERIAL_CODEC = Codec.either(
-            Item.ENTRY_CODEC,
-            TagKey.codec(RegistryKeys.ITEM)
+    public static final Codec<Either<Holder<Item>, TagKey<Item>>> MATERIAL_CODEC = Codec.either(
+            Item.CODEC,
+            TagKey.hashedCodec(Registries.ITEM)
     );
 
-    public static final PacketCodec<RegistryByteBuf, Either<RegistryEntry<Item>, TagKey<Item>>> MATERIAL_STREAM_CODEC = PacketCodecs.either(
-            Item.ENTRY_PACKET_CODEC,
-            TagKey.packetCodec(RegistryKeys.ITEM)
+    public static final StreamCodec<RegistryFriendlyByteBuf, Either<Holder<Item>, TagKey<Item>>> MATERIAL_STREAM_CODEC = ByteBufCodecs.either(
+            Item.STREAM_CODEC,
+            TagKey.streamCodec(Registries.ITEM)
     );
 
     public static final Codec<ArrowData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -68,31 +66,31 @@ public record ArrowData(Either<RegistryEntry<Item>, TagKey<Item>> material, doub
             Codec.BOOL.fieldOf("flame").forGetter(ArrowData::flame),
             Codec.DOUBLE.fieldOf("gravity").forGetter(ArrowData::gravity),
             Codec.unboundedMap(Identifier.CODEC, Codec.INT).fieldOf("effects").forGetter(ArrowData::effects),
-            Item.ENTRY_CODEC.fieldOf("feather").validate(itemHolder -> itemHolder.matches(Items.FEATHER.getRegistryEntry()) || itemHolder.value() instanceof ModFeatherItem ? DataResult.success(itemHolder) : DataResult.error(() -> "Item must be vanilla feather or feather from Arrow+ mod.")).forGetter(ArrowData::feather),
-            Item.ENTRY_CODEC.fieldOf("stick").validate(itemHolder -> itemHolder.matches(Items.STICK.getRegistryEntry()) || itemHolder.value() instanceof ModStickItem ? DataResult.success(itemHolder) : DataResult.error(() -> "Item must be vanilla stick or stick from Arrow+ mod.")).forGetter(ArrowData::stick),
+            Item.CODEC.fieldOf("feather").validate(itemHolder -> itemHolder.is(Items.FEATHER.builtInRegistryHolder()) || itemHolder.value() instanceof ModFeatherItem ? DataResult.success(itemHolder) : DataResult.error(() -> "Item must be vanilla feather or feather from Arrow+ mod.")).forGetter(ArrowData::feather),
+            Item.CODEC.fieldOf("stick").validate(itemHolder -> itemHolder.is(Items.STICK.builtInRegistryHolder()) || itemHolder.value() instanceof ModStickItem ? DataResult.success(itemHolder) : DataResult.error(() -> "Item must be vanilla stick or stick from Arrow+ mod.")).forGetter(ArrowData::stick),
             Codec.INT.fieldOf("outputAmount").forGetter(ArrowData::outputAmount)
     ).apply(instance, ArrowData::new));
 
-    public static final PacketCodec<RegistryByteBuf, ArrowData> STREAM_CODEC = PacketCodec.tuple(
+    public static final StreamCodec<RegistryFriendlyByteBuf, ArrowData> STREAM_CODEC = StreamCodec.composite(
             MATERIAL_STREAM_CODEC,
             ArrowData::material,
-            PacketCodecs.DOUBLE,
+            ByteBufCodecs.DOUBLE,
             ArrowData::baseDamage,
-            PacketCodecs.INTEGER,
+            ByteBufCodecs.INT,
             ArrowData::color,
-            PacketCodecs.STRING,
+            ByteBufCodecs.STRING_UTF8,
             ArrowData::translationKey,
-            PacketCodecs.BOOLEAN,
+            ByteBufCodecs.BOOL,
             ArrowData::flame,
-            PacketCodecs.DOUBLE,
+            ByteBufCodecs.DOUBLE,
             ArrowData::gravity,
-            PacketCodecs.map(HashMap::new, Identifier.PACKET_CODEC, PacketCodecs.INTEGER),
+            ByteBufCodecs.map(HashMap::new, Identifier.STREAM_CODEC, ByteBufCodecs.INT),
             ArrowData::effects,
-            Item.ENTRY_PACKET_CODEC,
+            Item.STREAM_CODEC,
             ArrowData::feather,
-            Item.ENTRY_PACKET_CODEC,
+            Item.STREAM_CODEC,
             ArrowData::stick,
-            PacketCodecs.INTEGER,
+            ByteBufCodecs.INT,
             ArrowData::outputAmount,
             ArrowData::new
     );

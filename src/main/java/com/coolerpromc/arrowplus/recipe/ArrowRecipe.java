@@ -6,75 +6,88 @@ import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
 import com.coolerpromc.arrowplus.item.ModItems;
 import com.coolerpromc.arrowplus.registry.ModRegistries;
 import com.mojang.datafixers.util.Either;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.SpecialCraftingRecipe;
-import net.minecraft.recipe.book.CraftingRecipeCategory;
-import net.minecraft.recipe.input.CraftingRecipeInput;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.world.World;
+import com.mojang.serialization.MapCodec;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.Holder;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingInput;
+import net.minecraft.world.item.crafting.CustomRecipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArrowRecipe extends SpecialCraftingRecipe {
-    public ArrowRecipe(CraftingRecipeCategory category) {
-        super(category);
-    }
+public class ArrowRecipe extends CustomRecipe {
+    public static final ArrowRecipe INSTANCE = new ArrowRecipe();
+    public static final MapCodec<ArrowRecipe> CODEC = MapCodec.unit(INSTANCE);
+    public static final StreamCodec<RegistryFriendlyByteBuf, ArrowRecipe> STREAM_CODEC = StreamCodec.unit(INSTANCE);
+    public static final RecipeSerializer<ArrowRecipe> SERIALIZER = new RecipeSerializer<>(CODEC, STREAM_CODEC);
+
+    private RegistryAccess registryAccess = null;
 
     @Override
-    public boolean matches(CraftingRecipeInput craftingInput, World level) {
-        if (craftingInput.getWidth() == 1 && craftingInput.getHeight() == 3 && craftingInput.getStackCount() == 3){
-            List<RegistryEntry.Reference<ArrowData>> arrowDataList = level.getRegistryManager().getOrThrow(ModRegistries.ARROW_DATA_KEY).streamEntries().filter(reference -> !ArrowPlusConfig.CONFIG.getRemoval().contains(reference.registryKey().getValue().getPath())).toList();
+    public boolean matches(CraftingInput craftingInput, Level level) {
+        registryAccess = level.registryAccess();
+        if (craftingInput.width() == 1 && craftingInput.height() == 3 && craftingInput.ingredientCount() == 3){
+            List<Holder.Reference<ArrowData>> arrowDataList = level.registryAccess().lookupOrThrow(ModRegistries.ARROW_DATA_KEY).listElements().filter(reference -> !ArrowPlusConfig.CONFIG.getRemoval().contains(reference.key().identifier().getPath())).toList();
 
-            ItemStack materialStack = craftingInput.getStackInSlot(0);
-            ItemStack stickStack = craftingInput.getStackInSlot(1);
-            ItemStack featherStack = craftingInput.getStackInSlot(2);
+            ItemStack materialStack = craftingInput.getItem(0);
+            ItemStack stickStack = craftingInput.getItem(1);
+            ItemStack featherStack = craftingInput.getItem(2);
 
-            for (RegistryEntry<ArrowData> arrowData : arrowDataList){
+            for (Holder<ArrowData> arrowData : arrowDataList){
                 if (arrowData.value().isValidMaterial(materialStack, stickStack, featherStack)){
                     return true;
                 }
             }
-            return false;
         }
-        else {
-            return false;
-        }
+        return false;
     }
 
     @Override
-    public ItemStack craft(CraftingRecipeInput craftingInput, RegistryWrapper.WrapperLookup provider) {
-        List<Either<RegistryEntry<Item>, TagKey<Item>>> materialList = new ArrayList<>();
-        RegistryEntry<ArrowData> arrowData = null;
-        ItemStack materialStack = craftingInput.getStackInSlot(0);
+    public ItemStack assemble(CraftingInput craftingInput) {
+        List<Either<Holder<Item>, TagKey<Item>>> materialList = new ArrayList<>();
+        Holder<ArrowData> arrowData = null;
+        ItemStack materialStack = craftingInput.getItem(0);
 
-        List<RegistryEntry.Reference<ArrowData>> arrowDataList = provider.getOrThrow(ModRegistries.ARROW_DATA_KEY).streamEntries().filter(reference -> !ArrowPlusConfig.CONFIG.getRemoval().contains(reference.registryKey().getValue().getPath())).toList();
-        for (RegistryEntry<ArrowData> holder : arrowDataList){
-            materialList.add(holder.value().material());
-            if (holder.value().material().left().isPresent() && materialStack.itemMatches(holder.value().material().left().get())) {
-                arrowData = holder;
+        try {
+            if (registryAccess == null){
+                registryAccess = Minecraft.getInstance().level.registryAccess();
             }
-            else if (holder.value().material().right().isPresent() && materialStack.isIn(holder.value().material().right().get())) {
-                arrowData = holder;
+
+            List<Holder.Reference<ArrowData>> arrowDataList = registryAccess.lookupOrThrow(ModRegistries.ARROW_DATA_KEY).listElements().filter(reference -> !ArrowPlusConfig.CONFIG.getRemoval().contains(reference.key().identifier().getPath())).toList();
+            for (Holder<ArrowData> holder : arrowDataList){
+                materialList.add(holder.value().material());
+                if (holder.value().material().left().isPresent() && materialStack.is(holder.value().material().left().get())) {
+                    arrowData = holder;
+                }
+                else if (holder.value().material().right().isPresent() && materialStack.is(holder.value().material().right().get())) {
+                    arrowData = holder;
+                }
+            }
+
+            if (arrowData != null && materialList.contains(arrowData.value().material())){
+                ItemStack stack = new ItemStack(ModItems.ARROW_PLUS, arrowData.value().outputAmount());
+                stack.set(ModDataComponents.ARROW_DATA, arrowData);
+                return stack;
+            }
+            else{
+                return ItemStack.EMPTY;
             }
         }
-
-        if (arrowData != null && materialList.contains(arrowData.value().material())){
-            ItemStack stack = new ItemStack(ModItems.ARROW_PLUS, arrowData.value().outputAmount());
-            stack.set(ModDataComponents.ARROW_DATA, arrowData);
-            return stack;
-        }
-        else{
+        catch (Exception e){
             return ItemStack.EMPTY;
         }
     }
 
     @Override
-    public RecipeSerializer<? extends SpecialCraftingRecipe> getSerializer() {
+    public RecipeSerializer<? extends CustomRecipe> getSerializer() {
         return ModRecipeSerializer.ARROW_RECIPE_SERIALIZER;
     }
 }

@@ -10,43 +10,40 @@ import com.coolerpromc.arrowplus.recipe.TippedArrowRecipe;
 import com.coolerpromc.arrowplus.registry.ModRegistries;
 import com.coolerpromc.fletchingrecipe.datagen.recipebuilder.FletchingRecipeBuilder;
 import com.coolerpromc.fletchingrecipe.util.SizedIngredient;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions;
-import net.minecraft.advancement.AdvancementCriterion;
-import net.minecraft.advancement.criterion.InventoryChangedCriterion;
-import net.minecraft.component.ComponentChanges;
-import net.minecraft.data.recipe.ComplexRecipeJsonBuilder;
-import net.minecraft.data.recipe.RecipeExporter;
-import net.minecraft.data.recipe.RecipeGenerator;
-import net.minecraft.data.recipe.ShapedRecipeJsonBuilder;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.book.RecipeCategory;
-import net.minecraft.registry.RegistryEntryLookup;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.util.Identifier;
+import net.minecraft.advancements.Criterion;
+import net.minecraft.advancements.criterion.InventoryChangeTrigger;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.recipes.*;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.concurrent.CompletableFuture;
 
 public class ModRecipeProvider extends FabricRecipeProvider {
-    public ModRecipeProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture) {
+    public ModRecipeProvider(FabricPackOutput dataOutput, CompletableFuture<HolderLookup.Provider> completableFuture) {
         super(dataOutput, completableFuture);
     }
 
     @Override
-    protected RecipeGenerator getRecipeGenerator(RegistryWrapper.WrapperLookup wrapperLookup, RecipeExporter recipeExporter) {
-        final RegistryEntryLookup<Item> items = wrapperLookup.getOrThrow(RegistryKeys.ITEM);
+    protected RecipeProvider createRecipeProvider(HolderLookup.Provider wrapperLookup, RecipeOutput recipeExporter) {
+        final HolderGetter<Item> items = wrapperLookup.lookupOrThrow(Registries.ITEM);
         
-        return new RecipeGenerator(wrapperLookup, recipeExporter) {
+        return new RecipeProvider(wrapperLookup, recipeExporter) {
             @Override
-            public void generate() {
-                ComplexRecipeJsonBuilder.create(ArrowRecipe::new).offerTo(this.exporter, RegistryKey.of(RegistryKeys.RECIPE, Identifier.of(ArrowPlus.MODID, "arrow_recipe")));
-                ComplexRecipeJsonBuilder.create(TippedArrowRecipe::new).offerTo(this.exporter, RegistryKey.of(RegistryKeys.RECIPE, Identifier.of(ArrowPlus.MODID, "tipped_arrow_recipe")));
+            public void buildRecipes() {
+                SpecialRecipeBuilder.special(ArrowRecipe::new).save(this.output, ResourceKey.create(Registries.RECIPE, Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "arrow_recipe")));
+                SpecialRecipeBuilder.special(TippedArrowRecipe::new).save(this.output, ResourceKey.create(Registries.RECIPE, Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "tipped_arrow_recipe")));
 
                 stickRecipe(Items.COPPER_INGOT, ModItems.COPPER_STICK);
                 stickRecipe(Items.IRON_INGOT, ModItems.IRON_STICK);
@@ -55,51 +52,51 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 stickRecipe(Items.EMERALD, ModItems.EMERALD_STICK);
                 stickRecipe(Items.NETHERITE_INGOT, ModItems.NETHERITE_STICK);
 
-                ShapedRecipeJsonBuilder.create(items, RecipeCategory.MISC, ModItems.GILDED_FEATHER, 4)
+                ShapedRecipeBuilder.shaped(items, RecipeCategory.MISC, ModItems.GILDED_FEATHER, 4)
                         .pattern(" G ")
                         .pattern("GFG")
                         .pattern(" G ")
-                        .input('G', Items.GLOWSTONE_DUST)
-                        .input('F', Items.FEATHER)
-                        .criterion(hasItem(Items.GLOWSTONE_DUST), conditionsFromItem(Items.GLOWSTONE_DUST))
-                        .criterion(hasItem(Items.FEATHER), conditionsFromItem(Items.FEATHER))
-                        .offerTo(exporter);
+                        .define('G', Items.GLOWSTONE_DUST)
+                        .define('F', Items.FEATHER)
+                        .unlockedBy(getHasName(Items.GLOWSTONE_DUST), has(Items.GLOWSTONE_DUST))
+                        .unlockedBy(getHasName(Items.FEATHER), has(Items.FEATHER))
+                        .save(output);
 
-                registries.getOrThrow(ModRegistries.ARROW_DATA_KEY).streamEntries().forEach(holder -> {
+                registries.lookupOrThrow(ModRegistries.ARROW_DATA_KEY).listElements().forEach(holder -> {
                     ArrowData arrowData = holder.value();
                     Ingredient ingredient = null;
-                    AdvancementCriterion<InventoryChangedCriterion.Conditions> hasIngredient = null;
+                    Criterion<InventoryChangeTrigger.TriggerInstance> hasIngredient = null;
                     String hasName = "";
                     if (arrowData.material().left().isPresent()){
-                        ingredient = Ingredient.ofItem(arrowData.material().left().get().value());
-                        hasIngredient = conditionsFromItem(arrowData.material().left().get().value());
-                        hasName = hasItem(arrowData.material().left().get().value());
+                        ingredient = Ingredient.of(arrowData.material().left().get().value());
+                        hasIngredient = has(arrowData.material().left().get().value());
+                        hasName = getHasName(arrowData.material().left().get().value());
                     }
                     else if (arrowData.material().right().isPresent()){
-                        ingredient = Ingredient.ofTag(items.getOrThrow(arrowData.material().right().get()));
-                        hasIngredient = conditionsFromTag(arrowData.material().right().get());
-                        hasName = "has_" + arrowData.material().right().get().id().getPath();
+                        ingredient = Ingredient.of(items.getOrThrow(arrowData.material().right().get()));
+                        hasIngredient = has(arrowData.material().right().get());
+                        hasName = "has_" + arrowData.material().right().get().location().getPath();
                     }
 
                     FletchingRecipeBuilder.builder()
                             .top(new SizedIngredient(ingredient, 1))
-                            .middle(new SizedIngredient(Ingredient.ofItem(arrowData.stick().value()), 1))
-                            .bottom(new SizedIngredient(Ingredient.ofItem(arrowData.feather().value()), 1))
-                            .output(new ItemStack(ModItems.ARROW_PLUS.getRegistryEntry(), arrowData.outputAmount() * 2, ComponentChanges.builder().add(ModDataComponents.ARROW_DATA, holder).build()))
-                            .criterion(hasName, hasIngredient)
-                            .criterion(hasItem(arrowData.stick().value()), conditionsFromItem(arrowData.stick().value()))
-                            .criterion(hasItem(arrowData.feather().value()), conditionsFromItem(arrowData.feather().value()))
-                            .offerTo(withConditions(exporter, ResourceConditions.allModsLoaded("fletchingrecipe")), RegistryKey.of(RegistryKeys.RECIPE, Identifier.of(ArrowPlus.MODID, "fletching/" + holder.getKey().get().getValue().getPath() + "_arrow")));
+                            .middle(new SizedIngredient(Ingredient.of(arrowData.stick().value()), 1))
+                            .bottom(new SizedIngredient(Ingredient.of(arrowData.feather().value()), 1))
+                            .output(new ItemStackTemplate(ModItems.ARROW_PLUS.builtInRegistryHolder(), arrowData.outputAmount() * 2, DataComponentPatch.builder().set(ModDataComponents.ARROW_DATA, holder).build()))
+                            .unlockedBy(hasName, hasIngredient)
+                            .unlockedBy(getHasName(arrowData.stick().value()), has(arrowData.stick().value()))
+                            .unlockedBy(getHasName(arrowData.feather().value()), has(arrowData.feather().value()))
+                            .save(withConditions(output, ResourceConditions.allModsLoaded("fletchingrecipe")), ResourceKey.create(Registries.RECIPE, Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "fletching/" + holder.unwrapKey().get().identifier().getPath() + "_arrow")));
                 });
             }
 
             private void stickRecipe(Item item, ModStickItem stickItem) {
-                ShapedRecipeJsonBuilder.create(items, RecipeCategory.MISC, stickItem, 4)
+                ShapedRecipeBuilder.shaped(items, RecipeCategory.MISC, stickItem, 4)
                         .pattern("S")
                         .pattern("S")
-                        .input('S', Ingredient.ofItem(item))
-                        .criterion(hasItem(item), conditionsFromItem(item))
-                        .offerTo(exporter);
+                        .define('S', Ingredient.of(item))
+                        .unlockedBy(getHasName(item), has(item))
+                        .save(output);
             }
         };
     }

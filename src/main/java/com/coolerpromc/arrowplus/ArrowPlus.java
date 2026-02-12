@@ -11,8 +11,7 @@ import com.coolerpromc.arrowplus.recipe.ModRecipeSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.util.Identifier;
-
+import net.minecraft.resources.Identifier;
 import java.nio.file.Path;
 
 public class ArrowPlus implements ModInitializer {
@@ -32,6 +31,6 @@ public class ArrowPlus implements ModInitializer {
 	}
 
     public static Identifier id(String path){
-        return Identifier.of(MODID, path);
+        return Identifier.fromNamespaceAndPath(MODID, path);
     }
 }

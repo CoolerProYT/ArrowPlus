@@ -2,18 +2,18 @@ package com.coolerpromc.arrowplus.datacomponent;
 
 import com.coolerpromc.arrowplus.ArrowPlus;
 import com.coolerpromc.arrowplus.registry.ModRegistries;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.RegistryFileCodec;
 import com.coolerpromc.arrowplus.arrow.ArrowData;
-import net.minecraft.component.ComponentType;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.entry.RegistryElementCodec;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.util.Identifier;
 
 public class ModDataComponents {
-    public static final ComponentType<RegistryEntry<ArrowData>> ARROW_DATA = Registry.register(Registries.DATA_COMPONENT_TYPE, Identifier.of(ArrowPlus.MODID, "arrow_data"), ComponentType.<RegistryEntry<ArrowData>>builder()
-            .codec(RegistryElementCodec.of(ModRegistries.ARROW_DATA_KEY, ArrowData.CODEC)).packetCodec(PacketCodecs.registryEntry(ModRegistries.ARROW_DATA_KEY, ArrowData.STREAM_CODEC)).build());
+    public static final DataComponentType<Holder<ArrowData>> ARROW_DATA = Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "arrow_data"), DataComponentType.<Holder<ArrowData>>builder()
+            .persistent(RegistryFileCodec.create(ModRegistries.ARROW_DATA_KEY, ArrowData.CODEC)).networkSynchronized(ByteBufCodecs.holder(ModRegistries.ARROW_DATA_KEY, ArrowData.STREAM_CODEC)).build());
 
     public static void register(){
 

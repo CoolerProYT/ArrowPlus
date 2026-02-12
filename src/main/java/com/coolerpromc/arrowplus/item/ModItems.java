@@ -5,18 +5,17 @@ import com.coolerpromc.arrowplus.entity.ModEntities;
 import com.coolerpromc.arrowplus.item.custom.ModArrowItem;
 import com.coolerpromc.arrowplus.item.custom.ModFeatherItem;
 import com.coolerpromc.arrowplus.item.custom.ModStickItem;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.item.Item;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.util.Identifier;
-
 import java.util.function.Function;
+import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.Item;
 
 public class ModItems {
-    public static final ModArrowItem ARROW_PLUS = registerItem("arrow_plus", properties -> new ModArrowItem(properties.component(DataComponentTypes.POTION_DURATION_SCALE, 0.125f), ModEntities.ARROW_PLUS));
+    public static final ModArrowItem ARROW_PLUS = registerItem("arrow_plus", properties -> new ModArrowItem(properties.component(DataComponents.POTION_DURATION_SCALE, 0.125f), ModEntities.ARROW_PLUS));
 
     // Sticks
     public static final ModStickItem COPPER_STICK = registerItem("copper_stick", properties -> new ModStickItem(properties, 0xFFD46D44));
@@ -29,8 +28,8 @@ public class ModItems {
     // Feathers
     public static final ModFeatherItem GILDED_FEATHER = registerItem("gilded_feather", properties -> new ModFeatherItem(properties, 0xFFfffc69));
 
-    private static <T extends Item> T registerItem(String name, Function<Item.Settings, T> item){
-        return Registry.register(Registries.ITEM, Identifier.of(ArrowPlus.MODID, name), item.apply(new Item.Settings().registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(ArrowPlus.MODID, name)))));
+    private static <T extends Item> T registerItem(String name, Function<Item.Properties, T> item){
+        return Registry.register(BuiltInRegistries.ITEM, Identifier.fromNamespaceAndPath(ArrowPlus.MODID, name), item.apply(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(ArrowPlus.MODID, name)))));
     }
 
     public static void register() {

@@ -5,26 +5,26 @@ import com.coolerpromc.arrowplus.entity.custom.ModArrowEntity;
 import com.coolerpromc.arrowplus.item.ModItems;
 import com.coolerpromc.arrowplus.item.custom.ModArrowItem;
 import com.coolerpromc.arrowplus.arrow.ArrowData;
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricTrackedDataRegistry;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnGroup;
-import net.minecraft.entity.data.TrackedDataHandler;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.util.Identifier;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityDataRegistry;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.syncher.EntityDataSerializer;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
 
 public class ModEntities {
     public static final EntityType<ModArrowEntity> ARROW_PLUS = registerArrow("arrow_plus", ModItems.ARROW_PLUS);
-    public static final TrackedDataHandler<ArrowData> ARROW_DATA = TrackedDataHandler.create(ArrowData.STREAM_CODEC);
+    public static final EntityDataSerializer<ArrowData> ARROW_DATA = EntityDataSerializer.forValueType(ArrowData.STREAM_CODEC);
 
     public static EntityType<ModArrowEntity> registerArrow(String name, ModArrowItem item) {
-        return Registry.register(Registries.ENTITY_TYPE, Identifier.of(ArrowPlus.MODID, name), EntityType.Builder.<ModArrowEntity>create((type, world) -> new ModArrowEntity(type, world, item.getDefaultStack()), SpawnGroup.MISC)
-                .dimensions(0.5f, 0.5f).maxTrackingRange(4).trackingTickInterval(20).build(RegistryKey.of(RegistryKeys.ENTITY_TYPE, Identifier.of(ArrowPlus.MODID, name))));
+        return Registry.register(BuiltInRegistries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(ArrowPlus.MODID, name), EntityType.Builder.<ModArrowEntity>of((type, world) -> new ModArrowEntity(type, world, item.getDefaultInstance()), MobCategory.MISC)
+                .sized(0.5f, 0.5f).clientTrackingRange(4).updateInterval(20).build(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(ArrowPlus.MODID, name))));
     }
 
     public static void register() {
-        FabricTrackedDataRegistry.register(Identifier.of(ArrowPlus.MODID, "arrow_data"), ARROW_DATA);
+        FabricEntityDataRegistry.register(Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "arrow_data"), ARROW_DATA);
     }
 }

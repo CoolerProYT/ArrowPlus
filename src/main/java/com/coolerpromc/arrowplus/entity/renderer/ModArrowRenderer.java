@@ -4,27 +4,27 @@ import com.coolerpromc.arrowplus.ArrowPlus;
 import com.coolerpromc.arrowplus.entity.custom.ModArrowEntity;
 import com.coolerpromc.arrowplus.item.custom.ModFeatherItem;
 import com.coolerpromc.arrowplus.item.custom.ModStickItem;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayers;
-import net.minecraft.client.render.command.OrderedRenderCommandQueue;
-import net.minecraft.client.render.entity.EntityRenderer;
-import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.render.entity.model.ArrowEntityModel;
-import net.minecraft.client.render.entity.model.EntityModelLayers;
-import net.minecraft.client.render.state.CameraRenderState;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.RotationAxis;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelLayers;
+import net.minecraft.client.model.object.projectile.ArrowModel;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.resources.Identifier;
 
 public class ModArrowRenderer extends EntityRenderer<ModArrowEntity, ModArrowRenderState> {
-    private final ArrowEntityModel model;
+    private final ArrowModel model;
     public static final Identifier BODY_TEXTURE = getTextureLocation("arrow_plus");
     public static final Identifier HEAD_TEXTURE = getTextureLocation("arrow_plus_head");
     public static final Identifier FEATHER_TEXTURE = getTextureLocation("arrow_plus_feather");
 
-    public ModArrowRenderer(EntityRendererFactory.Context p_174399_) {
+    public ModArrowRenderer(EntityRendererProvider.Context p_174399_) {
         super(p_174399_);
-        this.model = new ArrowEntityModel(p_174399_.getPart(EntityModelLayers.ARROW));
+        this.model = new ArrowModel(p_174399_.bakeLayer(ModelLayers.ARROW));
     }
 
     public ModArrowRenderState createRenderState() {
@@ -32,24 +32,24 @@ public class ModArrowRenderer extends EntityRenderer<ModArrowEntity, ModArrowRen
     }
 
     public static Identifier getTextureLocation(String textureName) {
-        return Identifier.of(ArrowPlus.MODID, "textures/entity/projectiles/" + textureName + ".png");
+        return Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "textures/entity/projectiles/" + textureName + ".png");
     }
 
     @Override
-    public void render(ModArrowRenderState renderState, MatrixStack matrixStack, OrderedRenderCommandQueue orderedRenderCommandQueue, CameraRenderState cameraRenderState) {
-        matrixStack.push();
-        matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(renderState.yaw - 90.0F));
-        matrixStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(renderState.pitch));
-        orderedRenderCommandQueue.submitModel(this.model, renderState, matrixStack, RenderLayers.entityCutout(BODY_TEXTURE), renderState.light, OverlayTexture.DEFAULT_UV, renderState.bodyColor, null, renderState.outlineColor, null);
-        orderedRenderCommandQueue.submitModel(this.model, renderState, matrixStack, RenderLayers.entityCutout(HEAD_TEXTURE), renderState.light, OverlayTexture.DEFAULT_UV, renderState.headColor, null, renderState.outlineColor, null);
-        orderedRenderCommandQueue.submitModel(this.model, renderState, matrixStack, RenderLayers.entityCutout(FEATHER_TEXTURE), renderState.light, OverlayTexture.DEFAULT_UV, renderState.featherColor, null, renderState.outlineColor, null);
-        matrixStack.pop();
-        super.render(renderState, matrixStack, orderedRenderCommandQueue, cameraRenderState);
+    public void submit(ModArrowRenderState renderState, PoseStack matrixStack, SubmitNodeCollector orderedRenderCommandQueue, CameraRenderState cameraRenderState) {
+        matrixStack.pushPose();
+        matrixStack.mulPose(Axis.YP.rotationDegrees(renderState.yRot - 90.0F));
+        matrixStack.mulPose(Axis.ZP.rotationDegrees(renderState.xRot));
+        orderedRenderCommandQueue.submitModel(this.model, renderState, matrixStack, RenderTypes.entityCutout(BODY_TEXTURE), renderState.lightCoords, OverlayTexture.NO_OVERLAY, renderState.bodyColor, null, renderState.outlineColor, null);
+        orderedRenderCommandQueue.submitModel(this.model, renderState, matrixStack, RenderTypes.entityCutout(HEAD_TEXTURE), renderState.lightCoords, OverlayTexture.NO_OVERLAY, renderState.headColor, null, renderState.outlineColor, null);
+        orderedRenderCommandQueue.submitModel(this.model, renderState, matrixStack, RenderTypes.entityCutout(FEATHER_TEXTURE), renderState.lightCoords, OverlayTexture.NO_OVERLAY, renderState.featherColor, null, renderState.outlineColor, null);
+        matrixStack.popPose();
+        super.submit(renderState, matrixStack, orderedRenderCommandQueue, cameraRenderState);
     }
 
     @Override
-    public void updateRenderState(ModArrowEntity arrowEntity, ModArrowRenderState renderState, float p_360538_) {
-        super.updateRenderState(arrowEntity, renderState, p_360538_);
+    public void extractRenderState(ModArrowEntity arrowEntity, ModArrowRenderState renderState, float p_360538_) {
+        super.extractRenderState(arrowEntity, renderState, p_360538_);
         renderState.headColor  = arrowEntity.getArrowData().color();
 
         if (arrowEntity.getArrowData().stick().value() instanceof ModStickItem item){
@@ -64,8 +64,8 @@ public class ModArrowRenderer extends EntityRenderer<ModArrowEntity, ModArrowRen
         else{
             renderState.featherColor = -1;
         }
-        renderState.pitch = arrowEntity.getPitch(p_360538_);
-        renderState.yaw = arrowEntity.getYaw(p_360538_);
-        renderState.shake = (float)arrowEntity.shake - p_360538_;
+        renderState.xRot = arrowEntity.getViewXRot(p_360538_);
+        renderState.yRot = arrowEntity.getViewYRot(p_360538_);
+        renderState.shake = (float)arrowEntity.shakeTime - p_360538_;
     }
 }

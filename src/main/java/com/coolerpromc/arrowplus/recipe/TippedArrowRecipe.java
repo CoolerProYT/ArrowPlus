@@ -1,38 +1,40 @@
 package com.coolerpromc.arrowplus.recipe;
 
 import com.coolerpromc.arrowplus.item.ModItems;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.SpecialCraftingRecipe;
-import net.minecraft.recipe.book.CraftingRecipeCategory;
-import net.minecraft.recipe.input.CraftingRecipeInput;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.world.World;
+import com.mojang.serialization.MapCodec;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.CraftingInput;
+import net.minecraft.world.item.crafting.CustomRecipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.Level;
 
-public class TippedArrowRecipe extends SpecialCraftingRecipe {
-    public TippedArrowRecipe(CraftingRecipeCategory category) {
-        super(category);
-    }
+public class TippedArrowRecipe extends CustomRecipe {
+    public static final TippedArrowRecipe INSTANCE = new TippedArrowRecipe();
+    public static final MapCodec<TippedArrowRecipe> CODEC = MapCodec.unit(INSTANCE);
+    public static final StreamCodec<RegistryFriendlyByteBuf, TippedArrowRecipe> STREAM_CODEC = StreamCodec.unit(INSTANCE);
+    public static final RecipeSerializer<TippedArrowRecipe> SERIALIZER = new RecipeSerializer<>(CODEC, STREAM_CODEC);
 
-    public boolean matches(CraftingRecipeInput craftingInput, World level) {
-        if (craftingInput.getWidth() == 3 && craftingInput.getHeight() == 3 && craftingInput.getStackCount() == 9) {
-            for(int i = 0; i < craftingInput.getHeight(); ++i) {
-                for(int j = 0; j < craftingInput.getWidth(); ++j) {
-                    ItemStack itemstack = craftingInput.getStackInSlot(j, i);
+    public boolean matches(CraftingInput craftingInput, Level level) {
+        if (craftingInput.width() == 3 && craftingInput.height() == 3 && craftingInput.ingredientCount() == 9) {
+            for(int i = 0; i < craftingInput.height(); ++i) {
+                for(int j = 0; j < craftingInput.width(); ++j) {
+                    ItemStack itemstack = craftingInput.getItem(j, i);
                     if (itemstack.isEmpty()) {
                         return false;
                     }
 
                     if (j == 1 && i == 1) {
-                        if (!itemstack.isOf(Items.LINGERING_POTION)) {
+                        if (!itemstack.is(Items.LINGERING_POTION)) {
                             return false;
                         }
-                    } else if (!itemstack.isOf(ModItems.ARROW_PLUS)) {
+                    } else if (!itemstack.is(ModItems.ARROW_PLUS)) {
                         return false;
                     }
-                    else if(itemstack.isOf(ModItems.ARROW_PLUS) && itemstack.contains(DataComponentTypes.POTION_CONTENTS)){
+                    else if(itemstack.is(ModItems.ARROW_PLUS) && itemstack.has(DataComponents.POTION_CONTENTS)){
                         return false;
                     }
                 }
@@ -44,13 +46,13 @@ public class TippedArrowRecipe extends SpecialCraftingRecipe {
         }
     }
 
-    public ItemStack craft(CraftingRecipeInput craftingInput, RegistryWrapper.WrapperLookup provider) {
-        ItemStack itemstack = craftingInput.getStackInSlot(1, 1);
-        if (!itemstack.isOf(Items.LINGERING_POTION)) {
+    public ItemStack assemble(CraftingInput craftingInput) {
+        ItemStack itemstack = craftingInput.getItem(1, 1);
+        if (!itemstack.is(Items.LINGERING_POTION)) {
             return ItemStack.EMPTY;
         } else {
-            ItemStack itemstack1 = craftingInput.getStackInSlot(0, 0).copyWithCount(8);
-            itemstack1.set(DataComponentTypes.POTION_CONTENTS, itemstack.get(DataComponentTypes.POTION_CONTENTS));
+            ItemStack itemstack1 = craftingInput.getItem(0, 0).copyWithCount(8);
+            itemstack1.set(DataComponents.POTION_CONTENTS, itemstack.get(DataComponents.POTION_CONTENTS));
             return itemstack1;
         }
     }
