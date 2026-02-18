@@ -13,14 +13,13 @@ import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.criterion.InventoryChangeTrigger;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentPatch;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.conditions.NeoForgeConditions;
@@ -78,7 +77,7 @@ public class ModRecipeProvider extends RecipeProvider {
                     .top(new SizedIngredient(ingredient, 1))
                     .middle(new SizedIngredient(Ingredient.of(arrowData.stick().value()), 1))
                     .bottom(new SizedIngredient(Ingredient.of(arrowData.feather().value()), 1))
-                    .output(new ItemStack(ModItems.ARROW_PLUS, arrowData.outputAmount() * 2, DataComponentPatch.builder().set(ModDataComponents.ARROW_DATA.get(), holder).build()))
+                    .output(new ItemStackTemplate(ModItems.ARROW_PLUS, arrowData.outputAmount() * 2, DataComponentPatch.builder().set(ModDataComponents.ARROW_DATA.get(), holder).build()))
                     .unlockedBy(hasName, hasIngredient)
                     .unlockedBy(getHasName(arrowData.stick().value()), has(arrowData.stick().value()))
                     .unlockedBy(getHasName(arrowData.feather().value()), has(arrowData.feather().value()))

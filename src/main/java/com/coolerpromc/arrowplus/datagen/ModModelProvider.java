@@ -9,6 +9,7 @@ import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
 import net.minecraft.client.data.models.model.*;
+import net.minecraft.client.renderer.block.model.Material;
 import net.minecraft.client.renderer.item.ConditionalItemModel;
 import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.properties.numeric.UseDuration;
@@ -37,32 +38,32 @@ public class ModModelProvider extends ModelProvider {
         generateArrow(itemModels, ModItems.ARROW_PLUS.get());
 
         // Sticks
-        itemModels.itemModelOutput.accept(ModItems.COPPER_STICK.get(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.create(ModItems.COPPER_STICK.get(), TextureMapping.layer0(Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "item/stick")), itemModels.modelOutput), new StickTintSource(-1)));
-        itemModels.itemModelOutput.accept(ModItems.IRON_STICK.get(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.create(ModItems.IRON_STICK.get(), TextureMapping.layer0(Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "item/stick")), itemModels.modelOutput), new StickTintSource(-1)));
-        itemModels.itemModelOutput.accept(ModItems.GOLD_STICK.get(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.create(ModItems.GOLD_STICK.get(), TextureMapping.layer0(Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "item/stick")), itemModels.modelOutput), new StickTintSource(-1)));
-        itemModels.itemModelOutput.accept(ModItems.DIAMOND_STICK.get(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.create(ModItems.DIAMOND_STICK.get(), TextureMapping.layer0(Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "item/stick")), itemModels.modelOutput), new StickTintSource(-1)));
-        itemModels.itemModelOutput.accept(ModItems.EMERALD_STICK.get(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.create(ModItems.EMERALD_STICK.get(), TextureMapping.layer0(Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "item/stick")), itemModels.modelOutput), new StickTintSource(-1)));
-        itemModels.itemModelOutput.accept(ModItems.NETHERITE_STICK.get(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.create(ModItems.NETHERITE_STICK.get(), TextureMapping.layer0(Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "item/stick")), itemModels.modelOutput), new StickTintSource(-1)));
+        itemModels.itemModelOutput.accept(ModItems.COPPER_STICK.get(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.create(ModItems.COPPER_STICK.get(), TextureMapping.layer0(new Material(ArrowPlus.id("item/stick"))), itemModels.modelOutput), new StickTintSource(-1)));
+        itemModels.itemModelOutput.accept(ModItems.IRON_STICK.get(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.create(ModItems.IRON_STICK.get(), TextureMapping.layer0(new Material(ArrowPlus.id("item/stick"))), itemModels.modelOutput), new StickTintSource(-1)));
+        itemModels.itemModelOutput.accept(ModItems.GOLD_STICK.get(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.create(ModItems.GOLD_STICK.get(), TextureMapping.layer0(new Material(ArrowPlus.id("item/stick"))), itemModels.modelOutput), new StickTintSource(-1)));
+        itemModels.itemModelOutput.accept(ModItems.DIAMOND_STICK.get(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.create(ModItems.DIAMOND_STICK.get(), TextureMapping.layer0(new Material(ArrowPlus.id("item/stick"))), itemModels.modelOutput), new StickTintSource(-1)));
+        itemModels.itemModelOutput.accept(ModItems.EMERALD_STICK.get(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.create(ModItems.EMERALD_STICK.get(), TextureMapping.layer0(new Material(ArrowPlus.id("item/stick"))), itemModels.modelOutput), new StickTintSource(-1)));
+        itemModels.itemModelOutput.accept(ModItems.NETHERITE_STICK.get(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.create(ModItems.NETHERITE_STICK.get(), TextureMapping.layer0(new Material(ArrowPlus.id("item/stick"))), itemModels.modelOutput), new StickTintSource(-1)));
 
         // Feather
-        itemModels.itemModelOutput.accept(ModItems.GILDED_FEATHER.get(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.create(ModItems.GILDED_FEATHER.get(), TextureMapping.layer0(Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "item/feather")), itemModels.modelOutput), new FeatherTintSource(-1)));
+        itemModels.itemModelOutput.accept(ModItems.GILDED_FEATHER.get(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.create(ModItems.GILDED_FEATHER.get(), TextureMapping.layer0(new Material(ArrowPlus.id("item/feather"))), itemModels.modelOutput), new FeatherTintSource(-1)));
 
         // Vanilla override
-        itemModels.itemModelOutput.accept(Items.ARROW, ItemModelUtils.plainModel(ModelTemplates.FLAT_ITEM.create(TextureMapping.getItemTexture(Items.ARROW), TextureMapping.layer0(getModelLocation(Items.ARROW, "")), itemModels.modelOutput)));
+        itemModels.itemModelOutput.accept(Items.ARROW, ItemModelUtils.plainModel(ModelTemplates.FLAT_ITEM.create(TextureMapping.getItemTexture(Items.ARROW).sprite(), TextureMapping.layer0(new Material(getModelLocation(Items.ARROW, ""))), itemModels.modelOutput)));
         generateBow(itemModels, Items.BOW);
     }
 
     private void generateArrow(ItemModelGenerators itemModels, Item item) {
         TextureMapping baseMapping = new TextureMapping()
-                .put(TextureSlot.LAYER0, ArrowPlus.id("item/arrow_stick"))
-                .put(TextureSlot.LAYER1, ArrowPlus.id("item/arrow_head"))
-                .put(TextureSlot.LAYER2, ArrowPlus.id("item/arrow_feather"));
+                .put(TextureSlot.LAYER0, new Material(ArrowPlus.id("item/arrow_stick")))
+                .put(TextureSlot.LAYER1, new Material(ArrowPlus.id("item/arrow_head")))
+                .put(TextureSlot.LAYER2, new Material(ArrowPlus.id("item/arrow_feather")));
 
         TextureMapping tippedMapping = new TextureMapping()
-                .put(TextureSlot.LAYER0, ArrowPlus.id("item/arrow_stick"))
-                .put(TextureSlot.LAYER1, ArrowPlus.id("item/arrow_head"))
-                .put(TextureSlot.LAYER2, ArrowPlus.id("item/arrow_feather"))
-                .put(LAYER3, ArrowPlus.id("item/arrow_tipped"));
+                .put(TextureSlot.LAYER0, new Material(ArrowPlus.id("item/arrow_stick")))
+                .put(TextureSlot.LAYER1, new Material(ArrowPlus.id("item/arrow_head")))
+                .put(TextureSlot.LAYER2, new Material(ArrowPlus.id("item/arrow_feather")))
+                .put(LAYER3, new Material(ArrowPlus.id("item/arrow_tipped")));
 
         Identifier base = ModelTemplates.THREE_LAYERED_ITEM.create(getModelLocation(item, ""), baseMapping, itemModels.modelOutput);
         Identifier tipped = FOUR_LAYERED_ITEM.create(getModelLocation(item, "_tipped"), tippedMapping, itemModels.modelOutput);
@@ -85,7 +86,7 @@ public class ModModelProvider extends ModelProvider {
     }
 
     private Identifier createLayeredItemModel(ItemModelGenerators itemModels, Item item, String suffix) {
-        return ModelTemplates.createItem("bow", TextureSlot.LAYER0, TextureSlot.LAYER1, TextureSlot.LAYER2).create(TextureMapping.getItemTexture(item, suffix), TextureMapping.layered(getModelLocation(item, suffix), getModelLocation(item, suffix + "_head"), getModelLocation(item, suffix + "_stick")), itemModels.modelOutput);
+        return ModelTemplates.createItem("bow", TextureSlot.LAYER0, TextureSlot.LAYER1, TextureSlot.LAYER2).create(TextureMapping.getItemTexture(item, suffix).sprite(), TextureMapping.layered(new Material(getModelLocation(item, suffix)), new Material(getModelLocation(item, suffix + "_head")), new Material(getModelLocation(item, suffix + "_stick"))), itemModels.modelOutput);
     }
 
     @Override
@@ -94,6 +95,6 @@ public class ModModelProvider extends ModelProvider {
     }
 
     private Identifier getModelLocation(Item item, String suffix) {
-        return Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "item/" + BuiltInRegistries.ITEM.getKey(item).getPath() + suffix);
+        return ArrowPlus.id("item/" + BuiltInRegistries.ITEM.getKey(item).getPath() + suffix);
     }
 }

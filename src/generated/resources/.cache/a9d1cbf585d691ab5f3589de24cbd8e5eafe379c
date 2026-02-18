@@ -1,4 +1,4 @@
-// 1.21.11	2025-12-26T00:44:27.0508197	Arrow+ Recipes
+// 26.1-snapshot-7	2026-02-18T19:37:22.0196535	Arrow+ Recipes
 4bce30d97c5916d2586a5c95ac9c93ce1fe53b83 data/arrowplus/advancement/fletching/amethyst_arrow.json
 e0909771544a6e03e5091f8f7d0f216346dd64fb data/arrowplus/advancement/fletching/bone_arrow.json
 17b4119432578525b4a23b34f0ff859acdc5ae01 data/arrowplus/advancement/fletching/brick_arrow.json
@@ -24,7 +24,7 @@ f3abbb4a39266ba1ba1c3b5ead41f50ea66da803 data/arrowplus/advancement/recipes/misc
 6e69e7476a5c70de5ef0f8814b31f439551aa942 data/arrowplus/advancement/recipes/misc/gold_stick.json
 f363394e7926d02c1ca3e5dc2a0baacac5136f8b data/arrowplus/advancement/recipes/misc/iron_stick.json
 f272637de21f6a45afd0b0b521f1e743582015ec data/arrowplus/advancement/recipes/misc/netherite_stick.json
-f0fb002a3a6a8e284cd84fab528eda450ece8860 data/arrowplus/recipe/arrow_recipe.json
+c4b2cede90911cb516777b8596633222f56ec115 data/arrowplus/recipe/arrow_recipe.json
 5d9f9fdf76efb88a2e6f6950f3ba38856371335a data/arrowplus/recipe/copper_stick.json
 914655cdfd505969ea780fb8176bee24c0377dac data/arrowplus/recipe/diamond_stick.json
 f14ca9fa552ee2f524db7f10439903db14922526 data/arrowplus/recipe/emerald_stick.json
@@ -50,4 +50,4 @@ e2e13fbdf03cf5043534257281ca873a5d0590be data/arrowplus/recipe/fletching/stone_a
 d9b6630551a8e96b5e890a41ae846e2a31e443d6 data/arrowplus/recipe/gold_stick.json
 59577bbe0cb5bf48831965fe4df5aadc70d9dc91 data/arrowplus/recipe/iron_stick.json
 c283df96202abb35c0081d80960bca62e2593062 data/arrowplus/recipe/netherite_stick.json
-77ffaac1b4cd84124e6a6ece55dc52e44ad2575a data/arrowplus/recipe/tipped_arrow_recipe.json
+722d62b2c09c42c268d7019ccc2292bf59252284 data/arrowplus/recipe/tipped_arrow_recipe.json

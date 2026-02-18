@@ -19,6 +19,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.crafting.*;
@@ -45,8 +46,7 @@ public class ModJEIPlugin implements IModPlugin {
         RegistryUtil.getRegistryAccess().lookupOrThrow(ModRegistries.ARROW_DATA_KEY).listElements().filter(reference -> !ArrowPlusConfig.CONFIG.getRemoval().contains(reference.key().identifier().getPath())).forEach(data -> {
             Ingredient ingredient = Ingredient.of(Items.FLINT);
             Identifier materialLocation = Identifier.parse("invalid");
-            ItemStack output = new ItemStack(ModItems.ARROW_PLUS.get(), data.value().outputAmount());
-            output.set(ModDataComponents.ARROW_DATA, data);
+            ItemStackTemplate output = new ItemStackTemplate(ModItems.ARROW_PLUS.get(), data.value().outputAmount(), DataComponentPatch.builder().set(ModDataComponents.ARROW_DATA.get(), data).build());
 
             if (data.value().material().left().isPresent()){
                 ingredient = Ingredient.of(data.value().material().left().get().value());
@@ -73,12 +73,11 @@ public class ModJEIPlugin implements IModPlugin {
 
             RegistryUtil.getRegistryAccess().lookupOrThrow(Registries.POTION).listElements().forEach(potion -> {
                 if (!potion.value().getEffects().isEmpty()) {
-                    ItemStack arrow = output.copyWithCount(1);
-                    ItemStack lingeringPotion = new ItemStack(Items.LINGERING_POTION.builtInRegistryHolder(), 1, DataComponentPatch.builder().set(DataComponents.POTION_CONTENTS, new PotionContents(potion)).build());
-                    ItemStack tippedOutput = arrow.copy();
-                    tippedOutput.set(DataComponents.POTION_CONTENTS, new PotionContents(potion));
+                    ItemStackTemplate arrow = copyFrom(output);
+                    ItemStackTemplate lingeringPotion = new ItemStackTemplate(Items.LINGERING_POTION.builtInRegistryHolder(), 1, DataComponentPatch.builder().set(DataComponents.POTION_CONTENTS, new PotionContents(potion)).build());
+                    ItemStackTemplate tippedOutput = copyFromWithComponents(arrow, DataComponentPatch.builder().set(DataComponents.POTION_CONTENTS, new PotionContents(potion)).build());
 
-                    Identifier loc = Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "arrowplus.arrow." + arrow.getItemHolder().unwrapKey().get().identifier().getPath() + "." + potion.unwrapKey().get().identifier().getPath());
+                    Identifier loc = Identifier.fromNamespaceAndPath(ArrowPlus.MODID, "arrowplus.arrow." + arrow.typeHolder().unwrapKey().get().identifier().getPath() + "." + potion.unwrapKey().get().identifier().getPath());
                     ResourceKey<Recipe<?>> key = ResourceKey.create(Registries.RECIPE, loc);
                     SlotDisplay outputDisplay = new SlotDisplay.ItemStackSlotDisplay(tippedOutput);
                     CraftingRecipe tippedRecipe = vanillaRecipeFactory.createShapedRecipeBuilder(CraftingBookCategory.MISC, outputDisplay)
@@ -101,5 +100,14 @@ public class ModJEIPlugin implements IModPlugin {
     @Override
     public void registerItemSubtypes(ISubtypeRegistration registration) {
         registration.registerFromDataComponentTypes(ModItems.ARROW_PLUS.get(), ModDataComponents.ARROW_DATA.get(), DataComponents.POTION_CONTENTS);
+    }
+
+    public static ItemStackTemplate copyFrom(ItemStackTemplate template){
+        return new ItemStackTemplate(template.item(), template.count(), template.components());
+    }
+
+    public static ItemStackTemplate copyFromWithComponents(ItemStackTemplate template, DataComponentPatch patch){
+        ItemStack stack = template.apply(patch);
+        return new ItemStackTemplate(stack.getItem(), stack.count(), stack.getComponentsPatch());
     }
 }

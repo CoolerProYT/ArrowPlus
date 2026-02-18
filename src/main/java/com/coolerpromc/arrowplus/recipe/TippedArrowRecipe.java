@@ -1,20 +1,22 @@
 package com.coolerpromc.arrowplus.recipe;
 
 import com.coolerpromc.arrowplus.item.ModItems;
-import net.minecraft.core.HolderLookup;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 
 public class TippedArrowRecipe extends CustomRecipe {
-    public TippedArrowRecipe(CraftingBookCategory category) {
-        super(category);
-    }
+    public static final TippedArrowRecipe INSTANCE = new TippedArrowRecipe();
+    public static final MapCodec<TippedArrowRecipe> CODEC = MapCodec.unit(INSTANCE);
+    public static final StreamCodec<RegistryFriendlyByteBuf, TippedArrowRecipe> STREAM_CODEC = StreamCodec.unit(INSTANCE);
+    public static final RecipeSerializer<TippedArrowRecipe> SERIALIZER = new RecipeSerializer<>(CODEC, STREAM_CODEC);
 
     public boolean matches(CraftingInput craftingInput, Level level) {
         if (craftingInput.width() == 3 && craftingInput.height() == 3 && craftingInput.ingredientCount() == 9) {
@@ -44,7 +46,7 @@ public class TippedArrowRecipe extends CustomRecipe {
         }
     }
 
-    public ItemStack assemble(CraftingInput craftingInput, HolderLookup.Provider provider) {
+    public ItemStack assemble(CraftingInput craftingInput) {
         ItemStack itemstack = craftingInput.getItem(1, 1);
         if (!itemstack.is(Items.LINGERING_POTION)) {
             return ItemStack.EMPTY;
