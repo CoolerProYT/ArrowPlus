@@ -30,20 +30,20 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ModArrowEntity extends PersistentProjectileEntity {
-    private final ItemStack stack;
     private static final TrackedData<ArrowData> ARROW_DATA = DataTracker.registerData(ModArrowEntity.class, ModEntities.ARROW_DATA);
     private static final TrackedData<Integer> ID_EFFECT_COLOR  = DataTracker.registerData(ModArrowEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    private static final TrackedData<ItemStack> PICKUP_STACK  = DataTracker.registerData(ModArrowEntity.class, TrackedDataHandlerRegistry.ITEM_STACK);
 
     public ModArrowEntity(EntityType<? extends PersistentProjectileEntity> p_331098_, World p_331626_, ItemStack pickupItemStack) {
         super(p_331098_, p_331626_);
-        this.stack = pickupItemStack;
+        this.setStack(pickupItemStack);
         this.updateArrowData();
         this.updateColor();
     }
 
     public ModArrowEntity(LivingEntity owner, World level, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, double baseDamage) {
         super(ModEntities.ARROW_PLUS, owner, level, pickupItemStack.copyWithCount(1), firedFromWeapon);
-        this.stack = pickupItemStack;
+        this.setStack(pickupItemStack);
         this.pickupType = PickupPermission.ALLOWED;
 
         if (firedFromWeapon != null && firedFromWeapon.getItem() instanceof BowItem){
@@ -63,23 +63,24 @@ public class ModArrowEntity extends PersistentProjectileEntity {
 
     public ModArrowEntity(double x, double y, double z, World level, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon) {
         super(ModEntities.ARROW_PLUS, x, y, z, level, pickupItemStack, firedFromWeapon);
-        this.stack = pickupItemStack;
+        this.setStack(pickupItemStack);
         this.updateArrowData();
         this.updateColor();
     }
 
     private PotionContentsComponent getPotionContents() {
-        return this.stack.getOrDefault(DataComponentTypes.POTION_CONTENTS, PotionContentsComponent.DEFAULT);
+        return this.dataTracker.get(PICKUP_STACK).getOrDefault(DataComponentTypes.POTION_CONTENTS, PotionContentsComponent.DEFAULT);
     }
 
     private float getPotionDurationScale() {
-        return this.stack.getOrDefault(DataComponentTypes.POTION_DURATION_SCALE, 1.0F);
+        return this.dataTracker.get(PICKUP_STACK).getOrDefault(DataComponentTypes.POTION_DURATION_SCALE, 1.0F);
     }
 
     @Override
     protected void setStack(ItemStack stack) {
         super.setStack(stack);
         this.updateColor();
+        this.dataTracker.set(PICKUP_STACK, stack);
     }
 
     private void updateColor() {
@@ -89,7 +90,7 @@ public class ModArrowEntity extends PersistentProjectileEntity {
 
     @Override
     protected @NotNull ItemStack getDefaultItemStack() {
-        return stack;
+        return this.dataTracker.get(PICKUP_STACK);
     }
 
     @Override
@@ -97,6 +98,7 @@ public class ModArrowEntity extends PersistentProjectileEntity {
         super.initDataTracker(builder);
         builder.add(ARROW_DATA, ArrowData.EMPTY);
         builder.add(ID_EFFECT_COLOR, -1);
+        builder.add(PICKUP_STACK, ItemStack.EMPTY);
     }
 
     @Override
@@ -144,7 +146,7 @@ public class ModArrowEntity extends PersistentProjectileEntity {
     }
 
     public void updateArrowData() {
-        this.dataTracker.set(ARROW_DATA, stack.getOrDefault(ModDataComponents.ARROW_DATA, RegistryEntry.of(ArrowData.EMPTY)).value());
+        this.dataTracker.set(ARROW_DATA, this.dataTracker.get(PICKUP_STACK).getOrDefault(ModDataComponents.ARROW_DATA, RegistryEntry.of(ArrowData.EMPTY)).value());
     }
 
     public ArrowData getArrowData(){
