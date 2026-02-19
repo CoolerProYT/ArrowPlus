@@ -104,13 +104,13 @@ publishing {
 
 	repositories {
         mavenLocal()
-        /*maven {
-            url = findProperty("repsy_url")
+        maven {
+            url = findProperty("maven_url")
             credentials {
-                username = findProperty("repsy_username")
-                password = findProperty("repsy_password")
+                username = findProperty("maven_username")
+                password = findProperty("maven_password")
             }
-        }*/
+        }
 	}
 }
 
@@ -132,4 +132,8 @@ publishMods {
         accessToken = findProperty("MODRINTH_TOKEN")
         minecraftVersions.add(minecraft_version)
     }
+}
+
+tasks.register("publishAndRelease"){
+    dependsOn("publish", "publishMods")
 }
