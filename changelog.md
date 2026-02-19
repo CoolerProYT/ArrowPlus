@@ -1,1 +1,2 @@
-- Fixed incorrect bow model on third person view
+- Fixed crash when shooting arrow to block with `Mob AI Tweaks` installed
+- Fixed bow with power enchantment pickup arrow become intangible and causing duplication
