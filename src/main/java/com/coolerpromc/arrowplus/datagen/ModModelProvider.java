@@ -16,14 +16,16 @@ import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
-import net.minecraft.client.renderer.block.model.Material;
 import net.minecraft.client.renderer.item.ConditionalItemModel;
 import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.properties.numeric.UseDuration;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+
+import java.util.Optional;
 
 public class ModModelProvider extends FabricModelProvider {
     public static final TextureSlot LAYER3 = TextureSlot.create("layer3");
@@ -75,6 +77,7 @@ public class ModModelProvider extends FabricModelProvider {
         Identifier tipped = FOUR_LAYERED_ITEM.create(getModelLocation(item, "_tipped"), tippedMapping, itemModels.modelOutput);
 
         itemModels.itemModelOutput.accept(item, new ConditionalItemModel.Unbaked(
+                Optional.empty(),
                 new TippedCondition(),
                 ItemModelUtils.tintedModel(tipped, new StickTintSource(-1), new ArrowTintSource(0xFFFFFFFF), new FeatherTintSource(-1), new Potion(-1)),
                 ItemModelUtils.tintedModel(base, new StickTintSource(-1), new ArrowTintSource(0xFFFFFFFF), new FeatherTintSource(-1)))
