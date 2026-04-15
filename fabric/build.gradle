@@ -1,0 +1,113 @@
+plugins {
+    id 'multiloader-loader'
+    id 'net.fabricmc.fabric-loom'
+    id "me.modmuss50.mod-publish-plugin"
+}
+dependencies {
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+    implementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
+
+    implementation include("com.electronwill.night-config:core:3.8.1")
+    implementation include("com.electronwill.night-config:toml:3.8.1")
+
+
+    compileOnly "mezz.jei:jei-${minecraft_version}-fabric-api:${jei_version}"
+    runtimeOnly "mezz.jei:jei-${minecraft_version}-fabric:${jei_version}"
+}
+
+loom {
+    def aw = project(':common').file("src/main/resources/${mod_id}.accesswidener")
+    if (aw.exists()) {
+        accessWidenerPath.set(aw)
+    }
+    runs {
+        client {
+            client()
+            setConfigName('Fabric Client')
+            ideConfigGenerated(true)
+            runDir('runs/client')
+        }
+        server {
+            server()
+            setConfigName('Fabric Server')
+            ideConfigGenerated(true)
+            runDir('runs/server')
+        }
+    }
+}
+
+sourceSets.main.resources { srcDir rootProject.project(':common').file('src/generated/resources/').getAbsolutePath() }
+
+processResources {
+    // keep your other resource processing here
+}
+
+tasks.named('processResources').configure {
+    doLast {
+        def outputDir = outputs.files.asFileTree
+        outputDir.matching { include 'data/**/recipe/**/*.json' }.each { file ->
+            def content = file.text
+            def newContent = content.replaceAll(
+                    /(?s)"neoforge:conditions"\s*:\s*\[\s*\{\s*"type"\s*:\s*"neoforge:mod_loaded"\s*,\s*"modid"\s*:\s*"fletchingrecipe"\s*\}\s*\]\s*,/,
+                    '''"fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "fletchingrecipe"
+      ]
+    }
+  ],'''
+            )
+            if (content != newContent) {
+                file.text = newContent
+                println "Patched: ${file.name}"
+            }
+        }
+    }
+}
+
+// Implement mcgradleconventions loader attribute
+def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
+['apiElements', 'runtimeElements', 'sourcesElements', 'javadocElements', 'includeInternal', 'modCompileClasspath'].each { variant ->
+    configurations.named("$variant") {
+        attributes {
+            attribute(loaderAttribute, 'fabric')
+        }
+    }
+}
+sourceSets.configureEach {
+    [it.compileClasspathConfigurationName, it.runtimeClasspathConfigurationName].each { variant->
+        configurations.named("$variant") {
+            attributes {
+                attribute(loaderAttribute, 'fabric')
+            }
+        }
+    }
+}
+
+publishMods {
+    file.set(jar.archiveFile)
+    type = BETA
+    modLoaders.add("fabric")
+    changelog = rootProject.file("changelog.md").text
+    displayName = mod_id + "-" + project.version + "+" + minecraft_version + "-fabric"
+
+    curseforge {
+        projectId = "1317209"
+        accessToken = findProperty("CF_TOKEN")
+        minecraftVersionRange {
+            start = "26.1"
+            end = "26.1.2"
+        }
+    }
+
+    modrinth {
+        projectId = 'srzQqcGY'
+        accessToken = findProperty("MODRINTH_TOKEN")
+        minecraftVersionRange {
+            start = "26.1"
+            end = "26.1.2"
+        }
+    }
+}

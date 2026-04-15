@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "arrowplus:item/netherite_stick",
+    "tints": [
+      {
+        "type": "arrowplus:stick_tint",
+        "default": -1
+      }
+    ]
+  }
+}
