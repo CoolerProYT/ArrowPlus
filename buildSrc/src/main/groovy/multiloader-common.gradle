@@ -32,6 +32,9 @@ repositories {
     maven {
         url = 'https://maven.coolerpromc.com/releases'
     }
+    maven {
+        url = 'https://maven.coolerpromc.com/snapshots'
+    }
 }
 
 sourcesJar {

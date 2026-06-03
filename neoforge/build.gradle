@@ -4,6 +4,17 @@ plugins {
     id "me.modmuss50.mod-publish-plugin"
 }
 
+repositories {
+    maven {
+        name = "Maven for PR #3198" // https://github.com/neoforged/NeoForge/pull/3198
+        url = uri("https://prmaven.neoforged.net/NeoForge/pr3198")
+        content {
+            includeModule("net.neoforged", "neoforge")
+            includeModule("net.neoforged", "testframework")
+        }
+    }
+}
+
 neoForge {
     version = neoforge_version
     // Automatically enable neoforge AccessTransformers if the file exists
@@ -44,7 +55,7 @@ dependencies {
     compileOnly("mezz.jei:jei-${dependencies_mc_version}-neoforge-api:${jei_version}")
 //    runtimeOnly("mezz.jei:jei-${dependencies_mc_version}-neoforge:${jei_version}")
 
-    compileOnly("com.coolerpromc.fletchingrecipe:fletchingrecipe-neoforge-26.1.2:26.1.2.0")
+    compileOnly("com.coolerpromc.fletchingrecipe:fletchingrecipe-neoforge-26.2-pre-2:26.2.0-pre-2")
 }
 
 sourceSets.main.resources { srcDir rootProject.project(':common').file('src/generated/resources/').getAbsolutePath() }
@@ -78,18 +89,14 @@ publishMods {
     curseforge {
         projectId = "1317209"
         accessToken = findProperty("CF_TOKEN")
-        minecraftVersionRange {
-            start = "26.1"
-            end = "26.1.2"
-        }
+        minecraftVersions.add(minecraft_version)
+        client = true
+        server = true
     }
 
     modrinth {
         projectId = 'srzQqcGY'
         accessToken = findProperty("MODRINTH_TOKEN")
-        minecraftVersionRange {
-            start = "26.1"
-            end = "26.1.2"
-        }
+        minecraftVersions.add(minecraft_version)
     }
 }

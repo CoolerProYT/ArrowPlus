@@ -17,6 +17,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         this.tag(ItemTags.ARROWS)
-                .add(ModItems.ARROW_PLUS.get());
+                .add(ModItems.ARROW_PLUS.key());
     }
 }

@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ModCreativeTabs {
-    public static final RegistryHandler<CreativeModeTab> ARROW_PLUS_TAB = Services.REGISTRY.registerCreativeTab("arrow_plus", () -> new ItemStack(Items.ARROW), Component.translatable("creativetab.arrowplus"),
+    public static final RegistryHandler<CreativeModeTab, CreativeModeTab> ARROW_PLUS_TAB = Services.REGISTRY.registerCreativeTab("arrow_plus", () -> new ItemStack(Items.ARROW), Component.translatable("creativetab.arrowplus"),
             (itemDisplayParameters) -> {
                 List<ItemStack> stacks = new ArrayList<>();
                 List<Holder.Reference<ArrowData>> holder = itemDisplayParameters.holders().lookupOrThrow(ModRegistries.ARROW_DATA_KEY).listElements().filter(reference -> !ArrowPlusConfig.getRemoval().contains(reference.key().identifier().getPath())).toList();
@@ -41,7 +41,7 @@ public class ModCreativeTabs {
             }
     );
 
-    public static final RegistryHandler<CreativeModeTab> ARROW_PLUS_MATERIAL_TAB = Services.REGISTRY.registerCreativeTab("arrow_plus_material", () -> new ItemStack(ModItems.GILDED_FEATHER.get()), Component.translatable("creativetab.arrowplus.material"),
+    public static final RegistryHandler<CreativeModeTab, CreativeModeTab> ARROW_PLUS_MATERIAL_TAB = Services.REGISTRY.registerCreativeTab("arrow_plus_material", () -> new ItemStack(ModItems.GILDED_FEATHER.get()), Component.translatable("creativetab.arrowplus.material"),
             (itemDisplayParameters) -> {
                 List<ItemStack> stacks = new ArrayList<>();
                 stacks.add(ModItems.COPPER_STICK.toStack());
