@@ -16,10 +16,10 @@
     "environment": "*",
     "entrypoints": {
         "main": [
-            "com.coolerpromc.arrowplus.ArrowPlus"
+            "com.coolerpromc.arrowplus.FabricArrowPlus"
         ],
         "client": [
-            "com.coolerpromc.arrowplus.ArrowPlusClient"
+            "com.coolerpromc.arrowplus.FabricArrowPlusClient"
         ],
         "jei_mod_plugin": [
             "com.coolerpromc.arrowplus.compat.jei.ModJEIPlugin"
@@ -33,7 +33,8 @@
         "fabricloader": ">=${fabric_loader_version}",
         "fabric-api": "*",
         "minecraft": "~26.1",
-        "java": ">=${java_version}"
+        "java": ">=${java_version}",
+        "coolerconfig": "*"
     },
     "suggests": {
         "another-mod": "*"

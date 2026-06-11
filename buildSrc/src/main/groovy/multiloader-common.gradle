@@ -29,8 +29,11 @@ repositories {
         name = 'BlameJared'
         url = 'https://maven.blamejared.com'
     }
-    maven {
-        url = 'https://maven.coolerpromc.com/releases'
+    repositories {
+        maven {
+            name = 'CoolerProMC'
+            url = 'https://maven.coolerpromc.com/releases'
+        }
     }
 }
 
@@ -75,7 +78,9 @@ processResources {
             'neoforge_loader_version_range': neoforge_loader_version_range,
             'credits'                      : credits,
             'java_version'                 : java_version,
-            'jei_version'                  : jei_version
+            'jei_version'                  : jei_version,
+            'dependencies_mc_version'      : dependencies_mc_version,
+            'coolerconfig_version'         : coolerconfig_version
     ]
 
     var jsonExpandProps = expandProps.collectEntries {

@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.item.properties.conditional.ConditionalItemModelProperties;
 import net.minecraft.resources.Identifier;
 
-public class ArrowPlusClient implements ClientModInitializer {
+public class FabricArrowPlusClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         ItemTintSources.ID_MAPPER.put(Identifier.fromNamespaceAndPath(Constants.MODID, "arrow_tint"), ArrowTintSource.MAP_CODEC);
