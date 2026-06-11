@@ -1,6 +1,7 @@
 package com.coolerpromc.arrowplus.entity.custom;
 
 import com.coolerpromc.arrowplus.arrow.ArrowData;
+import com.coolerpromc.arrowplus.config.ArrowPlusConfig;
 import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
 import com.coolerpromc.arrowplus.entity.ModEntities;
 import net.minecraft.core.Holder;
@@ -47,6 +48,8 @@ public class ModArrowEntity extends AbstractArrow {
         this.stack = pickupItemStack;
         this.pickup = Pickup.ALLOWED;
 
+        Holder<ArrowData> data = pickupItemStack.get(ModDataComponents.ARROW_DATA.get());
+
         if (firedFromWeapon != null && firedFromWeapon.getItem() instanceof BowItem){
             int powerLevel = EnchantmentHelper.getItemEnchantmentLevel(level.registryAccess().getOrThrow(Enchantments.POWER), firedFromWeapon);
             if (powerLevel > 0) {
@@ -54,7 +57,12 @@ public class ModArrowEntity extends AbstractArrow {
             }
 
             int infinityLevel = EnchantmentHelper.getItemEnchantmentLevel(level.registryAccess().getOrThrow(Enchantments.INFINITY), firedFromWeapon);
-            this.pickup = infinityLevel > 0 ? Pickup.DISALLOWED : Pickup.ALLOWED;
+            if (data != null){
+                this.pickup = infinityLevel > 0&& !ArrowPlusConfig.isInfinityBlacklisted(data.unwrapKey().get().identifier().getPath()) ? Pickup.DISALLOWED : Pickup.ALLOWED;
+            }
+            else{
+                this.pickup = infinityLevel > 0 ? Pickup.DISALLOWED : Pickup.ALLOWED;
+            }
         }
         this.setBaseDamage(baseDamage);
         this.updateArrowData();

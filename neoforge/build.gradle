@@ -56,6 +56,7 @@ dependencies {
 //    runtimeOnly("mezz.jei:jei-${dependencies_mc_version}-neoforge:${jei_version}")
 
     compileOnly("com.coolerpromc.fletchingrecipe:fletchingrecipe-neoforge-26.2-pre-2:26.2.0-pre-2")
+    jarJar implementation("com.coolerpromc.coolerconfig:coolerconfig-neoforge-${dependencies_mc_version}:${coolerconfig_version}")
 }
 
 sourceSets.main.resources { srcDir rootProject.project(':common').file('src/generated/resources/').getAbsolutePath() }
