@@ -1,1 +1,1 @@
-- Fixed `Flame` enchantment not applying to Arrow+
+- Added config to blacklist arrow from infinity enchantment

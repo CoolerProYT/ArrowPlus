@@ -1,6 +1,7 @@
 package com.coolerpromc.arrowplus.item.custom;
 
 import com.coolerpromc.arrowplus.arrow.ArrowData;
+import com.coolerpromc.arrowplus.config.ArrowPlusConfig;
 import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
 import com.coolerpromc.arrowplus.entity.custom.ModArrowEntity;
 import net.minecraft.core.Direction;
@@ -38,7 +39,11 @@ public class ModArrowItem extends ArrowItem {
 
     @Override
     public boolean isInfinite(ItemStack ammo, ItemStack bow, LivingEntity livingEntity) {
-        return bow.getEnchantmentLevel(livingEntity.level().registryAccess().holderOrThrow(Enchantments.INFINITY)) > 0;
+        Holder<ArrowData> data = ammo.get(ModDataComponents.ARROW_DATA.get());
+        if (data == null){
+            return bow.getEnchantmentLevel(livingEntity.level().registryAccess().holderOrThrow(Enchantments.INFINITY)) > 0;
+        }
+        return bow.getEnchantmentLevel(livingEntity.level().registryAccess().holderOrThrow(Enchantments.INFINITY)) > 0 && !ArrowPlusConfig.CONFIG.isInfinityBlacklisted(data.getKey().location().getPath());
     }
 
     @Override
