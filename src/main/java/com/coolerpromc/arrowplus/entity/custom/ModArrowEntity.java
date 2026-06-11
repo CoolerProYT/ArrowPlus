@@ -1,5 +1,6 @@
 package com.coolerpromc.arrowplus.entity.custom;
 
+import com.coolerpromc.arrowplus.config.ArrowPlusConfig;
 import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
 import com.coolerpromc.arrowplus.entity.ModEntities;
 import com.coolerpromc.arrowplus.arrow.ArrowData;
@@ -47,6 +48,8 @@ public class ModArrowEntity extends AbstractArrow {
         this.stack = pickupItemStack;
         this.pickup = Pickup.ALLOWED;
 
+        Holder<ArrowData> data = pickupItemStack.get(ModDataComponents.ARROW_DATA.get());
+
         if (firedFromWeapon != null && firedFromWeapon.getItem() instanceof BowItem){
             int powerLevel = firedFromWeapon.getEnchantmentLevel(level.registryAccess().holderOrThrow(Enchantments.POWER));
             if (powerLevel > 0) {
@@ -54,7 +57,12 @@ public class ModArrowEntity extends AbstractArrow {
             }
 
             int infinityLevel = firedFromWeapon.getEnchantmentLevel(level.registryAccess().holderOrThrow(Enchantments.INFINITY));
-            this.pickup = infinityLevel > 0 ? Pickup.DISALLOWED : Pickup.ALLOWED;
+            if(data != null){
+                this.pickup = infinityLevel > 0 && !ArrowPlusConfig.CONFIG.isInfinityBlacklisted(data.getKey().location().getPath()) ? Pickup.DISALLOWED : Pickup.ALLOWED;
+            }
+            else {
+                this.pickup = infinityLevel > 0 ? Pickup.DISALLOWED : Pickup.ALLOWED;
+            }
         }
         this.setBaseDamage(baseDamage);
         this.updateArrowData();
