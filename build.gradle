@@ -32,6 +32,10 @@ repositories {
     }
     maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
     maven { url "https://maven.architectury.dev/" }
+    maven {
+        name "coolerpromcMaven"
+        url "https://maven.coolerpromc.com/releases"
+    }
 }
 
 base {
@@ -100,7 +104,7 @@ dependencies {
     implementation  "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"
 
     implementation "curse.maven:jade-324717:6853386"
-    implementation "curse.maven:fletching-recipe-1364606:7395179"
+    compileOnly "com.coolerpromc:fletchingrecipe:1.2.4+1.21.1-neoforge"
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {

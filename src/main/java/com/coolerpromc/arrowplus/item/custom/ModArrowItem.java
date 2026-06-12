@@ -63,12 +63,24 @@ public class ModArrowItem extends ArrowItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(Component.translatable("tooltip.arrowplus.base_damage", stack.getOrDefault(ModDataComponents.ARROW_DATA, Holder.direct(ArrowData.EMPTY)).value().baseDamage()).withColor(0xBBBBBB));
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltips, TooltipFlag tooltipFlag) {
+        if(!tooltipFlag.hasShiftDown()){
+            tooltips.add(Component.literal("Hold §8[Shift]§r for more info."));
+        }
+        else{
+            Holder<ArrowData> data = stack.get(ModDataComponents.ARROW_DATA.get());
+            if (data != null){
+                boolean affectedByInfinity = ArrowPlusConfig.CONFIG.isInfinityBlacklisted(data.getKey().location().getPath());
+                tooltips.add(Component.translatable("tooltip.arrowplus.base_damage", "§a" + data.value().baseDamage()));
+                tooltips.add(Component.translatable("tooltip.arrowplus.flame", "§a" + data.value().flame()));
+                tooltips.add(Component.translatable("tooltip.arrowplus.gravity", "§a" + data.value().gravity()));
+                tooltips.add(Component.translatable("tooltip.arrowplus.infinity", "§a" + affectedByInfinity));
+            }
+        }
         PotionContents potioncontents = stack.get(DataComponents.POTION_CONTENTS);
         if (potioncontents != null) {
-            Objects.requireNonNull(tooltipComponents);
-            potioncontents.addPotionTooltip(tooltipComponents::add, 0.125F, context.tickRate());
+            Objects.requireNonNull(tooltips);
+            potioncontents.addPotionTooltip(tooltips::add, 0.125F, context.tickRate());
         }
     }
 

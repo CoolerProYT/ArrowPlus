@@ -12,6 +12,7 @@ public class ArrowPlusConfig {
 
     public final ModConfigSpec.ConfigValue<List<? extends String>> removal;
     public final ModConfigSpec.ConfigValue<List<? extends String>> infinityBlacklist;
+    public final ModConfigSpec.ConfigValue<Boolean> hideTippedArrow;
 
     static {
         Pair<ArrowPlusConfig, ModConfigSpec> pair = new ModConfigSpec.Builder().configure(ArrowPlusConfig::new);
@@ -25,6 +26,10 @@ public class ArrowPlusConfig {
         removal = builder.comment("A list of arrow to be disabled. Example: ['diamond', 'iron']").defineList("restrictions", List.of(), o -> o instanceof String);
         infinityBlacklist = builder.comment("A list of arrow that won't be affected by infinity enchantment. Example: ['diamond', 'iron']").defineList("infinityBlacklist", List.of(), o -> o instanceof String);
         builder.pop();
+
+        builder.push("Recipe Viewers");
+        hideTippedArrow = builder.comment("Hide tipped arrow+ arrow from recipe viewers").define("hideTippedArrow", false);
+        builder.pop();
     }
 
     public List<? extends String> getRemoval() {
@@ -33,5 +38,9 @@ public class ArrowPlusConfig {
 
     public boolean isInfinityBlacklisted(String name){
         return infinityBlacklist.get().contains(name);
+    }
+
+    public boolean hideTippedArrow(){
+        return hideTippedArrow.get();
     }
 }

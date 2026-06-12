@@ -8,9 +8,12 @@ import com.coolerpromc.arrowplus.registry.ModRegistries;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.recipe.vanilla.IVanillaRecipeFactory;
+import mezz.jei.api.registration.IAdvancedRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.ISubtypeRegistration;
+import mezz.jei.api.runtime.IIngredientManager;
 import mezz.jei.common.util.RegistryUtil;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
@@ -26,6 +29,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.neoforge.common.crafting.DataComponentIngredient;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @JeiPlugin
@@ -97,5 +101,29 @@ public class ModJEIPlugin implements IModPlugin {
     @Override
     public void registerItemSubtypes(ISubtypeRegistration registration) {
         registration.registerSubtypeInterpreter(ModItems.ARROW_PLUS.get(), ArrowSubtypeInterpreter.INSTANCE);
+    }
+
+    @Override
+    public void registerAdvanced(IAdvancedRegistration registration) {
+        if (ArrowPlusConfig.CONFIG.hideTippedArrow()){
+            IIngredientManager ingredientManager = registration.getJeiHelpers().getIngredientManager();
+
+            RegistryUtil.getRegistryAccess().lookupOrThrow(ModRegistries.ARROW_DATA_KEY).listElements().filter(reference -> !ArrowPlusConfig.CONFIG.getRemoval().contains(reference.key().location().getPath())).forEach(data -> {
+                ItemStack output = new ItemStack(ModItems.ARROW_PLUS.get());
+                output.set(ModDataComponents.ARROW_DATA, data);
+
+                RegistryUtil.getRegistryAccess().lookupOrThrow(Registries.POTION).listElements().forEach(potion -> {
+                    if (!potion.value().getEffects().isEmpty()) {
+                        ItemStack arrow = output.copyWithCount(1);
+                        ItemStack tippedOutput = arrow.copy();
+                        tippedOutput.set(DataComponents.POTION_CONTENTS, new PotionContents(potion));
+
+                        ingredientManager.removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, Collections.singletonList(tippedOutput));
+                    }
+                });
+
+                ingredientManager.addIngredientsAtRuntime(VanillaTypes.ITEM_STACK, Collections.singletonList(output));
+            });
+        }
     }
 }
