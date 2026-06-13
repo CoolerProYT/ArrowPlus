@@ -1,6 +1,6 @@
 package com.coolerpromc.arrowplus.compat.jei;
 
-import com.coolerpromc.arrowplus.arrow.ArrowData;
+import com.coolerpromc.arrowplus.datapack.arrow.ArrowData;
 import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
 import mezz.jei.api.ingredients.subtypes.ISubtypeInterpreter;
 import mezz.jei.api.ingredients.subtypes.UidContext;

@@ -28,15 +28,10 @@ public class ModItemModelProvider extends ItemModelProvider {
         generateArrowPlus(ModItems.ARROW_PLUS);
 
         // Sticks
-        generateStick(ModItems.COPPER_STICK);
-        generateStick(ModItems.IRON_STICK);
-        generateStick(ModItems.GOLD_STICK);
-        generateStick(ModItems.DIAMOND_STICK);
-        generateStick(ModItems.EMERALD_STICK);
-        generateStick(ModItems.NETHERITE_STICK);
+        generateStick(ModItems.CUSTOM_STICK);
 
         // Feathers
-        generateFeather(ModItems.GILDED_FEATHER);
+        generateFeather(ModItems.CUSTOM_FEATHER);
 
         // Vanilla Override
         generateArrow(Items.ARROW);

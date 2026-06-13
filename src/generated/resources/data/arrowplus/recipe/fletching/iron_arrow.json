@@ -15,7 +15,12 @@
   "middle": {
     "count": 1,
     "ingredient": {
-      "item": "arrowplus:copper_stick"
+      "type": "neoforge:components",
+      "components": {
+        "arrowplus:stick_data": "arrowplus:copper"
+      },
+      "items": "arrowplus:custom_stick",
+      "strict": true
     }
   },
   "output": {

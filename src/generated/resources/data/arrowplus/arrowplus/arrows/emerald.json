@@ -7,6 +7,7 @@
   "gravity": 0.05,
   "material": "minecraft:emerald",
   "outputAmount": 3,
-  "stick": "arrowplus:diamond_stick",
+  "stick": "arrowplus:custom_stick",
+  "stickData": "arrowplus:diamond",
   "translationKey": "item.arrowplus.emerald_arrow"
 }

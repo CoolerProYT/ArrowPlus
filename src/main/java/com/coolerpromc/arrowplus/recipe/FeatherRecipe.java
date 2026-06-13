@@ -1,0 +1,68 @@
+package com.coolerpromc.arrowplus.recipe;
+
+import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
+import com.coolerpromc.arrowplus.datapack.feather.FeatherData;
+import com.coolerpromc.arrowplus.item.ModItems;
+import com.coolerpromc.arrowplus.registry.ModRegistries;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CraftingInput;
+import net.minecraft.world.item.crafting.CustomRecipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.Level;
+
+import java.util.HashSet;
+import java.util.Set;
+
+@SuppressWarnings({"NullableProblems"})
+public class FeatherRecipe extends CustomRecipe {
+    private Holder<FeatherData> resultData = Holder.direct(FeatherData.EMPTY);
+
+    public FeatherRecipe(CraftingBookCategory category) {
+        super(category);
+    }
+
+    @Override
+    public boolean matches(CraftingInput craftingInput, Level level) {
+        if (craftingInput.width() == 3 && craftingInput.height() == 3 && craftingInput.ingredientCount() == 5){
+            ItemStack feather = craftingInput.getItem(1, 1);
+            Set<Item> material = new HashSet<>();
+            material.add(craftingInput.getItem(0, 1).getItem());
+            material.add(craftingInput.getItem(1, 0).getItem());
+            material.add(craftingInput.getItem(1, 2).getItem());
+            material.add(craftingInput.getItem(2, 1).getItem());
+
+            for (Holder<FeatherData> featherData : level.registryAccess().lookupOrThrow(ModRegistries.FEATHER_DATA_KEY).listElements().toList()){
+                if (material.size() == 1 && featherData.value().material().contains(material.iterator().next().builtInRegistryHolder()) && feather.is(Items.FEATHER)){
+                    this.resultData = featherData;
+                    return true;
+                }
+            }
+            return false;
+        }
+        else {
+            return false;
+        }
+    }
+
+    @Override
+    public ItemStack assemble(CraftingInput craftingInput, HolderLookup.Provider provider) {
+        ItemStack feather = new ItemStack(ModItems.CUSTOM_FEATHER.get(), this.resultData.value().outputAmount());
+        feather.set(ModDataComponents.FEATHER_DATA, this.resultData);
+        return feather;
+    }
+
+    @Override
+    public boolean canCraftInDimensions(int width, int height) {
+        return width >= 3 && height >= 3;
+    }
+
+    @Override
+    public RecipeSerializer<? extends CustomRecipe> getSerializer() {
+        return ModRecipeSerializer.FEATHER_RECIPE_SERIALIZER.get();
+    }
+}

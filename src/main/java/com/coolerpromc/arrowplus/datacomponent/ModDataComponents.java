@@ -1,8 +1,10 @@
 package com.coolerpromc.arrowplus.datacomponent;
 
 import com.coolerpromc.arrowplus.ArrowPlus;
+import com.coolerpromc.arrowplus.datapack.feather.FeatherData;
+import com.coolerpromc.arrowplus.datapack.stick.StickData;
 import com.coolerpromc.arrowplus.registry.ModRegistries;
-import com.coolerpromc.arrowplus.arrow.ArrowData;
+import com.coolerpromc.arrowplus.datapack.arrow.ArrowData;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
@@ -18,6 +20,10 @@ public class ModDataComponents {
 
     public static final Supplier<DataComponentType<Holder<ArrowData>>> ARROW_DATA = DATA_COMPONENTS.registerComponentType("arrow_data", builder ->
             builder.persistent(RegistryFileCodec.create(ModRegistries.ARROW_DATA_KEY, ArrowData.CODEC)).networkSynchronized(ByteBufCodecs.holder(ModRegistries.ARROW_DATA_KEY, ArrowData.STREAM_CODEC)));
+    public static final Supplier<DataComponentType<Holder<FeatherData>>> FEATHER_DATA = DATA_COMPONENTS.registerComponentType("feather_data", builder ->
+            builder.persistent(RegistryFileCodec.create(ModRegistries.FEATHER_DATA_KEY, FeatherData.CODEC)).networkSynchronized(ByteBufCodecs.holder(ModRegistries.FEATHER_DATA_KEY, FeatherData.STREAM_CODEC)));
+    public static final Supplier<DataComponentType<Holder<StickData>>> STICK_DATA = DATA_COMPONENTS.registerComponentType("stick_data", builder ->
+            builder.persistent(RegistryFileCodec.create(ModRegistries.STICK_DATA_KEY, StickData.CODEC)).networkSynchronized(ByteBufCodecs.holder(ModRegistries.STICK_DATA_KEY, StickData.STREAM_CODEC)));
 
     public static void register(IEventBus eventBus){
         DATA_COMPONENTS.register(eventBus);

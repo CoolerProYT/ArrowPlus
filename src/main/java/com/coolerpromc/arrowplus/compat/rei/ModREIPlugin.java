@@ -21,11 +21,15 @@ public class ModREIPlugin implements REIClientPlugin {
     @Override
     public void registerDisplays(DisplayRegistry registry) {
         new ArrowRecipeFiller().registerDisplays(registry);
+        new FeatherRecipeFiller().registerDisplays(registry);
+        new StickRecipeFiller().registerDisplays(registry);
     }
 
     @Override
     public void registerItemComparators(ItemComparatorRegistry registry) {
         registry.registerComponents(ModItems.ARROW_PLUS.get());
+        registry.registerComponents(ModItems.CUSTOM_FEATHER.get());
+        registry.registerComponents(ModItems.CUSTOM_STICK.get());
     }
 
     @Override

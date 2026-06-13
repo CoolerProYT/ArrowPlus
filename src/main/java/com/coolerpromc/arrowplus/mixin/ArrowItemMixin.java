@@ -16,7 +16,15 @@ public class ArrowItemMixin extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(Component.translatable("tooltip.arrowplus.base_damage", 2.0d).withColor(0xBBBBBB));
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltips, TooltipFlag tooltipFlag) {
+        if(!tooltipFlag.hasShiftDown()){
+            tooltips.add(Component.literal("Hold §8[Shift]§r for more info."));
+        }
+        else{
+            tooltips.add(Component.translatable("tooltip.arrowplus.base_damage", "§a2.0"));
+            tooltips.add(Component.translatable("tooltip.arrowplus.flame", "§afalse"));
+            tooltips.add(Component.translatable("tooltip.arrowplus.gravity", "§a0.05"));
+            tooltips.add(Component.translatable("tooltip.arrowplus.infinity", "§atrue"));
+        }
     }
 }

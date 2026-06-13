@@ -1,23 +1,25 @@
 package com.coolerpromc.arrowplus;
 
-import com.coolerpromc.arrowplus.arrow.ArrowData;
 import com.coolerpromc.arrowplus.config.ArrowPlusConfig;
 import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
+import com.coolerpromc.arrowplus.datapack.arrow.ArrowData;
+import com.coolerpromc.arrowplus.datapack.feather.FeatherData;
+import com.coolerpromc.arrowplus.datapack.stick.StickData;
 import com.coolerpromc.arrowplus.entity.ModEntities;
 import com.coolerpromc.arrowplus.entity.renderer.ModArrowRenderer;
 import com.coolerpromc.arrowplus.item.ModCreativeTabs;
 import com.coolerpromc.arrowplus.item.ModItems;
 import com.coolerpromc.arrowplus.item.custom.ModFeatherItem;
 import com.coolerpromc.arrowplus.item.custom.ModStickItem;
+import com.coolerpromc.arrowplus.recipe.ModRecipeSerializer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import com.coolerpromc.arrowplus.recipe.ModRecipeSerializer;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -72,8 +74,9 @@ public class ArrowPlus {
                     if (arrowData != null){
                         ArrowData data = arrowData.value();
                         if (i == 0){
-                            if(data.stick().value() instanceof ModStickItem item){
-                                return item.getColor();
+                            if (data.stick().value() instanceof ModStickItem && data.stickData().isPresent()){
+                                Holder<StickData> stickData = data.stickData().get();
+                                return stickData.value().color();
                             }
                             return 0xFF886627;
                         }
@@ -81,8 +84,9 @@ public class ArrowPlus {
                             return arrowData.value().color();
                         }
                         if (i == 2){
-                            if (data.feather().value() instanceof ModFeatherItem item){
-                                return item.getColor();
+                            if (data.feather().value() instanceof ModFeatherItem && data.featherData().isPresent()){
+                                Holder<FeatherData> featherData = data.featherData().get();
+                                return featherData.value().color();
                             }
                         }
                         if (i == 3){
@@ -97,18 +101,20 @@ public class ArrowPlus {
             }, ModItems.ARROW_PLUS.get());
 
             event.register((itemStack, i) -> {
-                if (itemStack.getItem() instanceof ModStickItem stickItem){
-                    return stickItem.getColor();
+                Holder<StickData> stickData = itemStack.get(ModDataComponents.STICK_DATA);
+                if (stickData != null){
+                    return stickData.value().color();
                 }
                 return -1;
-            }, ModItems.COPPER_STICK, ModItems.IRON_STICK, ModItems.GOLD_STICK, ModItems.DIAMOND_STICK, ModItems.EMERALD_STICK, ModItems.NETHERITE_STICK);
+            }, ModItems.CUSTOM_STICK);
 
             event.register((itemStack, i) -> {
-                if (itemStack.getItem() instanceof ModFeatherItem featherItem){
-                    return featherItem.getColor();
+                Holder<FeatherData> featherData = itemStack.get(ModDataComponents.FEATHER_DATA);
+                if (featherData != null){
+                    return featherData.value().color();
                 }
                 return -1;
-            }, ModItems.GILDED_FEATHER);
+            }, ModItems.CUSTOM_FEATHER);
 
             event.register((itemStack, i) -> {
                 if (itemStack.is(Items.BOW)){
@@ -126,8 +132,8 @@ public class ArrowPlus {
                             }
                         }
                         if (i == 2){
-                            if (arrowData != null && arrowData.value().stick().value() instanceof ModStickItem item){
-                                return item.getColor();
+                            if (arrowData != null && arrowData.value().stick().value() instanceof ModStickItem && arrowData.value().stickData().isPresent()){
+                                return arrowData.value().stickData().get().value().color();
                             }
                             return 0xFF886627;
                         }

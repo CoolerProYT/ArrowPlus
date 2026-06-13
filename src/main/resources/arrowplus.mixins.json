@@ -3,7 +3,8 @@
   "package": "com.coolerpromc.arrowplus.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "ArrowItemMixin"
+    "ArrowItemMixin",
+    "migrate.ItemStackMixin"
   ],
   "injectors": {
     "defaultRequire": 1

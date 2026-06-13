@@ -11,6 +11,8 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class ModRecipeSerializer {
     public static final DeferredRegister<RecipeSerializer<?>> SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, ArrowPlus.MODID);
 
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<FeatherRecipe>> FEATHER_RECIPE_SERIALIZER = SERIALIZERS.register("feather_recipe", () -> new SimpleCraftingRecipeSerializer<>(FeatherRecipe::new));
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<StickRecipe>> STICK_RECIPE_SERIALIZER = SERIALIZERS.register("stick_recipe", () -> new SimpleCraftingRecipeSerializer<>(StickRecipe::new));
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<ArrowRecipe>> ARROW_RECIPE_SERIALIZER = SERIALIZERS.register("arrow_recipe", () -> new SimpleCraftingRecipeSerializer<>(ArrowRecipe::new));
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<TippedArrowRecipe>> TIPPED_ARROW_RECIPE_SERIALIZER = SERIALIZERS.register("tipped_arrow_recipe", () -> new SimpleCraftingRecipeSerializer(TippedArrowRecipe::new));
 

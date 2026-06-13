@@ -7,11 +7,11 @@
   ],
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_diamond_stick": {
+    "has_custom_stick": {
       "conditions": {
         "items": [
           {
-            "items": "arrowplus:diamond_stick"
+            "items": "arrowplus:custom_stick"
           }
         ]
       },
@@ -48,7 +48,7 @@
     [
       "has_the_recipe",
       "has_emerald",
-      "has_diamond_stick",
+      "has_custom_stick",
       "has_feather"
     ]
   ],

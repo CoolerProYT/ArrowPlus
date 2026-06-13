@@ -1,6 +1,8 @@
 package com.coolerpromc.arrowplus.entity.renderer;
 
 import com.coolerpromc.arrowplus.ArrowPlus;
+import com.coolerpromc.arrowplus.datapack.feather.FeatherData;
+import com.coolerpromc.arrowplus.datapack.stick.StickData;
 import com.coolerpromc.arrowplus.entity.custom.ModArrowEntity;
 import com.coolerpromc.arrowplus.item.custom.ModFeatherItem;
 import com.coolerpromc.arrowplus.item.custom.ModStickItem;
@@ -12,6 +14,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
@@ -33,11 +36,13 @@ public class ModArrowRenderer extends EntityRenderer<ModArrowEntity> {
         int bodyColor = 0xFF886627;
         int featherColor = -1;
 
-        if (entity.getArrowData().stick().value() instanceof ModStickItem item){
-            bodyColor = item.getColor();
+        if (entity.getArrowData().stick().value() instanceof ModStickItem && entity.getArrowData().stickData().isPresent()){
+            Holder<StickData> stickData = entity.getArrowData().stickData().get();
+            bodyColor = stickData.value().color();
         }
-        if (entity.getArrowData().feather().value() instanceof ModFeatherItem item){
-            featherColor = item.getColor();
+        if (entity.getArrowData().feather().value() instanceof ModFeatherItem && entity.getArrowData().featherData().isPresent()){
+            Holder<FeatherData> featherData = entity.getArrowData().featherData().get();
+            featherColor = featherData.value().color();
         }
 
         render(entity, partialTicks, poseStack, buffer, packedLight, BODY_TEXTURE, bodyColor);

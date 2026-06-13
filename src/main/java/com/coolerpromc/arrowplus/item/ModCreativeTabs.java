@@ -1,9 +1,11 @@
 package com.coolerpromc.arrowplus.item;
 
 import com.coolerpromc.arrowplus.ArrowPlus;
-import com.coolerpromc.arrowplus.arrow.ArrowData;
+import com.coolerpromc.arrowplus.datapack.arrow.ArrowData;
 import com.coolerpromc.arrowplus.config.ArrowPlusConfig;
 import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
+import com.coolerpromc.arrowplus.datapack.feather.FeatherData;
+import com.coolerpromc.arrowplus.datapack.stick.StickData;
 import com.coolerpromc.arrowplus.registry.ModRegistries;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
@@ -46,16 +48,23 @@ public class ModCreativeTabs {
     );
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> ARROW_PLUS_MATERIAL_TAB = CREATIVE_MOD_TABS.register("arrow_plus_material",
-            () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.GILDED_FEATHER.get()))
+            () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.CUSTOM_FEATHER.get()))
                     .title(Component.translatable("creativetab.arrowplus.material"))
                     .displayItems((itemDisplayParameters, output) -> {
-                        output.accept(ModItems.COPPER_STICK);
-                        output.accept(ModItems.IRON_STICK);
-                        output.accept(ModItems.GOLD_STICK);
-                        output.accept(ModItems.DIAMOND_STICK);
-                        output.accept(ModItems.EMERALD_STICK);
-                        output.accept(ModItems.NETHERITE_STICK);
-                        output.accept(ModItems.GILDED_FEATHER);
+                        List<Holder.Reference<StickData>> stickHolder = itemDisplayParameters.holders().lookupOrThrow(ModRegistries.STICK_DATA_KEY).listElements().toList();
+                        stickHolder.forEach(stickData -> {
+                            ItemStack stick = ModItems.CUSTOM_STICK.toStack();
+                            stick.set(ModDataComponents.STICK_DATA, stickData);
+                            output.accept(stick);
+                        });
+
+                        List<Holder.Reference<FeatherData>> holder = itemDisplayParameters.holders().lookupOrThrow(ModRegistries.FEATHER_DATA_KEY).listElements().toList();
+                        holder.forEach(featherData -> {
+                            ItemStack feather = ModItems.CUSTOM_FEATHER.toStack();
+                            feather.set(ModDataComponents.FEATHER_DATA, featherData);
+                            output.accept(feather);
+                        });
+
                     })
                     .build()
     );

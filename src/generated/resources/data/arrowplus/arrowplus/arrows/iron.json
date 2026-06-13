@@ -7,6 +7,7 @@
   "gravity": 0.05,
   "material": "minecraft:iron_ingot",
   "outputAmount": 4,
-  "stick": "arrowplus:copper_stick",
+  "stick": "arrowplus:custom_stick",
+  "stickData": "arrowplus:copper",
   "translationKey": "item.arrowplus.iron_arrow"
 }

@@ -15,7 +15,12 @@
   "middle": {
     "count": 1,
     "ingredient": {
-      "item": "arrowplus:diamond_stick"
+      "type": "neoforge:components",
+      "components": {
+        "arrowplus:stick_data": "arrowplus:diamond"
+      },
+      "items": "arrowplus:custom_stick",
+      "strict": true
     }
   },
   "output": {

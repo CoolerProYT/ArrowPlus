@@ -9,13 +9,23 @@
   "bottom": {
     "count": 1,
     "ingredient": {
-      "item": "arrowplus:gilded_feather"
+      "type": "neoforge:components",
+      "components": {
+        "arrowplus:feather_data": "arrowplus:gilded"
+      },
+      "items": "arrowplus:custom_feather",
+      "strict": true
     }
   },
   "middle": {
     "count": 1,
     "ingredient": {
-      "item": "arrowplus:diamond_stick"
+      "type": "neoforge:components",
+      "components": {
+        "arrowplus:stick_data": "arrowplus:diamond"
+      },
+      "items": "arrowplus:custom_stick",
+      "strict": true
     }
   },
   "output": {

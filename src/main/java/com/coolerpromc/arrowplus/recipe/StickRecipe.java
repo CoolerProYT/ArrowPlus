@@ -1,0 +1,64 @@
+package com.coolerpromc.arrowplus.recipe;
+
+import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
+import com.coolerpromc.arrowplus.datapack.stick.StickData;
+import com.coolerpromc.arrowplus.item.ModItems;
+import com.coolerpromc.arrowplus.registry.ModRegistries;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CraftingInput;
+import net.minecraft.world.item.crafting.CustomRecipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.Level;
+
+import java.util.HashSet;
+import java.util.Set;
+
+@SuppressWarnings({"NullableProblems"})
+public class StickRecipe extends CustomRecipe {
+    private Holder<StickData> resultData = Holder.direct(StickData.EMPTY);
+
+    public StickRecipe(CraftingBookCategory category) {
+        super(category);
+    }
+
+    @Override
+    public boolean matches(CraftingInput craftingInput, Level level) {
+        if (craftingInput.width() == 1 && craftingInput.height() == 2 && craftingInput.ingredientCount() == 2){
+            Set<Item> material = new HashSet<>();
+            material.add(craftingInput.getItem(0).getItem());
+            material.add(craftingInput.getItem(1).getItem());
+
+            for (Holder<StickData> stickData : level.registryAccess().lookupOrThrow(ModRegistries.STICK_DATA_KEY).listElements().toList()){
+                if (material.size() == 1 && stickData.value().material().contains(material.iterator().next().builtInRegistryHolder())){
+                    this.resultData = stickData;
+                    return true;
+                }
+            }
+            return false;
+        }
+        else {
+            return false;
+        }
+    }
+
+    @Override
+    public ItemStack assemble(CraftingInput craftingInput, HolderLookup.Provider provider) {
+        ItemStack stick = new ItemStack(ModItems.CUSTOM_STICK.get(), this.resultData.value().outputAmount());
+        stick.set(ModDataComponents.STICK_DATA, this.resultData);
+        return stick;
+    }
+
+    @Override
+    public boolean canCraftInDimensions(int width, int height) {
+        return width >= 3 && height >= 3;
+    }
+
+    @Override
+    public RecipeSerializer<? extends CustomRecipe> getSerializer() {
+        return ModRecipeSerializer.STICK_RECIPE_SERIALIZER.get();
+    }
+}

@@ -3,7 +3,7 @@ package com.coolerpromc.arrowplus.entity.custom;
 import com.coolerpromc.arrowplus.config.ArrowPlusConfig;
 import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
 import com.coolerpromc.arrowplus.entity.ModEntities;
-import com.coolerpromc.arrowplus.arrow.ArrowData;
+import com.coolerpromc.arrowplus.datapack.arrow.ArrowData;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.component.DataComponents;
@@ -15,6 +15,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -27,6 +28,7 @@ import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -136,14 +138,14 @@ public class ModArrowEntity extends AbstractArrow {
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.put("arrow_data", ArrowData.CODEC.encodeStart(NbtOps.INSTANCE, this.getArrowData()).getOrThrow());
+        tag.put("arrow_data", ArrowData.CODEC.encodeStart(RegistryOps.create(NbtOps.INSTANCE, ServerLifecycleHooks.getCurrentServer().registryAccess()), this.getArrowData()).getOrThrow());
         tag.putInt("color", this.getColor());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        this.entityData.set(ARROW_DATA, ArrowData.CODEC.parse(NbtOps.INSTANCE, tag.get("arrow_data")).getOrThrow());
+        this.entityData.set(ARROW_DATA, ArrowData.CODEC.parse(RegistryOps.create(NbtOps.INSTANCE, ServerLifecycleHooks.getCurrentServer().registryAccess()), tag.get("arrow_data")).getOrThrow());
         this.entityData.set(ID_EFFECT_COLOR, tag.getInt("color"));
     }
 
