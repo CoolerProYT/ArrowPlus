@@ -12,6 +12,7 @@ import java.util.List;
 public class ArrowPlusConfig {
     public static ConfigValue<List<String>> removal;
     public static ConfigValue<List<String>> infinityBlacklist;
+    public static ConfigValue<Boolean> hideTippedArrow;
 
     public static ConfigSpec CONFIG;
 
@@ -20,6 +21,7 @@ public class ArrowPlusConfig {
 
         removal = builder.defineList("Restrictions.restrictions", List.of(), "A list of arrow to be disabled. Example: ['diamond', 'iron']");
         infinityBlacklist = builder.defineList("Restrictions.infinityBlacklist", List.of(), "A list of arrow that won't be affected by infinity enchantment. Example: ['diamond', 'iron']");
+        hideTippedArrow = builder.defineBoolean("Recipe Viewers.hideTippedArrow", false, "Hide tipped arrow+ arrow from recipe viewers");
 
         CONFIG = builder.build();
     }
@@ -30,5 +32,9 @@ public class ArrowPlusConfig {
 
     public static boolean isInfinityBlacklisted(String name){
         return infinityBlacklist.get().contains(name);
+    }
+
+    public static boolean hideTippedArrow(){
+        return hideTippedArrow.get();
     }
 }

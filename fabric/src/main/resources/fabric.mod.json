@@ -21,6 +21,9 @@
         "client": [
             "com.coolerpromc.arrowplus.FabricArrowPlusClient"
         ],
+        "fabric-datagen": [
+            "com.coolerpromc.arrowplus.datagen.ArrowPlusDataGenerator"
+        ],
         "jei_mod_plugin": [
             "com.coolerpromc.arrowplus.compat.jei.ModJEIPlugin"
         ]

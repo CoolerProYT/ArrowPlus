@@ -1,6 +1,6 @@
 package com.coolerpromc.arrowplus.entity;
 
-import com.coolerpromc.arrowplus.arrow.ArrowData;
+import com.coolerpromc.arrowplus.datapack.arrow.ArrowData;
 import com.coolerpromc.arrowplus.entity.custom.ModArrowEntity;
 import com.coolerpromc.arrowplus.item.ModItems;
 import com.coolerpromc.arrowplus.item.custom.ModArrowItem;

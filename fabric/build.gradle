@@ -15,11 +15,19 @@ dependencies {
     compileOnly "mezz.jei:jei-${dependencies_mc_version}-fabric-api:${jei_version}"
 //    runtimeOnly "mezz.jei:jei-${dependencies_mc_version}-fabric:${jei_version}"
 
+    compileOnly("com.coolerpromc.fletchingrecipe:fletchingrecipe-fabric-26.1.2:26.1.2.3")
+    runtimeOnly("com.coolerpromc.fletchingrecipe:fletchingrecipe-fabric-26.1.2:26.1.2.3")
     implementation include("com.coolerpromc.coolerconfig:coolerconfig-fabric-${dependencies_mc_version}:${coolerconfig_version}")
 }
 
+fabricApi {
+    configureDataGeneration {
+        client = true
+    }
+}
+
 loom {
-    def aw = project(':common').file("src/main/resources/${mod_id}.accesswidener")
+    def aw = file("src/main/resources/${mod_id}.accesswidener")
     if (aw.exists()) {
         accessWidenerPath.set(aw)
     }
@@ -39,7 +47,7 @@ loom {
     }
 }
 
-sourceSets.main.resources { srcDir rootProject.project(':common').file('src/generated/resources/').getAbsolutePath() }
+sourceSets.main.resources { srcDirs 'src/generated/resources', rootProject.project(':common').file('src/generated/resources/').getAbsolutePath() }
 
 processResources {
     // keep your other resource processing here

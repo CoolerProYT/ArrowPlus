@@ -35,5 +35,10 @@
   "effect.minecraft.leaping": "跳跃",
   "effect.minecraft.turtle_master": "神龟",
   "effect.minecraft.swiftness": "迅捷",
-  "effect.minecraft.healing": "治疗"
+  "effect.minecraft.healing": "治疗",
+
+  "tooltip.arrowplus.flame": "§7火焰: %d",
+  "tooltip.arrowplus.gravity": "§7重力: %d",
+  "tooltip.arrowplus.infinity": "§7可以被无限影响: %d",
+  "item.arrowplus.gilded_feather": "金羽毛"
 }

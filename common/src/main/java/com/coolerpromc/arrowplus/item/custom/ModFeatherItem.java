@@ -1,16 +1,19 @@
 package com.coolerpromc.arrowplus.item.custom;
 
+import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
+import com.coolerpromc.arrowplus.datapack.feather.FeatherData;
+import net.minecraft.core.Holder;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 public class ModFeatherItem extends Item {
-    private final int color;
-
-    public ModFeatherItem(Properties properties, int color) {
+    public ModFeatherItem(Properties properties) {
         super(properties);
-        this.color = color;
     }
 
-    public int getColor() {
-        return color;
+    @Override
+    public Component getName(ItemStack stack) {
+        return Component.translatable(stack.getOrDefault(ModDataComponents.FEATHER_DATA.get(), Holder.direct(FeatherData.EMPTY)).value().translationKey());
     }
 }

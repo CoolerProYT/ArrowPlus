@@ -1,7 +1,9 @@
 package com.coolerpromc.arrowplus.datagen;
 
 import com.coolerpromc.arrowplus.Constants;
-import com.coolerpromc.arrowplus.arrow.ArrowData;
+import com.coolerpromc.arrowplus.datapack.arrow.ArrowData;
+import com.coolerpromc.arrowplus.datapack.feather.FeatherData;
+import com.coolerpromc.arrowplus.datapack.stick.StickData;
 import com.coolerpromc.arrowplus.registry.ModRegistries;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
@@ -20,16 +22,21 @@ public class ModDataGenerator {
         DataGenerator generator = event.getGenerator();
         PackOutput packOutput = generator.getPackOutput();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
-        ModDatapackProvider datapackProvider = new ModDatapackProvider(packOutput, lookupProvider);
 
         event.addProvider(new ModModelProvider(packOutput));
         event.addProvider(new ModItemTagsProvider(packOutput, lookupProvider));
-        event.addProvider(new ModRecipeProvider.Runner(packOutput, datapackProvider.getRegistryProvider()));
-        event.addProvider(datapackProvider);
+    }
+
+    @SubscribeEvent
+    public static void onGatherData(GatherDataEvent.Server event) {
+        event.createDatapackRegistryObjects(ModDatapackProvider.registrySetBuilder);
+        event.createProvider(ModRecipeProvider.Runner::new);
     }
 
     @SubscribeEvent
     public static void onDataPackRegistry(DataPackRegistryEvent.NewRegistry event) {
         event.dataPackRegistry(ModRegistries.ARROW_DATA_KEY, ArrowData.CODEC, ArrowData.CODEC, builder -> builder.maxId(256));
+        event.dataPackRegistry(ModRegistries.FEATHER_DATA_KEY, FeatherData.CODEC, FeatherData.CODEC, builder -> builder.maxId(256));
+        event.dataPackRegistry(ModRegistries.STICK_DATA_KEY, StickData.CODEC, StickData.CODEC, builder -> builder.maxId(256));
     }
 }

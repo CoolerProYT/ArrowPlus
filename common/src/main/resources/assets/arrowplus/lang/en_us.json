@@ -2,7 +2,10 @@
   "item.minecraft.arrow": "Flint Arrow",
   "creativetab.arrowplus": "Arrow+",
   "creativetab.arrowplus.material": "Arrow+ Materials",
-  "tooltip.arrowplus.base_damage": "Base Damage: %d",
+  "tooltip.arrowplus.base_damage": "§7Base Damage: %d",
+  "tooltip.arrowplus.flame": "§7Flame: %d",
+  "tooltip.arrowplus.gravity": "§7Gravity: %d",
+  "tooltip.arrowplus.infinity": "§7Affected by Infinity: %d",
   "item.arrowplus.cheated_item": "Invalid Arrow+ Item",
 
   "item.arrowplus.stone_arrow": "Stone Arrow",
@@ -31,6 +34,8 @@
   "item.arrowplus.diamond_stick": "Diamond Stick",
   "item.arrowplus.emerald_stick": "Emerald Stick",
   "item.arrowplus.netherite_stick": "Netherite Stick",
+
+  "item.arrowplus.gilded_feather": "Gilded Feather",
 
   "effect.minecraft.leaping": "Leaping",
   "effect.minecraft.turtle_master": "Turtle Master",
