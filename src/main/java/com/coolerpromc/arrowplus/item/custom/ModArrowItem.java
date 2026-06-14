@@ -40,6 +40,10 @@ public class ModArrowItem extends ArrowItem {
     @Override
     public boolean isInfinite(ItemStack ammo, ItemStack bow, LivingEntity livingEntity) {
         Holder<ArrowData> data = ammo.get(ModDataComponents.ARROW_DATA.get());
+        PotionContents potioncontents = ammo.get(DataComponents.POTION_CONTENTS);
+        if (potioncontents != null){
+            return false;
+        }
         if (data == null){
             return bow.getEnchantmentLevel(livingEntity.level().registryAccess().holderOrThrow(Enchantments.INFINITY)) > 0;
         }
@@ -64,20 +68,20 @@ public class ModArrowItem extends ArrowItem {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltips, TooltipFlag tooltipFlag) {
+        PotionContents potioncontents = stack.get(DataComponents.POTION_CONTENTS);
         if(!tooltipFlag.hasShiftDown()){
             tooltips.add(Component.literal("Hold §8[Shift]§r for more info."));
         }
         else{
             Holder<ArrowData> data = stack.get(ModDataComponents.ARROW_DATA.get());
             if (data != null){
-                boolean affectedByInfinity = ArrowPlusConfig.CONFIG.isInfinityBlacklisted(data.getKey().location().getPath());
+                boolean affectedByInfinity = !ArrowPlusConfig.CONFIG.isInfinityBlacklisted(data.getKey().location().getPath()) && potioncontents == null;
                 tooltips.add(Component.translatable("tooltip.arrowplus.base_damage", "§a" + data.value().baseDamage()));
                 tooltips.add(Component.translatable("tooltip.arrowplus.flame", "§a" + data.value().flame()));
                 tooltips.add(Component.translatable("tooltip.arrowplus.gravity", "§a" + data.value().gravity()));
                 tooltips.add(Component.translatable("tooltip.arrowplus.infinity", "§a" + affectedByInfinity));
             }
         }
-        PotionContents potioncontents = stack.get(DataComponents.POTION_CONTENTS);
         if (potioncontents != null) {
             Objects.requireNonNull(tooltips);
             potioncontents.addPotionTooltip(tooltips::add, 0.125F, context.tickRate());

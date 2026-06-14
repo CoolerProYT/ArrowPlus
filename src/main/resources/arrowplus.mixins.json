@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "ArrowItemMixin",
+    "TippedArrowItemMixin",
     "migrate.ItemStackMixin"
   ],
   "injectors": {

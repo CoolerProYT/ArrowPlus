@@ -5,7 +5,7 @@
   "tooltip.arrowplus.base_damage": "§7Base Damage: %d",
   "tooltip.arrowplus.flame": "§7Flame: %d",
   "tooltip.arrowplus.gravity": "§7Gravity: %d",
-  "tooltip.arrowplus.infinity": "§7Affect by Infinity: %d",
+  "tooltip.arrowplus.infinity": "§7Affected by Infinity: %d",
   "item.arrowplus.cheated_item": "Invalid Arrow+ Item",
 
   "item.arrowplus.stone_arrow": "Stone Arrow",

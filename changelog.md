@@ -1,8 +1,5 @@
-### 4.0.0
-- Added arrow data info to arrows tooltip
-- Added config to hide tipped arrow from JEI/REI
-- Sticks and feathers are now datapack-driven (like arrows), replaced individual stick items and gilded feather with a single `custom_stick` and `custom_feather` item
-- Deprecated individual stick items (copper_stick, iron_stick, gold_stick, diamond_stick, emerald_stick, netherite_stick) and gilded_feather (will be removed in a future version)
-- Added stick and feather recipe types for crafting table
-- Added JEI/REI support for custom sticks and feathers
-- Arrow data `stick` and `feather` fields that reference `arrowplus:custom_stick` / `arrowplus:custom_feather` now require a `stickData` / `featherData` field pointing to the corresponding datapack entry (e.g. `"stickData": "arrowplus:gold"`)
+### 4.1.0
+- Fixed tooltip not showing for vanilla tipped arrow
+- Fixed some tooltip showing wrong information
+- Fixed tipped custom arrow can be affected by infinity
+- Tipped arrow recipe viewer config can affect EMI now
