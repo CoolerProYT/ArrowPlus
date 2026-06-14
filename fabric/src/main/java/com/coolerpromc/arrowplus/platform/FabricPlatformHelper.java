@@ -1,7 +1,9 @@
 package com.coolerpromc.arrowplus.platform;
 
+import com.coolerpromc.arrowplus.FabricArrowPlus;
 import com.coolerpromc.arrowplus.platform.services.IPlatformHelper;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.server.MinecraftServer;
 
 public class FabricPlatformHelper implements IPlatformHelper {
 
@@ -20,5 +22,10 @@ public class FabricPlatformHelper implements IPlatformHelper {
     public boolean isDevelopmentEnvironment() {
 
         return FabricLoader.getInstance().isDevelopmentEnvironment();
+    }
+
+    @Override
+    public MinecraftServer getServer() {
+        return FabricArrowPlus.server;
     }
 }

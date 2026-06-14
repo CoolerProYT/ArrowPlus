@@ -1,9 +1,12 @@
 package com.coolerpromc.arrowplus.item.custom;
 
-import com.coolerpromc.arrowplus.arrow.ArrowData;
+import com.coolerpromc.arrowplus.datapack.arrow.ArrowData;
 import com.coolerpromc.arrowplus.config.ArrowPlusConfig;
 import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
 import com.coolerpromc.arrowplus.entity.custom.ModArrowEntity;
+import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.platform.Window;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Position;
@@ -22,7 +25,9 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
+import org.lwjgl.glfw.GLFW;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 
 public class ModArrowItem extends ArrowItem {
@@ -40,6 +45,10 @@ public class ModArrowItem extends ArrowItem {
 
     public boolean isInfinite(ItemStack ammo, ItemStack bow, LivingEntity livingEntity) {
         Holder<ArrowData> data = ammo.get(ModDataComponents.ARROW_DATA.get());
+        PotionContents potioncontents = ammo.get(DataComponents.POTION_CONTENTS);
+        if (potioncontents != null){
+            return false;
+        }
         if (data == null){
             return EnchantmentHelper.getItemEnchantmentLevel(livingEntity.level().registryAccess().getOrThrow(Enchantments.INFINITY), bow) > 0;
         }
@@ -63,8 +72,24 @@ public class ModArrowItem extends ArrowItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay tooltipDisplay, Consumer<Component> tooltipAdder, TooltipFlag flag) {
-        tooltipAdder.accept(Component.translatable("tooltip.arrowplus.base_damage", stack.getOrDefault(ModDataComponents.ARROW_DATA.get(), Holder.direct(ArrowData.EMPTY)).value().baseDamage()).withColor(0xBBBBBB));
+    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay tooltipDisplay, Consumer<Component> tooltips, TooltipFlag tooltipFlag) {
+        Window handle = Minecraft.getInstance().getWindow();
+        boolean shiftDown = InputConstants.isKeyDown(handle, GLFW.GLFW_KEY_LEFT_SHIFT) || InputConstants.isKeyDown(handle, GLFW.GLFW_KEY_RIGHT_SHIFT);
+
+        if(!shiftDown){
+            tooltips.accept(Component.literal("Hold §8[Shift]§r for more info."));
+        }
+        else{
+            Holder<ArrowData> data = stack.get(ModDataComponents.ARROW_DATA.get());
+            PotionContents potioncontents = stack.get(DataComponents.POTION_CONTENTS);
+            if (data != null){
+                boolean affectedByInfinity = !ArrowPlusConfig.isInfinityBlacklisted(data.unwrapKey().get().identifier().getPath()) && potioncontents == null;
+                tooltips.accept(Component.translatable("tooltip.arrowplus.base_damage", "§a" + data.value().baseDamage()));
+                tooltips.accept(Component.translatable("tooltip.arrowplus.flame", "§a" + data.value().flame()));
+                tooltips.accept(Component.translatable("tooltip.arrowplus.gravity", "§a" + data.value().gravity()));
+                tooltips.accept(Component.translatable("tooltip.arrowplus.infinity", "§a" + affectedByInfinity));
+            }
+        }
     }
 
     @Override

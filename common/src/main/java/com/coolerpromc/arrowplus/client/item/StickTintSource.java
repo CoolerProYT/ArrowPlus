@@ -1,7 +1,8 @@
 package com.coolerpromc.arrowplus.client.item;
 
-import com.coolerpromc.arrowplus.arrow.ArrowData;
+import com.coolerpromc.arrowplus.datapack.arrow.ArrowData;
 import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
+import com.coolerpromc.arrowplus.datapack.stick.StickData;
 import com.coolerpromc.arrowplus.item.custom.ModStickItem;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -23,13 +24,17 @@ public record StickTintSource(int defaultColor) implements ItemTintSource {
         if (itemStack.has(ModDataComponents.ARROW_DATA.get())){
             Holder<ArrowData> holder = itemStack.get(ModDataComponents.ARROW_DATA.get());
             ArrowData data = holder.value();
-            if (data.stick().value() instanceof ModStickItem item){
-                return item.getColor();
+            if (data.stick().value() instanceof ModStickItem && data.stickData().isPresent()){
+                Holder<StickData> stickData = data.stickData().get();
+                return stickData.value().color();
             }
             return 0xFF886627;
         }
         if (itemStack.getItem() instanceof ModStickItem item){
-            return item.getColor();
+            Holder<StickData> stickData = itemStack.get(ModDataComponents.STICK_DATA.get());
+            if (stickData != null){
+                return stickData.value().color();
+            }
         }
         return defaultColor;
     }

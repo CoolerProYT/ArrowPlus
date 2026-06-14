@@ -1,6 +1,6 @@
 package com.coolerpromc.arrowplus.client.item;
 
-import com.coolerpromc.arrowplus.arrow.ArrowData;
+import com.coolerpromc.arrowplus.datapack.arrow.ArrowData;
 import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
 import com.coolerpromc.arrowplus.item.custom.ModStickItem;
 import com.mojang.serialization.Codec;
@@ -23,8 +23,8 @@ public record BowStickTintSource(int defaultColor) implements ItemTintSource {
         if (livingEntity != null){
             ItemStack arrowStack = livingEntity.getProjectile(itemStack);
             Holder<ArrowData> data = arrowStack.get(ModDataComponents.ARROW_DATA.get());
-            if (data != null && data.value().stick().value() instanceof ModStickItem item){
-                return item.getColor();
+            if (data != null && data.value().stick().value() instanceof ModStickItem item && data.value().stickData().isPresent()){
+                return data.value().stickData().get().value().color();
             }
             return 0xFF886627;
         }

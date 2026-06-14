@@ -1,6 +1,6 @@
 package com.coolerpromc.arrowplus.client.item;
 
-import com.coolerpromc.arrowplus.arrow.ArrowData;
+import com.coolerpromc.arrowplus.datapack.arrow.ArrowData;
 import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

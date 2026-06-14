@@ -1,5 +1,7 @@
 package com.coolerpromc.arrowplus.platform.services;
 
+import net.minecraft.server.MinecraftServer;
+
 public interface IPlatformHelper {
 
     /**
@@ -33,4 +35,6 @@ public interface IPlatformHelper {
 
         return isDevelopmentEnvironment() ? "development" : "production";
     }
+
+    MinecraftServer getServer();
 }

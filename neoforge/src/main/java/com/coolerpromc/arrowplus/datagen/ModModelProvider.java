@@ -38,15 +38,10 @@ public class ModModelProvider extends ModelProvider {
         generateArrow(itemModels, ModItems.ARROW_PLUS.get());
 
         // Sticks
-        itemModels.itemModelOutput.accept(ModItems.COPPER_STICK.get(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.create(ModItems.COPPER_STICK.get(), TextureMapping.layer0(new Material(Constants.id("item/stick"))), itemModels.modelOutput), new StickTintSource(-1)));
-        itemModels.itemModelOutput.accept(ModItems.IRON_STICK.get(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.create(ModItems.IRON_STICK.get(), TextureMapping.layer0(new Material(Constants.id("item/stick"))), itemModels.modelOutput), new StickTintSource(-1)));
-        itemModels.itemModelOutput.accept(ModItems.GOLD_STICK.get(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.create(ModItems.GOLD_STICK.get(), TextureMapping.layer0(new Material(Constants.id("item/stick"))), itemModels.modelOutput), new StickTintSource(-1)));
-        itemModels.itemModelOutput.accept(ModItems.DIAMOND_STICK.get(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.create(ModItems.DIAMOND_STICK.get(), TextureMapping.layer0(new Material(Constants.id("item/stick"))), itemModels.modelOutput), new StickTintSource(-1)));
-        itemModels.itemModelOutput.accept(ModItems.EMERALD_STICK.get(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.create(ModItems.EMERALD_STICK.get(), TextureMapping.layer0(new Material(Constants.id("item/stick"))), itemModels.modelOutput), new StickTintSource(-1)));
-        itemModels.itemModelOutput.accept(ModItems.NETHERITE_STICK.get(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.create(ModItems.NETHERITE_STICK.get(), TextureMapping.layer0(new Material(Constants.id("item/stick"))), itemModels.modelOutput), new StickTintSource(-1)));
+        itemModels.itemModelOutput.accept(ModItems.CUSTOM_STICK.get(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.create(ModItems.CUSTOM_STICK.get(), TextureMapping.layer0(new Material(Constants.id("item/stick"))), itemModels.modelOutput), new StickTintSource(-1)));
 
         // Feather
-        itemModels.itemModelOutput.accept(ModItems.GILDED_FEATHER.get(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.create(ModItems.GILDED_FEATHER.get(), TextureMapping.layer0(new Material(Constants.id("item/feather"))), itemModels.modelOutput), new FeatherTintSource(-1)));
+        itemModels.itemModelOutput.accept(ModItems.CUSTOM_FEATHER.get(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.create(ModItems.CUSTOM_FEATHER.get(), TextureMapping.layer0(new Material(Constants.id("item/feather"))), itemModels.modelOutput), new FeatherTintSource(-1)));
 
         // Vanilla override
         itemModels.itemModelOutput.accept(Items.ARROW, ItemModelUtils.plainModel(ModelTemplates.FLAT_ITEM.create(TextureMapping.getItemTexture(Items.ARROW).sprite(), TextureMapping.layer0(new Material(getModelLocation(Items.ARROW, ""))), itemModels.modelOutput)));
@@ -92,7 +87,7 @@ public class ModModelProvider extends ModelProvider {
 
     @Override
     protected @NotNull Stream<? extends Holder<Item>> getKnownItems() {
-        return BuiltInRegistries.ITEM.listElements().filter(itemReference -> Optional.of(BuiltInRegistries.ITEM.getKey(itemReference.value())).filter(Identifier -> Identifier.getNamespace().equals(Constants.MODID)).isPresent());
+        return Stream.of(ModItems.ARROW_PLUS.get().builtInRegistryHolder(), ModItems.CUSTOM_FEATHER.get().builtInRegistryHolder(), ModItems.CUSTOM_STICK.get().builtInRegistryHolder());
     }
 
     private Identifier getModelLocation(Item item, String suffix) {
