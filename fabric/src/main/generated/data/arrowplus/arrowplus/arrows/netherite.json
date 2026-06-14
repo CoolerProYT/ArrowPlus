@@ -1,0 +1,14 @@
+{
+  "baseDamage": 4.5,
+  "color": -12698050,
+  "effects": {},
+  "feather": "arrowplus:custom_feather",
+  "featherData": "arrowplus:gilded",
+  "flame": false,
+  "gravity": 0.05,
+  "material": "minecraft:netherite_ingot",
+  "outputAmount": 2,
+  "stick": "arrowplus:custom_stick",
+  "stickData": "arrowplus:diamond",
+  "translationKey": "item.arrowplus.netherite_arrow"
+}

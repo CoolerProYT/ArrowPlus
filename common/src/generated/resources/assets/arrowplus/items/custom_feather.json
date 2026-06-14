@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "arrowplus:item/custom_feather",
+    "tints": [
+      {
+        "type": "arrowplus:feather_tint",
+        "default": -1
+      }
+    ]
+  }
+}

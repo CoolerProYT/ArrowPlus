@@ -184,7 +184,7 @@ public record ArrowData(Ingredient ingredient, double baseDamage, int color, Str
     }
 
     public boolean isValidFeather(ItemStack featherStack){
-        if (feather instanceof ModFeatherItem){
+        if (feather.value() instanceof ModFeatherItem){
             if (featherData.isPresent()){
                 Holder<FeatherData> data = featherStack.getOrDefault(ModDataComponents.FEATHER_DATA.get(), Holder.direct(FeatherData.EMPTY));
                 return featherStack.is(feather) && featherData.get().is(data);

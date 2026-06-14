@@ -1,0 +1,42 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "fletchingrecipe"
+      ]
+    }
+  ],
+  "type": "fletchingrecipe:fletching",
+  "bottom": {
+    "count": 1,
+    "ingredient": {
+      "fabric:type": "fabric:components",
+      "base": "arrowplus:custom_feather",
+      "components": {
+        "arrowplus:feather_data": "arrowplus:gilded"
+      }
+    }
+  },
+  "middle": {
+    "count": 1,
+    "ingredient": {
+      "fabric:type": "fabric:components",
+      "base": "arrowplus:custom_stick",
+      "components": {
+        "arrowplus:stick_data": "arrowplus:diamond"
+      }
+    }
+  },
+  "output": {
+    "components": {
+      "arrowplus:arrow_data": "arrowplus:netherite"
+    },
+    "count": 4,
+    "id": "arrowplus:arrow_plus"
+  },
+  "top": {
+    "count": 1,
+    "ingredient": "minecraft:netherite_ingot"
+  }
+}

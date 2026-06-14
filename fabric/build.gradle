@@ -15,8 +15,8 @@ dependencies {
     compileOnly "mezz.jei:jei-${dependencies_mc_version}-fabric-api:${jei_version}"
 //    runtimeOnly "mezz.jei:jei-${dependencies_mc_version}-fabric:${jei_version}"
 
-    compileOnly("com.coolerpromc.fletchingrecipe:fletchingrecipe-fabric-26.1.2:26.1.2.3")
-    runtimeOnly("com.coolerpromc.fletchingrecipe:fletchingrecipe-fabric-26.1.2:26.1.2.3")
+    compileOnly("com.coolerpromc.fletchingrecipe:fletchingrecipe-fabric-26.2-rc-2:26.2.0-rc-2")
+//    runtimeOnly("com.coolerpromc.fletchingrecipe:fletchingrecipe-fabric-26.2-rc-2:26.2.0-rc-2")
     implementation include("com.coolerpromc.coolerconfig:coolerconfig-fabric-${dependencies_mc_version}:${coolerconfig_version}")
 }
 

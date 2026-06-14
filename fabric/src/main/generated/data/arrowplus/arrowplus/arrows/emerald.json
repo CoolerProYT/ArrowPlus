@@ -1,0 +1,13 @@
+{
+  "baseDamage": 3.0,
+  "color": -16725933,
+  "effects": {},
+  "feather": "minecraft:feather",
+  "flame": false,
+  "gravity": 0.05,
+  "material": "minecraft:emerald",
+  "outputAmount": 3,
+  "stick": "arrowplus:custom_stick",
+  "stickData": "arrowplus:diamond",
+  "translationKey": "item.arrowplus.emerald_arrow"
+}

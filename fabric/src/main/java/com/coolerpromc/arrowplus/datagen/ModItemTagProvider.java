@@ -15,7 +15,7 @@ public class ModItemTagProvider extends FabricTagsProvider.ItemTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider registries) {
-        this.valueLookupBuilder(ItemTags.ARROWS)
-                .add(ModItems.ARROW_PLUS.get());
+        this.tag(ItemTags.ARROWS)
+                .add(ModItems.ARROW_PLUS.key());
     }
 }

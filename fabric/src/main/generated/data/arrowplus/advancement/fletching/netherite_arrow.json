@@ -1,0 +1,62 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "fletchingrecipe"
+      ]
+    }
+  ],
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_custom_feather": {
+      "conditions": {
+        "items": [
+          {
+            "items": "arrowplus:custom_feather"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_custom_stick": {
+      "conditions": {
+        "items": [
+          {
+            "items": "arrowplus:custom_stick"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_netherite_ingot": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:netherite_ingot"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "arrowplus:fletching/netherite_arrow"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_netherite_ingot",
+      "has_custom_stick",
+      "has_custom_feather"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "arrowplus:fletching/netherite_arrow"
+    ]
+  }
+}

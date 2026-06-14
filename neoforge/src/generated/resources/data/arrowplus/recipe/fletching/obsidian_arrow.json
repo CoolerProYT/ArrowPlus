@@ -1,0 +1,40 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "fletchingrecipe"
+    }
+  ],
+  "type": "fletchingrecipe:fletching",
+  "bottom": {
+    "count": 1,
+    "ingredient": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "arrowplus:feather_data": "arrowplus:gilded"
+      },
+      "items": "arrowplus:custom_feather"
+    }
+  },
+  "middle": {
+    "count": 1,
+    "ingredient": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "arrowplus:stick_data": "arrowplus:diamond"
+      },
+      "items": "arrowplus:custom_stick"
+    }
+  },
+  "output": {
+    "components": {
+      "arrowplus:arrow_data": "arrowplus:obsidian"
+    },
+    "count": 4,
+    "id": "arrowplus:arrow_plus"
+  },
+  "top": {
+    "count": 1,
+    "ingredient": "minecraft:obsidian"
+  }
+}
