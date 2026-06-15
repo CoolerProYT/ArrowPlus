@@ -1,3 +1,6 @@
+## 26.1.2.101
+- Removed arrow info tooltip for other modded arrow
+
 ## 26.1.2.100
 - Fixed duplicated tipped arrow effect tooltip
 - Tipped custom arrow no longer affected by infinity
