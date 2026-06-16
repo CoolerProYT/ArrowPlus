@@ -25,6 +25,7 @@ public class ModDataGenerator {
 
         event.addProvider(new ModModelProvider(packOutput));
         event.addProvider(new ModItemTagsProvider(packOutput, lookupProvider));
+        event.addProvider(new ModEntityTagsProvider(packOutput, lookupProvider));
     }
 
     @SubscribeEvent
