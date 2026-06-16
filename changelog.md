@@ -1,3 +1,6 @@
+## 26.1.2.102
+- Added `arrow_plus` to `#arrows` entity type tag
+
 ## 26.1.2.101
 - Removed arrow info tooltip for other modded arrow
 
