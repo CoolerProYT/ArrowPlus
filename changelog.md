@@ -1,2 +1,2 @@
-### 4.1.1
-- Removed arrow info tooltip for other modded arrow
+### 4.1.2
+- Added `arrow_plus` to `#arrows` entity type tag.

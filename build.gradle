@@ -113,7 +113,7 @@ dependencies {
 
     localRuntime "curse.maven:jade-324717:6853386"
     compileOnly "com.coolerpromc:fletchingrecipe:1.2.4+1.21.1-neoforge"
-//    localRuntime "com.coolerpromc:fletchingrecipe:1.2.4+1.21.1-neoforge"
+    localRuntime "com.coolerpromc:fletchingrecipe:1.2.4+1.21.1-neoforge"
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
