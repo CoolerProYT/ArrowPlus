@@ -63,9 +63,9 @@ dependencies {
     compileOnly("mezz.jei:jei-${dependencies_mc_version}-neoforge-api:${jei_version}")
 //    runtimeOnly("mezz.jei:jei-${dependencies_mc_version}-neoforge:${jei_version}")
 
-    compileOnly("com.coolerpromc.fletchingrecipe:fletchingrecipe-neoforge-26.2-rc-2:26.2.0-rc-2")
-//    runtimeOnly("com.coolerpromc.fletchingrecipe:fletchingrecipe-neoforge-26.2-rc-2:26.2.0-rc-2")
-    jarJar implementation("com.coolerpromc.coolerconfig:coolerconfig-neoforge-${dependencies_mc_version}:${coolerconfig_version}")
+    compileOnly("com.coolerpromc.fletchingrecipe:fletchingrecipe-neoforge-26.2:26.2.0")
+//    runtimeOnly("com.coolerpromc.fletchingrecipe:fletchingrecipe-neoforge-26.2:26.2.0")
+    jarJar implementation("com.coolerpromc.coolerconfig:coolerconfig-neoforge-${minecraft_version}:${coolerconfig_version}")
 }
 
 sourceSets.main.resources { srcDirs 'src/generated/resources', rootProject.project(':common').file('src/generated/resources/').getAbsolutePath() }

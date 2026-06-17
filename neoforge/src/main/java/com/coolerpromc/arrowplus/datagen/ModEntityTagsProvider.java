@@ -16,6 +16,6 @@ public class ModEntityTagsProvider extends EntityTypeTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider registries) {
-        tag(EntityTypeTags.ARROWS).add(ModEntities.ARROW_PLUS.get());
+        tag(EntityTypeTags.ARROWS).add(ModEntities.ARROW_PLUS.key());
     }
 }
