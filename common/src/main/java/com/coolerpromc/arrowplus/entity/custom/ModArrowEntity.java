@@ -13,6 +13,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.Unit;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -21,6 +22,7 @@ import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -50,7 +52,7 @@ public class ModArrowEntity extends AbstractArrow {
 
         Holder<ArrowData> data = pickupItemStack.get(ModDataComponents.ARROW_DATA.get());
 
-        if (firedFromWeapon != null && firedFromWeapon.getItem() instanceof BowItem){
+        if (firedFromWeapon != null && firedFromWeapon.getItem() instanceof ProjectileWeaponItem){
             int powerLevel = EnchantmentHelper.getItemEnchantmentLevel(level.registryAccess().getOrThrow(Enchantments.POWER), firedFromWeapon);
             if (powerLevel > 0) {
                 baseDamage += (baseDamage * 0.25D) * (powerLevel + 1);
@@ -63,6 +65,10 @@ public class ModArrowEntity extends AbstractArrow {
             else{
                 this.pickup = infinityLevel > 0 ? Pickup.DISALLOWED : Pickup.ALLOWED;
             }
+        }
+        Unit unit = pickupItemStack.remove(DataComponents.INTANGIBLE_PROJECTILE);
+        if (unit != null) {
+            this.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
         }
         this.setBaseDamage(baseDamage);
         this.updateArrowData();
