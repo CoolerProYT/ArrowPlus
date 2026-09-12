@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "arrowplus:fletching/gold_arrow"
+        "recipes": "arrowplus:fletching/gold_arrow"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

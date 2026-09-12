@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "arrowplus:fletching/lapis_arrow"
+        "recipes": "arrowplus:fletching/lapis_arrow"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

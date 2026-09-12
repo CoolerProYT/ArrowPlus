@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "arrowplus:fletching/redstone_arrow"
+        "recipes": "arrowplus:fletching/redstone_arrow"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

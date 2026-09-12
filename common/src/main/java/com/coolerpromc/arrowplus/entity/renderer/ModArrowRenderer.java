@@ -41,11 +41,11 @@ public class ModArrowRenderer extends EntityRenderer<ModArrowEntity, ModArrowRen
     @Override
     public void submit(ModArrowRenderState renderState, PoseStack poseStack, SubmitNodeCollector nodeCollector, CameraRenderState cameraRenderState) {
         poseStack.pushPose();
-        poseStack.mulPose(Axis.YP.rotationDegrees(renderState.yRot - 90.0F));
-        poseStack.mulPose(Axis.ZP.rotationDegrees(renderState.xRot));
-        nodeCollector.submitModel(this.model, renderState, poseStack, RenderTypes.entityCutout(BODY_TEXTURE), renderState.lightCoords, OverlayTexture.NO_OVERLAY, renderState.bodyColor, null, renderState.outlineColor, null);
-        nodeCollector.submitModel(this.model, renderState, poseStack, RenderTypes.entityCutout(HEAD_TEXTURE), renderState.lightCoords, OverlayTexture.NO_OVERLAY, renderState.headColor, null, renderState.outlineColor, null);
-        nodeCollector.submitModel(this.model, renderState, poseStack, RenderTypes.entityCutout(FEATHER_TEXTURE), renderState.lightCoords, OverlayTexture.NO_OVERLAY, renderState.featherColor, null, renderState.outlineColor, null);
+        poseStack.rotateDegrees(Axis.YP, renderState.yRot - 90.0F);
+        poseStack.rotateDegrees(Axis.ZP, renderState.xRot);
+        nodeCollector.submitModel(this.model, renderState, poseStack, RenderTypes.entityCutout(BODY_TEXTURE), renderState.lightCoords, OverlayTexture.NO_OVERLAY, renderState.bodyColor, null, renderState.outlineColor);
+        nodeCollector.submitModel(this.model, renderState, poseStack, RenderTypes.entityCutout(HEAD_TEXTURE), renderState.lightCoords, OverlayTexture.NO_OVERLAY, renderState.headColor, null, renderState.outlineColor);
+        nodeCollector.submitModel(this.model, renderState, poseStack, RenderTypes.entityCutout(FEATHER_TEXTURE), renderState.lightCoords, OverlayTexture.NO_OVERLAY, renderState.featherColor, null, renderState.outlineColor);
         poseStack.popPose();
         super.submit(renderState, poseStack, nodeCollector, cameraRenderState);
     }

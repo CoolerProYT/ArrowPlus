@@ -13,6 +13,14 @@ repositories {
             includeModule("net.neoforged", "testframework")
         }
     }
+    maven {
+        name "coolerpromcMavenPrivate"
+        url "https://maven.coolerpromc.com/private"
+        credentials {
+            username = findProperty("maven_username")
+            password = findProperty("maven_password")
+        }
+    }
 }
 
 neoForge {
@@ -63,8 +71,7 @@ dependencies {
     compileOnly("mezz.jei:jei-${dependencies_mc_version}-neoforge-api:${jei_version}")
 //    runtimeOnly("mezz.jei:jei-${dependencies_mc_version}-neoforge:${jei_version}")
 
-    compileOnly("com.coolerpromc.fletchingrecipe:fletchingrecipe-neoforge-26.2:26.2.0")
-//    runtimeOnly("com.coolerpromc.fletchingrecipe:fletchingrecipe-neoforge-26.2:26.2.0")
+    implementation("com.coolerpromc.fletchingrecipe:fletchingrecipe-neoforge-26.3-rc-2:26.3.0-rc-2")
     jarJar implementation("com.coolerpromc.coolerconfig:coolerconfig-neoforge-${minecraft_version}:${coolerconfig_version}")
 }
 

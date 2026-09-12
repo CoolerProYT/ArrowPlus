@@ -17,17 +17,19 @@ import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.fabricmc.fabric.impl.recipe.ingredient.builtin.ComponentsIngredient;
 import net.fabricmc.fabric.impl.resource.conditions.conditions.AllModsLoadedResourceCondition;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.triggers.Criterion;
 import net.minecraft.advancements.triggers.InventoryChangeTrigger;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.SpecialRecipeBuilder;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -38,12 +40,12 @@ public class ModRecipeProvider extends FabricRecipeProvider {
     }
 
     @Override
-    protected RecipeProvider createRecipeProvider(HolderLookup.Provider registries, RecipeOutput output) {
-        return new RecipeProvider(registries, output) {
+    protected RecipeProvider createRecipeProvider(HolderLookup.Provider registries, BootstrapContext<Recipe<?>> recipes, BootstrapContext<Advancement> advancements) {
+        return new RecipeProvider(recipes, advancements) {
             @Override
             public void buildRecipes() {
-                SpecialRecipeBuilder.special(FeatherRecipe::new).save(output, ResourceKey.create(Registries.RECIPE, Constants.id("feather_recipe")));
-                SpecialRecipeBuilder.special(StickRecipe::new).save(output, ResourceKey.create(Registries.RECIPE, Constants.id("stick_recipe")));
+                SpecialRecipeBuilder.special(FeatherRecipe::new).save(this.output, ResourceKey.create(Registries.RECIPE, Constants.id("feather_recipe")));
+                SpecialRecipeBuilder.special(StickRecipe::new).save(this.output, ResourceKey.create(Registries.RECIPE, Constants.id("stick_recipe")));
                 SpecialRecipeBuilder.special(ArrowRecipe::new).save(this.output, ResourceKey.create(Registries.RECIPE, Constants.id("arrow_recipe")));
                 SpecialRecipeBuilder.special(TippedArrowRecipe::new).save(this.output, ResourceKey.create(Registries.RECIPE, Constants.id("tipped_arrow_recipe")));
 
@@ -79,7 +81,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                             .unlockedBy(hasName, hasIngredient)
                             .unlockedBy(getHasName(arrowData.stick().value()), has(arrowData.stick().value()))
                             .unlockedBy(getHasName(arrowData.feather().value()), has(arrowData.feather().value()))
-                            .save(withConditions(output, new AllModsLoadedResourceCondition(List.of("fletchingrecipe"))), ResourceKey.create(Registries.RECIPE, Constants.id("fletching/" + holder.key().identifier().getPath() + "_arrow")));
+                            .save(withConditions(this.output, new AllModsLoadedResourceCondition(List.of("fletchingrecipe"))), ResourceKey.create(Registries.RECIPE, Constants.id("fletching/" + holder.key().identifier().getPath() + "_arrow")));
                 });
             }
         };

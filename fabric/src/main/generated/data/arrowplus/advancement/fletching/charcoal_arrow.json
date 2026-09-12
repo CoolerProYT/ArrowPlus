@@ -41,7 +41,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "arrowplus:fletching/charcoal_arrow"
+        "recipes": "arrowplus:fletching/charcoal_arrow"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

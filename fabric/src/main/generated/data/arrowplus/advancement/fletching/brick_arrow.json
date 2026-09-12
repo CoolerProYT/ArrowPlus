@@ -41,7 +41,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "arrowplus:fletching/brick_arrow"
+        "recipes": "arrowplus:fletching/brick_arrow"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

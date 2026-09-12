@@ -17,31 +17,27 @@ import com.coolerpromc.arrowplus.registry.ModRegistries;
 import com.coolerpromc.fletchingrecipe.recipe.builder.FletchingRecipeBuilder;
 import com.coolerpromc.fletchingrecipe.util.SizedIngredient;
 import com.mojang.datafixers.util.Either;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.triggers.Criterion;
 import net.minecraft.advancements.triggers.InventoryChangeTrigger;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStackTemplate;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 import net.neoforged.neoforge.common.conditions.NeoForgeConditions;
 import net.neoforged.neoforge.common.crafting.DataComponentIngredient;
 
-import java.util.concurrent.CompletableFuture;
-
 public class ModRecipeProvider extends RecipeProvider {
-    private final HolderLookup.Provider lookupProvider;
-
-    protected ModRecipeProvider(HolderLookup.Provider registries, RecipeOutput output) {
-        super(registries, output);
-        this.lookupProvider = registries;
+    public ModRecipeProvider(BootstrapContext<Recipe<?>> recipes, BootstrapContext<Advancement> advancements) {
+        super(recipes, advancements);
     }
 
     @Override
@@ -51,9 +47,9 @@ public class ModRecipeProvider extends RecipeProvider {
         SpecialRecipeBuilder.special(ArrowRecipe::new).save(this.output, ResourceKey.create(Registries.RECIPE, Constants.id("arrow_recipe")));
         SpecialRecipeBuilder.special(TippedArrowRecipe::new).save(this.output, ResourceKey.create(Registries.RECIPE, Constants.id("tipped_arrow_recipe")));
 
-        HolderLookup.RegistryLookup<ArrowData> arrowLookup = lookupProvider.lookupOrThrow(ModRegistries.ARROW_DATA_KEY);
-        HolderLookup.RegistryLookup<StickData> stickLookup = lookupProvider.lookupOrThrow(ModRegistries.STICK_DATA_KEY);
-        HolderLookup.RegistryLookup<FeatherData> featherLookup = lookupProvider.lookupOrThrow(ModRegistries.FEATHER_DATA_KEY);
+        HolderGetter<ArrowData> arrowLookup = this.output.lookup(ModRegistries.ARROW_DATA_KEY);
+        HolderGetter<StickData> stickLookup = this.output.lookup(ModRegistries.STICK_DATA_KEY);
+        HolderGetter<FeatherData> featherLookup = this.output.lookup(ModRegistries.FEATHER_DATA_KEY);
 
         Arrows.getRecipeEntries().forEach(entry -> {
             Either<Item, TagKey<Item>> material = entry.material();
@@ -92,21 +88,5 @@ public class ModRecipeProvider extends RecipeProvider {
                     .unlockedBy(getHasName(entry.feather()), has(entry.feather()))
                     .save(output.withConditions(NeoForgeConditions.modLoaded("fletchingrecipe")), ResourceKey.create(Registries.RECIPE, Constants.id("fletching/" + entry.key().identifier().getPath() + "_arrow")));
         });
-    }
-
-    public static class Runner extends RecipeProvider.Runner {
-        protected Runner(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> registries) {
-            super(packOutput, registries);
-        }
-
-        @Override
-        protected RecipeProvider createRecipeProvider(HolderLookup.Provider provider, RecipeOutput recipeOutput) {
-            return new ModRecipeProvider(provider, recipeOutput);
-        }
-
-        @Override
-        public String getName() {
-            return "Arrow+ Recipes";
-        }
     }
 }

@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "arrowplus:fletching/diamond_arrow"
+        "recipes": "arrowplus:fletching/diamond_arrow"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -3,9 +3,9 @@ package com.coolerpromc.arrowplus.datapack.feather;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderSet;
-import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.codec.RegistryCodecs;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -17,7 +17,7 @@ import net.minecraft.world.level.ItemLike;
 
 public record FeatherData(HolderSet<Item> material, int color, String translationKey, int outputAmount) {
     public static final Codec<FeatherData> CODEC = RecordCodecBuilder.create(i -> i.group(
-            RegistryCodecs.homogeneousList(Registries.ITEM).fieldOf("material").forGetter(FeatherData::material),
+            RegistryCodecs.holderSet(Registries.ITEM).fieldOf("material").forGetter(FeatherData::material),
             Codec.INT.fieldOf("color").forGetter(FeatherData::color),
             Codec.STRING.fieldOf("translationKey").forGetter(FeatherData::translationKey),
             Codec.INT.optionalFieldOf("outputAmount", 4).forGetter(FeatherData::outputAmount)
