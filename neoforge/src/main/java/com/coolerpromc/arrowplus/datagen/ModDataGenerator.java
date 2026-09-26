@@ -19,7 +19,7 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
-import net.neoforged.neoforge.registries.DataPackRegistryEvent;
+import net.neoforged.neoforge.registries.NewDatapackRegistryEvent;
 
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -56,9 +56,9 @@ public class ModDataGenerator {
     }
 
     @SubscribeEvent
-    public static void onDataPackRegistry(DataPackRegistryEvent.NewRegistry event) {
-        event.dataPackRegistry(ModRegistries.ARROW_DATA_KEY, ArrowData.CODEC, ArrowData.CODEC, builder -> builder.maxId(256));
-        event.dataPackRegistry(ModRegistries.FEATHER_DATA_KEY, FeatherData.CODEC, FeatherData.CODEC, builder -> builder.maxId(256));
-        event.dataPackRegistry(ModRegistries.STICK_DATA_KEY, StickData.CODEC, StickData.CODEC, builder -> builder.maxId(256));
+    public static void onDataPackRegistry(NewDatapackRegistryEvent event) {
+        event.worldRegistry(ModRegistries.ARROW_DATA_KEY, ArrowData.CODEC, ArrowData.CODEC, builder -> builder.maxId(256));
+        event.worldRegistry(ModRegistries.FEATHER_DATA_KEY, FeatherData.CODEC, FeatherData.CODEC, builder -> builder.maxId(256));
+        event.worldRegistry(ModRegistries.STICK_DATA_KEY, StickData.CODEC, StickData.CODEC, builder -> builder.maxId(256));
     }
 }

@@ -15,23 +15,9 @@ public class ModItems {
     public static final RegistryHandler.Items<ModArrowItem> ARROW_PLUS = registerItem("arrow_plus", properties -> new ModArrowItem(properties.component(DataComponents.POTION_DURATION_SCALE, 0.125f), ModEntities.ARROW_PLUS.get()));
 
     // Sticks
-    @Deprecated(forRemoval = true)
-    public static final RegistryHandler.Items<ModStickItem> COPPER_STICK = registerItem("copper_stick", ModStickItem::new);
-    @Deprecated(forRemoval = true)
-    public static final RegistryHandler.Items<ModStickItem> IRON_STICK = registerItem("iron_stick", ModStickItem::new);
-    @Deprecated(forRemoval = true)
-    public static final RegistryHandler.Items<ModStickItem> GOLD_STICK = registerItem("gold_stick", ModStickItem::new);
-    @Deprecated(forRemoval = true)
-    public static final RegistryHandler.Items<ModStickItem> DIAMOND_STICK = registerItem("diamond_stick", ModStickItem::new);
-    @Deprecated(forRemoval = true)
-    public static final RegistryHandler.Items<ModStickItem> EMERALD_STICK = registerItem("emerald_stick", ModStickItem::new);
-    @Deprecated(forRemoval = true)
-    public static final RegistryHandler.Items<ModStickItem> NETHERITE_STICK = registerItem("netherite_stick", ModStickItem::new);
     public static final RegistryHandler.Items<ModStickItem> CUSTOM_STICK = registerItem("custom_stick", ModStickItem::new);
 
     // Feathers
-    @Deprecated(forRemoval = true)
-    public static final RegistryHandler.Items<ModFeatherItem> GILDED_FEATHER = registerItem("gilded_feather", ModFeatherItem::new);
     public static final RegistryHandler.Items<ModFeatherItem> CUSTOM_FEATHER = registerItem("custom_feather", ModFeatherItem::new);
 
     private static <T extends Item> RegistryHandler.Items<T> registerItem(String name, Function<Item.Properties, T> item){

@@ -43,7 +43,7 @@ public class ModCreativeTabs {
             }
     );
 
-    public static final RegistryHandler<CreativeModeTab, CreativeModeTab> ARROW_PLUS_MATERIAL_TAB = Services.REGISTRY.registerCreativeTab("arrow_plus_material", () -> new ItemStack(ModItems.GILDED_FEATHER.get()), Component.translatable("creativetab.arrowplus.material"),
+    public static final RegistryHandler<CreativeModeTab, CreativeModeTab> ARROW_PLUS_MATERIAL_TAB = Services.REGISTRY.registerCreativeTab("arrow_plus_material", () -> new ItemStack(Items.FEATHER), Component.translatable("creativetab.arrowplus.material"),
             (itemDisplayParameters) -> {
                 List<Holder.Reference<StickData>> stickHolder = itemDisplayParameters.holders().lookupOrThrow(ModRegistries.STICK_DATA_KEY).listElements().toList();
                 List<ItemStack> stacks = new ArrayList<>();

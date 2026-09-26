@@ -1,3 +1,6 @@
-## 26.2.0.1
-- Fixed 2 extra arrow from multishot crossbow able to collect
-- Fixed arrow shot in creative mode able to collect
+## 26.3.0.1
+- Removed deprecated feather, stick item registration
+- Removed old feather migration code
+
+### NeoForge
+- Bump to `26.3.0.22-beta` and resolve breaking changes by NeoForge
