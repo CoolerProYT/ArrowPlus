@@ -4,7 +4,7 @@ layout: home
 hero:
   name: Arrow+
   text: Build your own arrows
-  tagline: Combine any of 19 heads with any stick and feather. Heads hit harder, sticks change the arc, feathers change the range. Add your own with datapacks, no code needed. For Arrow+ 26.3.0.2+ on Minecraft 26.3, Fabric and NeoForge.
+  tagline: Combine any of 19 heads with any stick and feather. Heads hit harder, sticks change the arc, feathers change the range. Add your own with datapacks, no code needed. For Arrow+ 26.3.0.2+, 26.2.0.2+ and 26.1.2.104+ on Fabric and NeoForge.
   image:
     src: /logo.png
     alt: Arrow+

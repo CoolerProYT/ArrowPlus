@@ -20,8 +20,8 @@ The docs cover three systems, picked with the version switcher:
 
 | Folder | Versions | Data |
 | --- | --- | --- |
-| `/` | 26.3.0.2+, modular arrows | Synced from the mod by `npm run sync` |
-| `v26-1/` | 26.1 to 26.3.0.1 and 1.21.1-NeoForge, fixed recipes | Frozen snapshot in `.vitepress/frozen/data-26.1.json`, frozen components in `.vitepress/theme/components/v26-1/` |
+| `/` | 26.3.0.2+, 26.2.0.2+, 26.1.2.104+, modular arrows | Synced from the mod by `npm run sync` |
+| `v26-1/` | 26.1 through 26.1.2.103, 26.2.0.1, 26.3.0.1 and 1.21.1-NeoForge, fixed recipes | Frozen snapshot in `.vitepress/frozen/data-26.1.json`, frozen components in `.vitepress/theme/components/v26-1/` |
 | `legacy/` | 1.21.11 and older | Written by hand |
 
 The `v26-1/` and `legacy/` pages use the hosted Arrow+ renders under `arrowplus/`, made by `scripts/render-icons.py` (needs Pillow) for the fixed-recipe arrows. Don't change those: they show what those versions look like.

@@ -7,8 +7,8 @@ const { page } = useData()
 const isOpen = ref(false)
 
 const versions = [
-  { label: '26.3.0.2+', tag: 'New', prefix: '' },
-  { label: '26.1 – 26.3.0.1 / 1.21.1-NeoForge', tag: 'Fixed', prefix: 'v26-1/' },
+  { label: '26.x modular arrows', tag: 'New', prefix: '' },
+  { label: '26.x fixed recipes / 1.21.1-NeoForge', tag: 'Fixed', prefix: 'v26-1/' },
   { label: '1.21.11 and older', tag: 'Legacy', prefix: 'legacy/' },
 ]
 

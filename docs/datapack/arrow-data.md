@@ -93,7 +93,7 @@ Add the `translationKey` to a resource pack's lang file:
 
 ## Migrating from 26.3.0.1
 
-Before 26.3.0.2, every arrow had a fixed stick and feather. These fields still load, but are **deprecated** and will be removed in a future version:
+Before modular arrows (26.3.0.2, 26.2.0.2 and 26.1.2.104), every arrow had a fixed stick and feather. These fields still load, but are **deprecated** and will be removed in a future version:
 
 | Old field | Now |
 | --- | --- |

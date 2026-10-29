@@ -3,9 +3,9 @@
 Arrow+ lets you build your own arrows. Every arrow is a **head**, a **stick** and a **feather**, and any combination works: a <ItemSlot id="arrowplus:diamond_arrow" label /> can use a plain stick, bamboo for lower gravity and speed, or a blaze rod to hit harder. Every head, stick and feather is a datapack entry, so you can change them or add your own.
 
 ::: info You are viewing the modular arrow docs
-This covers **Arrow+ 26.3.0.2 and newer** for **Minecraft 26.3** on NeoForge and Fabric.
+This covers modular arrows on NeoForge and Fabric: **26.3.0.2+** for Minecraft **26.3**, **26.2.0.2+** for **26.2**, and **26.1.2.104+** for **26.1.2**.
 
-On **Arrow+ 26.1 to 26.3.0.1** or **1.21.1-NeoForge**, arrows have fixed recipes: see the [26.1 – 26.3.0.1 docs](/v26-1/getting-started). On **1.21.11** or older, see the [legacy docs](/legacy/getting-started). The version switcher at the top moves between them.
+Earlier 26.x builds and **1.21.1-NeoForge** use fixed recipes: see the [fixed-recipe docs](/v26-1/getting-started). On **1.21.11** or older, see the [legacy docs](/legacy/getting-started). The version switcher at the top moves between them.
 :::
 
 ## Install
@@ -17,7 +17,9 @@ On **Arrow+ 26.1 to 26.3.0.1** or **1.21.1-NeoForge**, arrows have fixed recipes
 | Mod loader | Minecraft | Arrow+ version | Docs |
 | --- | :---: | :---: | --- |
 | NeoForge, Fabric | 26.3 | 26.3.0.2+ | Modular arrows, maintained |
-| NeoForge, Fabric | 26.1–26.3 | 26.1 to 26.3.0.1 | [Fixed recipes](/v26-1/getting-started) |
+| NeoForge, Fabric | 26.2 | 26.2.0.2+ | Modular arrows |
+| NeoForge, Fabric | 26.1.2 | 26.1.2.104+ | Modular arrows |
+| NeoForge, Fabric | 26.1–26.3 | Earlier builds | [Fixed recipes](/v26-1/getting-started) |
 | NeoForge | 1.21.1 | 1.21.1 builds | [Fixed recipes](/v26-1/getting-started), partial |
 
 ::: warning

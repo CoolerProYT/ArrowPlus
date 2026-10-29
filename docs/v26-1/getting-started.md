@@ -2,10 +2,10 @@
 
 Arrow+ adds 18 new arrows to Minecraft, from the cheap <ItemSlot id="arrowplus:wood_arrow" label /> to the <ItemSlot id="arrowplus:netherite_arrow" label />. Every arrow, stick and feather is a datapack entry, so you can change them or add your own.
 
-::: info You are viewing the 26.1 – 26.3.0.1 docs
-This covers **26.1 to 26.3.0.1** (NeoForge and Fabric) and **1.21.1-NeoForge**, where every arrow has a fixed recipe with its own stick and feather.
+::: info You are viewing the fixed-recipe docs
+This covers **26.1 through 26.1.2.103**, **26.2.0.1** and **26.3.0.1** (NeoForge and Fabric) and **1.21.1-NeoForge**, where every arrow has a fixed recipe with its own stick and feather.
 
-From **26.3.0.2**, arrows are modular: any head, stick and feather can be combined. Use the version switcher at the top for the [current docs](/getting-started). On **1.21.11** or older, see the [legacy docs](/legacy/getting-started).
+From **26.3.0.2**, **26.2.0.2** and **26.1.2.104**, arrows are modular: any head, stick and feather can be combined. Use the version switcher at the top for the [current docs](/getting-started). On **1.21.11** or older, see the [legacy docs](/legacy/getting-started).
 :::
 
 ## Install
@@ -16,7 +16,7 @@ From **26.3.0.2**, arrows are modular: any head, stick and feather can be combin
 
 | Mod loader | Minecraft | Status |
 | --- | :---: | :---: |
-| NeoForge, Fabric | 26.1 to 26.3.0.1 | Replaced by modular arrows in 26.3.0.2 |
+| NeoForge, Fabric | 26.1–26.3 | Earlier builds listed above; see the [current version table](/getting-started#install) for modular releases |
 | NeoForge | 1.21.1 | Partial |
 
 ::: warning
