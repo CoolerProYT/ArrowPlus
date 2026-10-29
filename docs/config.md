@@ -1,5 +1,7 @@
 <script setup>
-import { data } from './.vitepress/theme/arrowplus'
+import { current } from './.vitepress/theme/arrowplus'
+
+const { data } = current
 </script>
 
 # Config
@@ -16,17 +18,19 @@ config/arrowplus-common.toml
 
 | Setting | Type | Default | Description |
 | --- | --- | --- | --- |
-| `restrictions` | list of arrow names | `[]` | Arrows to disable. Disabled arrows cannot be crafted or used. |
-| `infinityBlacklist` | list of arrow names | `[]` | Arrows that are **not** kept by the Infinity enchantment. |
+| `restrictions` | list of head names | `[]` | Heads to disable. Disabled heads cannot be crafted into arrows. |
+| `infinityBlacklist` | list of head names | `[]` | Heads whose arrows are **not** kept by the Infinity enchantment. |
 
 ### Recipe viewers
 
 | Setting | Type | Default | Description |
 | --- | --- | --- | --- |
-| `hideTippedArrow` | boolean | `false` | Hides tipped Arrow+ arrows from JEI and REI. |
+| `hideTippedArrow` | boolean | `false` | Hides tipped Arrow+ arrows from JEI. |
 
 ::: info
-`infinityBlacklist` and `hideTippedArrow` only exist in **26.1+** and **1.21.1-NeoForge**. Older versions only have `restrictions`, see the [legacy config](/legacy/config).
+These options apply to heads only. Sticks and feathers can't be disabled from the config, remove them with a datapack instead.
+
+`infinityBlacklist` and `hideTippedArrow` exist since **26.1** and in **1.21.1-NeoForge**. Older versions only have `restrictions`, see the [legacy config](/legacy/config).
 :::
 
 ## Default file
@@ -43,9 +47,9 @@ config/arrowplus-common.toml
 	hideTippedArrow = false
 ```
 
-## Arrow names
+## Head names
 
-The config uses the arrow's datapack name, the part after `arrowplus:`:
+The config uses the head's datapack name, the part after `arrowplus:`:
 
 <div class="ap-names">
   <span v-for="a in data.arrows" :key="a.id"><ItemSlot :id="a.item" /> <code>{{ a.id.split(':')[1] }}</code></span>
@@ -67,7 +71,7 @@ Stop Infinity from keeping Obsidian and Netherite Arrows:
 	infinityBlacklist = ["obsidian", "netherite"]
 ```
 
-Hide tipped arrows from JEI and REI:
+Hide tipped arrows from JEI:
 
 ```toml
 ["Recipe Viewers"]

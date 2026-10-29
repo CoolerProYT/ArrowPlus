@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
 import { withBase } from 'vitepress'
-import { data, hex, itemName } from '../arrowplus'
+import { hex, useArrowPlus, VANILLA_FEATHER, VANILLA_STICK } from '../arrowplus'
 import ItemSlot from './ItemSlot.vue'
 
-const VANILLA_STICK = 0xff886627
-const VANILLA_FEATHER = 0xffffffff
+const { data, itemName } = useArrowPlus()
 
 const id = ref('mymod:ruby')
 const displayName = ref('Ruby Arrow')
@@ -16,13 +15,11 @@ const stick = ref('')
 const feather = ref('')
 const output = ref(4)
 const flame = ref(false)
-const gravity = ref(0.05)
 
 const namespace = computed(() => (id.value.includes(':') ? id.value.split(':')[0] : '') || 'mymod')
 const path = computed(() => id.value.split(':').pop() || 'arrow')
 const translationKey = computed(() => `item.${namespace.value}.${path.value}_arrow`)
 
-/** The signed ARGB int the datapack wants, from a #RRGGBB color. */
 const colourInt = computed(() => (0xff000000 | parseInt(colour.value.slice(1), 16)) | 0)
 
 const stickPart = computed(() => data.sticks.find((s) => s.id === stick.value))
@@ -35,19 +32,13 @@ const json = computed(() => {
     color: colourInt.value,
     translationKey: translationKey.value,
     flame: flame.value,
-    gravity: Number(gravity.value),
     effects: {},
-    feather: featherPart.value ? 'arrowplus:custom_feather' : 'minecraft:feather',
+    outputAmount: Number(output.value),
   }
-  if (featherPart.value) result.featherData = featherPart.value.id
-  result.stick = stickPart.value ? 'arrowplus:custom_stick' : 'minecraft:stick'
-  if (stickPart.value) result.stickData = stickPart.value.id
-  result.outputAmount = Number(output.value)
   return JSON.stringify(result, null, 2)
 })
 const langJson = computed(() => JSON.stringify({ [translationKey.value]: displayName.value }, null, 2))
 
-// Live preview: the mod's untinted layers, multiplied by the chosen colors like the game's tint sources.
 const canvas = ref<HTMLCanvasElement>()
 const images: Record<string, HTMLImageElement> = {}
 const loaded = ref(false)
@@ -105,7 +96,7 @@ async function copy(text: string, what: string) {
     copied.value = what
     setTimeout(() => (copied.value = ''), 1500)
   } catch {
-    // Clipboard blocked: the code stays selectable.
+
   }
 }
 </script>
@@ -133,17 +124,17 @@ async function copy(text: string, what: string) {
         </span>
       </label>
       <label>
-        <span>Stick</span>
+        <span>Preview stick</span>
         <select v-model="stick">
           <option value="">Stick (vanilla)</option>
-          <option v-for="s in data.sticks" :key="s.id" :value="s.id">{{ itemName(s.item) }}</option>
+          <option v-for="s in data.sticks.filter((s) => s.id !== 'arrowplus:stick')" :key="s.id" :value="s.id">{{ itemName(s.item) }}</option>
         </select>
       </label>
       <label>
-        <span>Feather</span>
+        <span>Preview feather</span>
         <select v-model="feather">
           <option value="">Feather (vanilla)</option>
-          <option v-for="f in data.feathers" :key="f.id" :value="f.id">{{ itemName(f.item) }}</option>
+          <option v-for="f in data.feathers.filter((f) => f.id !== 'arrowplus:feather')" :key="f.id" :value="f.id">{{ itemName(f.item) }}</option>
         </select>
       </label>
       <div class="numbers">
@@ -154,10 +145,6 @@ async function copy(text: string, what: string) {
         <label>
           <span>Output</span>
           <input v-model.number="output" type="number" step="1" min="1" max="64" />
-        </label>
-        <label>
-          <span>Gravity</span>
-          <input v-model.number="gravity" type="number" step="0.01" min="0" />
         </label>
       </div>
       <label class="check"><input v-model="flame" type="checkbox" /> Sets targets on fire</label>

@@ -1,30 +1,35 @@
-# Custom feathers
+# Feathers
 
-The two strongest arrows need the <ItemSlot id="arrowplus:gilded_feather" label /> instead of a normal feather. Custom feathers are one item, `arrowplus:custom_feather`, and the feather type comes from its `arrowplus:feather_data` component, which points at a [feather data](./datapack/feather-data) entry.
+The feather sets how far and how straight an arrow flies, and can counterbalance a heavy shaft. Any feather works with any head and stick.
 
-## Built-in feathers
+| Stat | Meaning |
+| --- | --- |
+| **Gravity multiplier** | Multiplies the shaft’s gravity. Phantom membrane uses `0.6`, reducing drop by 40%. |
+| **Air drag** | Speed lost each tick in air. Vanilla is 1%, lower flies further. |
+| **Water drag** | Speed lost each tick in water. Vanilla is 40%, which is why arrows stop almost at once underwater. |
+| **Spread** (`accuracy`) | Multiplier on shot spread: `1` is vanilla, below `1` is tighter, and above `1` is wider. |
+
+## All feathers
 
 <PartTable kind="feather" />
 
-## Crafting
+## Feathers used as they are
 
-Surround a vanilla feather with four of the material:
+The vanilla feather, phantom membrane and paper go straight into the arrow recipe. The vanilla feather entry matches the `#c:feathers` tag, so feathers from other mods work too.
 
-<RecipeCard type="feather" id="gilded" />
+<RecipeCard id="emerald" feather="phantom_membrane" />
 
-::: info Deprecated item
-The old `arrowplus:gilded_feather` item still exists in 26.1+ but is **deprecated** and will be removed in a future version. Use `arrowplus:custom_feather` with `featherData: "arrowplus:gilded"`.
-:::
+## Crafted feathers
 
-## In arrow datapacks
+The Gilded, Kelp and Prismarine Feathers are crafted first. Surround a vanilla feather with four of the material to make four:
 
-When an arrow entry uses `arrowplus:custom_feather`, it **must** also say which feather with `featherData`:
+<RecipeCard type="feather" id="kelp" />
+<RecipeCard type="feather" id="prismarine" />
 
-```json
-{
-  "feather": "arrowplus:custom_feather",
-  "featherData": "arrowplus:gilded"
-}
-```
+Kelp and Prismarine Feathers keep arrows flying underwater. They are all one item, `arrowplus:custom_feather`, and the feather type comes from its `arrowplus:feather_data` component, which points at a [feather data](./datapack/feather-data) entry.
 
-See [Arrow data](./datapack/arrow-data) for the full format, and [Feather data](./datapack/feather-data) to add your own feather types.
+<RecipeCard id="prismarine" feather="kelp" />
+
+## Add your own
+
+See [Feather data](./datapack/feather-data) to add feathers, or to change the stats of the built-in ones.

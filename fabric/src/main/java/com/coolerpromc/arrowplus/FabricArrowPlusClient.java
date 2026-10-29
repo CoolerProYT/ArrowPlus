@@ -3,7 +3,9 @@ package com.coolerpromc.arrowplus;
 import com.coolerpromc.arrowplus.client.item.*;
 import com.coolerpromc.arrowplus.entity.ModEntities;
 import com.coolerpromc.arrowplus.entity.renderer.ModArrowRenderer;
+import com.coolerpromc.arrowplus.item.PartTooltips;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.minecraft.client.color.item.ItemTintSources;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.item.properties.conditional.ConditionalItemModelProperties;
@@ -21,5 +23,7 @@ public class FabricArrowPlusClient implements ClientModInitializer {
         ConditionalItemModelProperties.ID_MAPPER.put(Identifier.fromNamespaceAndPath(Constants.MODID, "tipped"), TippedCondition.MAP_CODEC);
 
         EntityRenderers.register(ModEntities.ARROW_PLUS.get(), ModArrowRenderer::new);
+
+        ItemTooltipCallback.EVENT.register((stack, context, flag, lines) -> PartTooltips.addMaterial(stack, context.registries(), lines::add));
     }
 }

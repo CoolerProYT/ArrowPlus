@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { itemIcon, itemName, tagItems } from '../arrowplus'
+import { renderLayers, tagItems, useArrowPlus } from '../arrowplus'
+
+const { itemIcon, itemName } = useArrowPlus()
 
 const props = withDefaults(defineProps<{ id?: string | null; count?: number; label?: boolean; large?: boolean }>(), {
   id: null,
@@ -9,7 +11,6 @@ const props = withDefaults(defineProps<{ id?: string | null; count?: number; lab
   large: false,
 })
 
-// A tag slot cycles through the tag's items once a second, like JEI and REI.
 const tick = ref(0)
 let timer: ReturnType<typeof setInterval> | undefined
 onMounted(() => (timer = setInterval(() => tick.value++, 1000)))
@@ -21,9 +22,16 @@ const shown = computed(() => {
   return items[tick.value % items.length]
 })
 const name = computed(() => (props.id ? itemName(props.id) : ''))
-const src = computed(() => (shown.value ? itemIcon(shown.value) : null))
+const icon = computed(() => (shown.value ? itemIcon(shown.value) : null))
 
-// Falls back to initials when an item has no icon or the hosted icon fails to load.
+const src = ref<string | null>(typeof icon.value === 'string' ? icon.value : null)
+async function resolveIcon() {
+  const value = icon.value
+  src.value = !value ? null : typeof value === 'string' ? value : await renderLayers(value.layers)
+}
+onMounted(resolveIcon)
+watch(icon, resolveIcon)
+
 const failed = ref(false)
 watch(src, () => (failed.value = false))
 const initials = computed(() =>

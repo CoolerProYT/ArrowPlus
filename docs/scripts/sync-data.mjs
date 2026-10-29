@@ -1,6 +1,3 @@
-// Pulls wiki data straight from the mod so the docs never drift from the game:
-// the arrow, stick and feather datapack entries, Fletching Table recipes and names from the lang file.
-// Run `./gradlew :fabric:runDatagen` first when the mod's built-in arrows change.
 import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { basename, dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -20,7 +17,6 @@ const jsonFiles = (dir) => (existsSync(dir) ? readdirSync(dir).filter((f) => f.e
 const list = (value) => (value == null ? [] : Array.isArray(value) ? value : [value])
 const namespaces = readdirSync(generated).sort()
 
-/** Every entry of one Arrow+ datapack registry, across namespaces, keyed `namespace:name`. */
 function registry(kind) {
   return namespaces.flatMap((namespace) =>
     jsonFiles(join(generated, namespace, 'arrowplus', kind)).map((file) => ({
@@ -30,32 +26,30 @@ function registry(kind) {
   )
 }
 
-// Each stick, feather and arrow variant is shown as its own item, e.g. arrowplus:copper_stick,
-// with the icon rendered by render-icons.py and hosted alongside the vanilla renders.
-const HOSTED_TEXTURES = 'https://storage.googleapis.com/coolerpromc/textures'
+const VANILLA_STICK = 0xff886627 | 0
+const VANILLA_FEATHER = -1
+const STICK = { gravity: 0.05, velocity: 1.0, outputAmount: 4, standalone: false }
+const FEATHER = { gravityMultiplier: 1.0, airDrag: 0.99, waterDrag: 0.6, accuracy: 1.0, outputAmount: 4, standalone: false }
+
 const variant = (id, suffix) => `${id}_${suffix}`
 const names = { 'minecraft:arrow': lang['item.minecraft.arrow'] }
 const textures = {}
-function addItem(item, translationKey) {
+function addItem(item, translationKey, layers) {
   names[item] = lang[translationKey] ?? translationKey
-  const [namespace, path] = item.split(':')
-  textures[item] = `${HOSTED_TEXTURES}/${namespace}/${path}.png`
+  if (layers) textures[item] = { layers }
 }
 
-const sticks = registry('sticks').map(({ id, json }) => {
-  const item = variant(id, 'stick')
-  addItem(item, json.translationKey)
-  return { id, item, material: list(json.material), color: json.color, outputAmount: json.outputAmount ?? 4 }
-})
+function part(id, json, defaults, suffix, layer) {
+  const entry = { ...defaults, ...json }
+  const material = list(json.material)
+  const item = entry.standalone ? material[0] : variant(id, suffix)
+  if (!entry.standalone) addItem(item, json.translationKey, [[layer, json.color]])
+  const { translationKey, ...stats } = entry
+  return { id, item, ...stats, material }
+}
 
-const feathers = registry('feathers').map(({ id, json }) => {
-  const item = variant(id, 'feather')
-  addItem(item, json.translationKey)
-  return { id, item, material: list(json.material), color: json.color, outputAmount: json.outputAmount ?? 4 }
-})
-
-/** A stick or feather slot: the vanilla item, or the custom item's variant. */
-const part = (itemId, dataId, suffix) => (dataId ? variant(dataId, suffix) : itemId)
+const sticks = registry('sticks').map(({ id, json }) => part(id, json, STICK, 'stick', 'stick'))
+const feathers = registry('feathers').map(({ id, json }) => part(id, json, FEATHER, 'feather', 'feather'))
 
 const fletching = Object.fromEntries(
   namespaces.flatMap((namespace) =>
@@ -68,30 +62,38 @@ const fletching = Object.fromEntries(
 
 const arrows = registry('arrows').map(({ id, json }) => {
   const item = variant(id, 'arrow')
-  addItem(item, json.translationKey)
+  addItem(item, json.translationKey, [
+    ['arrow_stick', VANILLA_STICK],
+    ['arrow_head', json.color],
+    ['arrow_feather', VANILLA_FEATHER],
+  ])
   return {
     id,
     item,
     material: typeof json.material === 'string' ? json.material : list(json.material)[0],
-    stick: part(json.stick, json.stickData, 'stick'),
-    feather: part(json.feather, json.featherData, 'feather'),
-    outputAmount: json.outputAmount,
+    outputAmount: json.outputAmount ?? 4,
     fletchingAmount: fletching[id] ?? null,
     baseDamage: json.baseDamage,
     flame: json.flame,
-    gravity: json.gravity,
     effects: json.effects ?? {},
     color: json.color,
   }
 })
 
-// The untinted texture layers, for the arrow designer's live preview.
+const POISON = 0xff87a363 | 0
+const diamond = arrows.find((a) => a.id === 'arrowplus:diamond')
+if (diamond) {
+  textures['arrowplus:diamond_arrow_tipped'] = {
+    layers: [...textures[diamond.item].layers, ['arrow_tipped', POISON]],
+  }
+}
+
 const layers = join(root, 'common/src/main/resources/assets/arrowplus/textures/item')
 mkdirSync(join(docs, 'public/layers'), { recursive: true })
-for (const name of ['arrow_stick', 'arrow_head', 'arrow_feather']) {
+for (const name of ['arrow_stick', 'arrow_head', 'arrow_feather', 'arrow_tipped', 'stick', 'feather']) {
   copyFileSync(join(layers, `${name}.png`), join(docs, `public/layers/${name}.png`))
 }
 
 mkdirSync(join(docs, '.vitepress/data'), { recursive: true })
 writeFileSync(join(docs, '.vitepress/data/data.json'), JSON.stringify({ names, textures, arrows, sticks, feathers }, null, 2))
-console.log(`Synced ${arrows.length} arrows, ${sticks.length} sticks, ${feathers.length} feathers.`)
+console.log(`Synced ${arrows.length} heads, ${sticks.length} sticks, ${feathers.length} feathers.`)

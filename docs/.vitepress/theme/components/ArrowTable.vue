@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { data, itemName, maxDamage, number, type Arrow } from '../arrowplus'
+import { number, useArrowPlus } from '../arrowplus'
 import ItemSlot from './ItemSlot.vue'
 import RecipeCard from './RecipeCard.vue'
 
@@ -11,15 +11,13 @@ const SORTS: { key: Sort; label: string }[] = [
   { key: 'name', label: 'Name' },
 ]
 
+const { data, itemName, maxDamage } = useArrowPlus()
+
 const sort = ref<Sort>('damage')
-const specialOnly = ref(false)
 const open = ref<string | null>(null)
 
-const special = (a: Arrow) => a.stick !== 'minecraft:stick' || a.feather !== 'minecraft:feather'
-
 const arrows = computed(() =>
-  data.arrows
-    .filter((a) => !specialOnly.value || special(a))
+  [...data.arrows]
     .sort((a, b) => {
       if (sort.value === 'name') return itemName(a.item).localeCompare(itemName(b.item))
       if (sort.value === 'output') return b.outputAmount - a.outputAmount || b.baseDamage - a.baseDamage
@@ -41,13 +39,12 @@ function toggle(id: string) {
           {{ s.label }}
         </button>
       </div>
-      <label class="filter"><input v-model="specialOnly" type="checkbox" /> Only arrows with special sticks or feathers</label>
     </div>
 
     <div class="table">
       <div class="row head">
-        <span>Arrow</span>
-        <span>Recipe</span>
+        <span>Head</span>
+        <span>Material</span>
         <span class="num">Makes</span>
         <span>Base damage</span>
       </div>
@@ -56,8 +53,6 @@ function toggle(id: string) {
           <span class="arrow-cell"><ItemSlot :id="a.item" label /></span>
           <span class="parts">
             <ItemSlot :id="a.material" />
-            <ItemSlot :id="a.stick" :class="{ custom: a.stick !== 'minecraft:stick' }" />
-            <ItemSlot :id="a.feather" :class="{ custom: a.feather !== 'minecraft:feather' }" />
           </span>
           <span class="num makes">
             ×{{ a.outputAmount }}
@@ -72,13 +67,19 @@ function toggle(id: string) {
           <RecipeCard :id="a.id" fletching />
           <ul class="facts">
             <li><span>Flame</span> {{ a.flame ? 'Yes' : 'No' }}</li>
-            <li><span>Gravity</span> {{ a.gravity }}</li>
+            <li>
+              <span>Effects</span>
+              <template v-if="Object.keys(a.effects).length">
+                <code v-for="(ticks, potion) in a.effects" :key="potion">{{ potion }} ({{ ticks / 20 }}s)</code>
+              </template>
+              <template v-else>None</template>
+            </li>
             <li><span>Datapack id</span> <code>{{ a.id }}</code></li>
           </ul>
         </div>
       </template>
     </div>
-    <p class="legend">Click an arrow for its recipes. Vanilla Flint Arrow: {{ number(2) }} damage.</p>
+    <p class="legend">Shown with the vanilla stick and feather. Click a head for its recipes. Vanilla Flint Arrow: {{ number(2) }} damage.</p>
   </div>
 </template>
 
@@ -123,13 +124,6 @@ function toggle(id: string) {
   font-weight: 600;
 }
 
-.filter {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  color: var(--vp-c-text-2);
-}
-
 .table {
   border: 1px solid var(--vp-c-divider);
   border-radius: 12px;
@@ -138,7 +132,7 @@ function toggle(id: string) {
 
 .row {
   display: grid;
-  grid-template-columns: minmax(170px, 1.4fr) 132px 90px minmax(120px, 1fr);
+  grid-template-columns: minmax(170px, 1.4fr) 80px 90px minmax(120px, 1fr);
   gap: 12px;
   align-items: center;
   width: 100%;
@@ -166,11 +160,6 @@ button.row[aria-expanded='true'] {
 
 .parts {
   display: flex;
-}
-
-.parts .custom :deep(.ap-slot) {
-  box-shadow: 0 0 0 2px var(--vp-c-brand-1);
-  z-index: 1;
 }
 
 .num {

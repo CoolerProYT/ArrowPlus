@@ -1,0 +1,378 @@
+{
+  "names": {
+    "minecraft:arrow": "Flint Arrow",
+    "arrowplus:copper_stick": "Copper Stick",
+    "arrowplus:diamond_stick": "Diamond Stick",
+    "arrowplus:emerald_stick": "Emerald Stick",
+    "arrowplus:gold_stick": "Gold Stick",
+    "arrowplus:iron_stick": "Iron Stick",
+    "arrowplus:netherite_stick": "Netherite Stick",
+    "arrowplus:gilded_feather": "Gilded Feather",
+    "arrowplus:amethyst_arrow": "Amethyst Arrow",
+    "arrowplus:bone_arrow": "Bone Arrow",
+    "arrowplus:brick_arrow": "Brick Arrow",
+    "arrowplus:charcoal_arrow": "Charcoal Arrow",
+    "arrowplus:copper_arrow": "Copper Arrow",
+    "arrowplus:diamond_arrow": "Diamond Arrow",
+    "arrowplus:emerald_arrow": "Emerald Arrow",
+    "arrowplus:glowstone_arrow": "Glowstone Arrow",
+    "arrowplus:gold_arrow": "Gold Arrow",
+    "arrowplus:iron_arrow": "Iron Arrow",
+    "arrowplus:lapis_arrow": "Lapis Arrow",
+    "arrowplus:netherite_arrow": "Netherite Arrow",
+    "arrowplus:obsidian_arrow": "Obsidian Arrow",
+    "arrowplus:prismarine_arrow": "Prismarine Arrow",
+    "arrowplus:quartz_arrow": "Quartz Arrow",
+    "arrowplus:redstone_arrow": "Redstone Arrow",
+    "arrowplus:stone_arrow": "Stone Arrow",
+    "arrowplus:wood_arrow": "Wood Arrow"
+  },
+  "textures": {
+    "arrowplus:copper_stick": "https://storage.googleapis.com/coolerpromc/textures/arrowplus/copper_stick.png",
+    "arrowplus:diamond_stick": "https://storage.googleapis.com/coolerpromc/textures/arrowplus/diamond_stick.png",
+    "arrowplus:emerald_stick": "https://storage.googleapis.com/coolerpromc/textures/arrowplus/emerald_stick.png",
+    "arrowplus:gold_stick": "https://storage.googleapis.com/coolerpromc/textures/arrowplus/gold_stick.png",
+    "arrowplus:iron_stick": "https://storage.googleapis.com/coolerpromc/textures/arrowplus/iron_stick.png",
+    "arrowplus:netherite_stick": "https://storage.googleapis.com/coolerpromc/textures/arrowplus/netherite_stick.png",
+    "arrowplus:gilded_feather": "https://storage.googleapis.com/coolerpromc/textures/arrowplus/gilded_feather.png",
+    "arrowplus:amethyst_arrow": "https://storage.googleapis.com/coolerpromc/textures/arrowplus/amethyst_arrow.png",
+    "arrowplus:bone_arrow": "https://storage.googleapis.com/coolerpromc/textures/arrowplus/bone_arrow.png",
+    "arrowplus:brick_arrow": "https://storage.googleapis.com/coolerpromc/textures/arrowplus/brick_arrow.png",
+    "arrowplus:charcoal_arrow": "https://storage.googleapis.com/coolerpromc/textures/arrowplus/charcoal_arrow.png",
+    "arrowplus:copper_arrow": "https://storage.googleapis.com/coolerpromc/textures/arrowplus/copper_arrow.png",
+    "arrowplus:diamond_arrow": "https://storage.googleapis.com/coolerpromc/textures/arrowplus/diamond_arrow.png",
+    "arrowplus:emerald_arrow": "https://storage.googleapis.com/coolerpromc/textures/arrowplus/emerald_arrow.png",
+    "arrowplus:glowstone_arrow": "https://storage.googleapis.com/coolerpromc/textures/arrowplus/glowstone_arrow.png",
+    "arrowplus:gold_arrow": "https://storage.googleapis.com/coolerpromc/textures/arrowplus/gold_arrow.png",
+    "arrowplus:iron_arrow": "https://storage.googleapis.com/coolerpromc/textures/arrowplus/iron_arrow.png",
+    "arrowplus:lapis_arrow": "https://storage.googleapis.com/coolerpromc/textures/arrowplus/lapis_arrow.png",
+    "arrowplus:netherite_arrow": "https://storage.googleapis.com/coolerpromc/textures/arrowplus/netherite_arrow.png",
+    "arrowplus:obsidian_arrow": "https://storage.googleapis.com/coolerpromc/textures/arrowplus/obsidian_arrow.png",
+    "arrowplus:prismarine_arrow": "https://storage.googleapis.com/coolerpromc/textures/arrowplus/prismarine_arrow.png",
+    "arrowplus:quartz_arrow": "https://storage.googleapis.com/coolerpromc/textures/arrowplus/quartz_arrow.png",
+    "arrowplus:redstone_arrow": "https://storage.googleapis.com/coolerpromc/textures/arrowplus/redstone_arrow.png",
+    "arrowplus:stone_arrow": "https://storage.googleapis.com/coolerpromc/textures/arrowplus/stone_arrow.png",
+    "arrowplus:wood_arrow": "https://storage.googleapis.com/coolerpromc/textures/arrowplus/wood_arrow.png"
+  },
+  "arrows": [
+    {
+      "id": "arrowplus:amethyst",
+      "item": "arrowplus:amethyst_arrow",
+      "material": "minecraft:amethyst_shard",
+      "stick": "minecraft:stick",
+      "feather": "minecraft:feather",
+      "outputAmount": 4,
+      "fletchingAmount": 8,
+      "baseDamage": 3.2,
+      "flame": false,
+      "gravity": 0.05,
+      "effects": {},
+      "color": -6543440
+    },
+    {
+      "id": "arrowplus:bone",
+      "item": "arrowplus:bone_arrow",
+      "material": "minecraft:bone",
+      "stick": "minecraft:stick",
+      "feather": "minecraft:feather",
+      "outputAmount": 8,
+      "fletchingAmount": 16,
+      "baseDamage": 2.4,
+      "flame": false,
+      "gravity": 0.05,
+      "effects": {},
+      "color": -1120086
+    },
+    {
+      "id": "arrowplus:brick",
+      "item": "arrowplus:brick_arrow",
+      "material": "minecraft:brick",
+      "stick": "minecraft:stick",
+      "feather": "minecraft:feather",
+      "outputAmount": 8,
+      "fletchingAmount": 16,
+      "baseDamage": 2,
+      "flame": false,
+      "gravity": 0.05,
+      "effects": {},
+      "color": -4822448
+    },
+    {
+      "id": "arrowplus:charcoal",
+      "item": "arrowplus:charcoal_arrow",
+      "material": "minecraft:charcoal",
+      "stick": "minecraft:stick",
+      "feather": "minecraft:feather",
+      "outputAmount": 6,
+      "fletchingAmount": 12,
+      "baseDamage": 1.6,
+      "flame": false,
+      "gravity": 0.05,
+      "effects": {},
+      "color": -12703965
+    },
+    {
+      "id": "arrowplus:copper",
+      "item": "arrowplus:copper_arrow",
+      "material": "minecraft:copper_ingot",
+      "stick": "minecraft:stick",
+      "feather": "minecraft:feather",
+      "outputAmount": 4,
+      "fletchingAmount": 8,
+      "baseDamage": 2.2,
+      "flame": false,
+      "gravity": 0.05,
+      "effects": {},
+      "color": -2855612
+    },
+    {
+      "id": "arrowplus:diamond",
+      "item": "arrowplus:diamond_arrow",
+      "material": "minecraft:diamond",
+      "stick": "arrowplus:gold_stick",
+      "feather": "minecraft:feather",
+      "outputAmount": 3,
+      "fletchingAmount": 6,
+      "baseDamage": 3.5,
+      "flame": false,
+      "gravity": 0.05,
+      "effects": {},
+      "color": -12532481
+    },
+    {
+      "id": "arrowplus:emerald",
+      "item": "arrowplus:emerald_arrow",
+      "material": "minecraft:emerald",
+      "stick": "arrowplus:diamond_stick",
+      "feather": "minecraft:feather",
+      "outputAmount": 3,
+      "fletchingAmount": 6,
+      "baseDamage": 3,
+      "flame": false,
+      "gravity": 0.05,
+      "effects": {},
+      "color": -16725933
+    },
+    {
+      "id": "arrowplus:glowstone",
+      "item": "arrowplus:glowstone_arrow",
+      "material": "minecraft:glowstone_dust",
+      "stick": "minecraft:stick",
+      "feather": "minecraft:feather",
+      "outputAmount": 6,
+      "fletchingAmount": 12,
+      "baseDamage": 2,
+      "flame": false,
+      "gravity": 0.05,
+      "effects": {},
+      "color": -3722
+    },
+    {
+      "id": "arrowplus:gold",
+      "item": "arrowplus:gold_arrow",
+      "material": "minecraft:gold_ingot",
+      "stick": "arrowplus:iron_stick",
+      "feather": "minecraft:feather",
+      "outputAmount": 4,
+      "fletchingAmount": 8,
+      "baseDamage": 2,
+      "flame": false,
+      "gravity": 0.05,
+      "effects": {},
+      "color": -10752
+    },
+    {
+      "id": "arrowplus:iron",
+      "item": "arrowplus:iron_arrow",
+      "material": "minecraft:iron_ingot",
+      "stick": "arrowplus:copper_stick",
+      "feather": "minecraft:feather",
+      "outputAmount": 4,
+      "fletchingAmount": 8,
+      "baseDamage": 2.5,
+      "flame": false,
+      "gravity": 0.05,
+      "effects": {},
+      "color": -5194043
+    },
+    {
+      "id": "arrowplus:lapis",
+      "item": "arrowplus:lapis_arrow",
+      "material": "minecraft:lapis_lazuli",
+      "stick": "minecraft:stick",
+      "feather": "minecraft:feather",
+      "outputAmount": 4,
+      "fletchingAmount": 8,
+      "baseDamage": 2.3,
+      "flame": false,
+      "gravity": 0.05,
+      "effects": {},
+      "color": -12627531
+    },
+    {
+      "id": "arrowplus:netherite",
+      "item": "arrowplus:netherite_arrow",
+      "material": "minecraft:netherite_ingot",
+      "stick": "arrowplus:diamond_stick",
+      "feather": "arrowplus:gilded_feather",
+      "outputAmount": 2,
+      "fletchingAmount": 4,
+      "baseDamage": 4.5,
+      "flame": false,
+      "gravity": 0.05,
+      "effects": {},
+      "color": -12698050
+    },
+    {
+      "id": "arrowplus:obsidian",
+      "item": "arrowplus:obsidian_arrow",
+      "material": "minecraft:obsidian",
+      "stick": "arrowplus:diamond_stick",
+      "feather": "arrowplus:gilded_feather",
+      "outputAmount": 2,
+      "fletchingAmount": 4,
+      "baseDamage": 3.8,
+      "flame": false,
+      "gravity": 0.05,
+      "effects": {},
+      "color": -13755833
+    },
+    {
+      "id": "arrowplus:prismarine",
+      "item": "arrowplus:prismarine_arrow",
+      "material": "minecraft:prismarine_shard",
+      "stick": "minecraft:stick",
+      "feather": "minecraft:feather",
+      "outputAmount": 6,
+      "fletchingAmount": 12,
+      "baseDamage": 2.8,
+      "flame": false,
+      "gravity": 0.05,
+      "effects": {},
+      "color": -10565432
+    },
+    {
+      "id": "arrowplus:quartz",
+      "item": "arrowplus:quartz_arrow",
+      "material": "minecraft:quartz",
+      "stick": "minecraft:stick",
+      "feather": "minecraft:feather",
+      "outputAmount": 6,
+      "fletchingAmount": 12,
+      "baseDamage": 2.7,
+      "flame": false,
+      "gravity": 0.05,
+      "effects": {},
+      "color": -657931
+    },
+    {
+      "id": "arrowplus:redstone",
+      "item": "arrowplus:redstone_arrow",
+      "material": "minecraft:redstone",
+      "stick": "minecraft:stick",
+      "feather": "minecraft:feather",
+      "outputAmount": 4,
+      "fletchingAmount": 8,
+      "baseDamage": 1.8,
+      "flame": false,
+      "gravity": 0.05,
+      "effects": {},
+      "color": -59580
+    },
+    {
+      "id": "arrowplus:stone",
+      "item": "arrowplus:stone_arrow",
+      "material": "#minecraft:stone_crafting_materials",
+      "stick": "minecraft:stick",
+      "feather": "minecraft:feather",
+      "outputAmount": 8,
+      "fletchingAmount": 16,
+      "baseDamage": 1.5,
+      "flame": false,
+      "gravity": 0.05,
+      "effects": {},
+      "color": -11711671
+    },
+    {
+      "id": "arrowplus:wood",
+      "item": "arrowplus:wood_arrow",
+      "material": "#minecraft:planks",
+      "stick": "minecraft:stick",
+      "feather": "minecraft:feather",
+      "outputAmount": 8,
+      "fletchingAmount": 16,
+      "baseDamage": 1,
+      "flame": false,
+      "gravity": 0.05,
+      "effects": {},
+      "color": -7508381
+    }
+  ],
+  "sticks": [
+    {
+      "id": "arrowplus:copper",
+      "item": "arrowplus:copper_stick",
+      "material": [
+        "minecraft:copper_ingot"
+      ],
+      "color": -2855612,
+      "outputAmount": 4
+    },
+    {
+      "id": "arrowplus:diamond",
+      "item": "arrowplus:diamond_stick",
+      "material": [
+        "minecraft:diamond"
+      ],
+      "color": -10557722,
+      "outputAmount": 4
+    },
+    {
+      "id": "arrowplus:emerald",
+      "item": "arrowplus:emerald_stick",
+      "material": [
+        "minecraft:emerald"
+      ],
+      "color": -16725933,
+      "outputAmount": 4
+    },
+    {
+      "id": "arrowplus:gold",
+      "item": "arrowplus:gold_stick",
+      "material": [
+        "minecraft:gold_ingot"
+      ],
+      "color": -10752,
+      "outputAmount": 4
+    },
+    {
+      "id": "arrowplus:iron",
+      "item": "arrowplus:iron_stick",
+      "material": [
+        "minecraft:iron_ingot"
+      ],
+      "color": -5194043,
+      "outputAmount": 4
+    },
+    {
+      "id": "arrowplus:netherite",
+      "item": "arrowplus:netherite_stick",
+      "material": [
+        "minecraft:netherite_ingot"
+      ],
+      "color": -12698050,
+      "outputAmount": 4
+    }
+  ],
+  "feathers": [
+    {
+      "id": "arrowplus:gilded",
+      "item": "arrowplus:gilded_feather",
+      "material": [
+        "minecraft:glowstone_dust"
+      ],
+      "color": -919,
+      "outputAmount": 4
+    }
+  ]
+}

@@ -35,14 +35,14 @@ public class StickRecipe extends CustomRecipe {
             material.add(craftingInput.getItem(1).getItem());
 
             for (Holder<StickData> stickData : level.registryAccess().lookupOrThrow(ModRegistries.STICK_DATA_KEY).listElements().toList()){
-                if (material.size() == 1 && stickData.value().ingredient().test(material.iterator().next().getDefaultInstance())){
+                if (material.size() == 1 && !stickData.value().standalone() && stickData.value().ingredient().test(material.iterator().next().getDefaultInstance())){
                     this.resultData = stickData;
                     return true;
                 }
             }
             return false;
         }
-        else {
+        else{
             return false;
         }
     }

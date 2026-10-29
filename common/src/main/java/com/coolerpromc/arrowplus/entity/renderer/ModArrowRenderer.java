@@ -1,11 +1,7 @@
 package com.coolerpromc.arrowplus.entity.renderer;
 
 import com.coolerpromc.arrowplus.Constants;
-import com.coolerpromc.arrowplus.datapack.feather.FeatherData;
-import com.coolerpromc.arrowplus.datapack.stick.StickData;
 import com.coolerpromc.arrowplus.entity.custom.ModArrowEntity;
-import com.coolerpromc.arrowplus.item.custom.ModFeatherItem;
-import com.coolerpromc.arrowplus.item.custom.ModStickItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -16,7 +12,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.core.Holder;
 import net.minecraft.resources.Identifier;
 
 public class ModArrowRenderer extends EntityRenderer<ModArrowEntity, ModArrowRenderState> {
@@ -54,20 +49,8 @@ public class ModArrowRenderer extends EntityRenderer<ModArrowEntity, ModArrowRen
     public void extractRenderState(ModArrowEntity arrowEntity, ModArrowRenderState renderState, float p_360538_) {
         super.extractRenderState(arrowEntity, renderState, p_360538_);
         renderState.headColor = arrowEntity.getArrowData().color();
-        if (arrowEntity.getArrowData().stick().value() instanceof ModStickItem && arrowEntity.getArrowData().stickData().isPresent()){
-            Holder<StickData> stickData = arrowEntity.getArrowData().stickData().get();
-            renderState.bodyColor = stickData.value().color();
-        }
-        else{
-            renderState.bodyColor = 0xFF886627;
-        }
-        if (arrowEntity.getArrowData().feather().value() instanceof ModFeatherItem && arrowEntity.getArrowData().featherData().isPresent()){
-            Holder<FeatherData> featherData = arrowEntity.getArrowData().featherData().get();
-            renderState.featherColor = featherData.value().color();
-        }
-        else{
-            renderState.featherColor = -1;
-        }
+        renderState.bodyColor = arrowEntity.getStickData().color();
+        renderState.featherColor = arrowEntity.getFeatherData().color();
         renderState.xRot = arrowEntity.getXRot(p_360538_);
         renderState.yRot = arrowEntity.getYRot(p_360538_);
         renderState.shake = (float)arrowEntity.shakeTime - p_360538_;

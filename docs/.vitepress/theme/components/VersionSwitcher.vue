@@ -6,13 +6,12 @@ const router = useRouter()
 const { page } = useData()
 const isOpen = ref(false)
 
-// Two "systems", each covering several Minecraft versions. `prefix` is the page path prefix.
 const versions = [
-  { label: '26.1+ / 1.21.1-NeoForge', tag: 'New', prefix: '' },
+  { label: '26.3.0.2+', tag: 'New', prefix: '' },
+  { label: '26.1 – 26.3.0.1 / 1.21.1-NeoForge', tag: 'Fixed', prefix: 'v26-1/' },
   { label: '1.21.11 and older', tag: 'Legacy', prefix: 'legacy/' },
 ]
 
-// Pages that exist under a different name in the other system.
 const RENAMED: Record<string, string> = {
   'custom-sticks': 'material-sticks',
   'custom-feathers': 'material-sticks',
@@ -23,14 +22,16 @@ const RENAMED: Record<string, string> = {
 const LEGACY_PAGES = ['getting-started', 'arrows', 'material-sticks', 'tipped-arrows', 'config', 'datapack/arrow-data']
 const NEW_PAGES = ['getting-started', 'arrows', 'custom-sticks', 'custom-feathers', 'tipped-arrows', 'config', 'datapack/arrow-data', 'datapack/stick-data', 'datapack/feather-data']
 
-const current = computed(() => (page.value.relativePath.startsWith('legacy/') ? versions[1] : versions[0]))
+const current = computed(() => versions.find((v) => v.prefix && page.value.relativePath.startsWith(v.prefix)) ?? versions[0])
 
 function switchVersion(v: (typeof versions)[number]) {
   isOpen.value = false
   if (v === current.value) return
-  const name = page.value.relativePath.replace(/^legacy\//, '').replace(/(index)?\.md$/, '')
-  const target = RENAMED[name] ?? name
-  const pages = v.prefix ? LEGACY_PAGES : NEW_PAGES
+  const name = page.value.relativePath.replace(/^(legacy|v26-1)\//, '').replace(/(index)?\.md$/, '')
+  const legacy = v.prefix === 'legacy/'
+
+  const target = legacy !== current.value.prefix.startsWith('legacy') ? (RENAMED[name] ?? name) : name
+  const pages = legacy ? LEGACY_PAGES : NEW_PAGES
   router.go(withBase(`/${v.prefix}${pages.includes(target) ? target : 'getting-started'}`))
 }
 </script>
@@ -96,6 +97,11 @@ function switchVersion(v: (typeof versions)[number]) {
   letter-spacing: 0.03em;
   background: var(--vp-c-brand-soft);
   color: var(--vp-c-brand-1);
+}
+
+.tag.fixed {
+  background: var(--vp-c-warning-soft);
+  color: var(--vp-c-warning-1);
 }
 
 .tag.legacy {

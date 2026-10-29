@@ -1,59 +1,70 @@
 # Getting started
 
-Arrow+ adds 18 new arrows to Minecraft, from the cheap <ItemSlot id="arrowplus:wood_arrow" label /> to the <ItemSlot id="arrowplus:netherite_arrow" label />. Every arrow, stick and feather is a datapack entry, so you can change them or add your own.
+Arrow+ lets you build your own arrows. Every arrow is a **head**, a **stick** and a **feather**, and any combination works: a <ItemSlot id="arrowplus:diamond_arrow" label /> can use a plain stick, bamboo for lower gravity and speed, or a blaze rod to hit harder. Every head, stick and feather is a datapack entry, so you can change them or add your own.
 
-::: info You are viewing the new system docs
-This covers **26.1+** (NeoForge and Fabric) and **1.21.1-NeoForge**, where arrows, sticks and feathers are all datapack driven.
+::: info You are viewing the modular arrow docs
+This covers **Arrow+ 26.3.0.2 and newer** for **Minecraft 26.3** on NeoForge and Fabric.
 
-On **1.21.11**, **1.21.10**, **1.21.8**, **1.20.1** or any other older version, use the version switcher at the top to open the [legacy docs](/legacy/getting-started).
+On **Arrow+ 26.1 to 26.3.0.1** or **1.21.1-NeoForge**, arrows have fixed recipes: see the [26.1 – 26.3.0.1 docs](/v26-1/getting-started). On **1.21.11** or older, see the [legacy docs](/legacy/getting-started). The version switcher at the top moves between them.
 :::
 
 ## Install
 
 1. Install [Fabric](https://fabricmc.net/) with Fabric API, or [NeoForge](https://neoforged.net/).
 2. Download Arrow+ from [CurseForge](https://www.curseforge.com/minecraft/mc-mods/arrow) or [Modrinth](https://modrinth.com/mod/srzQqcGY) and put the jar in your `mods` folder.
-3. Optional: add [JEI](https://modrinth.com/mod/jei) or [REI](https://modrinth.com/mod/rei) to see every arrow, stick and feather recipe in game, and [Fletching Recipe](https://www.curseforge.com/minecraft/mc-mods/fletching-recipe) to craft arrows at the Fletching Table for double the output.
+3. Optional: add [JEI](https://modrinth.com/mod/jei) to see every arrow, stick and feather recipe in game, and [Fletching Recipe](https://www.curseforge.com/minecraft/mc-mods/fletching-recipe) to craft arrows at the Fletching Table for double the output.
 
-| Mod loader | Minecraft | Status |
-| --- | :---: | :---: |
-| NeoForge, Fabric | 26.1 and newer | :white_check_mark: Maintained |
-| NeoForge | 1.21.1 | Partial |
+| Mod loader | Minecraft | Arrow+ version | Docs |
+| --- | :---: | :---: | --- |
+| NeoForge, Fabric | 26.3 | 26.3.0.2+ | Modular arrows, maintained |
+| NeoForge, Fabric | 26.1–26.3 | 26.1 to 26.3.0.1 | [Fixed recipes](/v26-1/getting-started) |
+| NeoForge | 1.21.1 | 1.21.1 builds | [Fixed recipes](/v26-1/getting-started), partial |
 
 ::: warning
-Only the latest 26.x release is actively maintained. `1.21.1-NeoForge` uses the same datapack system but is not actively maintained.
+Only the latest 26.x release is actively maintained.
 :::
 
 ## Your first arrows
 
-Arrows are crafted from a **material**, a **stick** and a **feather**, stacked in one column of a Crafting Table. The cheaper arrows only need a vanilla stick and feather:
+Put a head, a stick and a feather in one column of a Crafting Table, top to bottom. With a plain stick and feather you get a normal arrow with the head's damage:
 
 <RecipeCard id="copper" />
 
-Stronger arrows need a [custom stick](./custom-sticks), and the best two also need the [Gilded Feather](./custom-feathers):
+Swap the stick or feather for a different flight. Bamboo reduces gravity at the cost of launch speed and damage. Phantom membrane reduces the shaft’s gravity further and tightens spread:
 
-<RecipeCard id="iron" />
+<RecipeCard id="diamond" stick="bamboo" feather="phantom_membrane" />
 
-<RecipeCard id="netherite" />
+| Part | What it changes |
+| --- | --- |
+| [Head](./arrows) | Damage, flame and potion effects |
+| [Stick](./custom-sticks) | Gravity (how fast it drops) and velocity (launch speed, which also adds damage) |
+| [Feather](./custom-feathers) | Air drag, water drag, spread and a gravity multiplier |
 
-See every arrow, its damage and its recipe on the [Arrows](./arrows) page.
+Try combinations with the [arrow builder](./arrows#arrow-builder). Arrows stack when their head, stick, feather, potion contents and other item data match.
 
 ## How it works
 
-All Arrow+ arrows are one item, `arrowplus:arrow_plus`. What kind of arrow a stack is comes from a data component, pointing at a datapack entry:
+All Arrow+ arrows are one item, `arrowplus:arrow_plus`. Each arrow stack carries three data components, one per part, each pointing at a datapack entry:
 
-| Component | Item | Datapack entries |
+| Component | Part | Datapack entries |
 | --- | --- | --- |
-| `arrowplus:arrow_data` | `arrowplus:arrow_plus` | [`arrowplus/arrows/`](./datapack/arrow-data) |
-| `arrowplus:stick_data` | `arrowplus:custom_stick` | [`arrowplus/sticks/`](./datapack/stick-data) |
-| `arrowplus:feather_data` | `arrowplus:custom_feather` | [`arrowplus/feathers/`](./datapack/feather-data) |
+| `arrowplus:arrow_data` | Head | [`arrowplus/arrows/`](./datapack/arrow-data) |
+| `arrowplus:stick_data` | Stick | [`arrowplus/sticks/`](./datapack/stick-data) |
+| `arrowplus:feather_data` | Feather | [`arrowplus/feathers/`](./datapack/feather-data) |
 
-This means any arrow, stick or feather can be added, changed or removed with a datapack, with no Java code.
+Some sticks and feathers are plain items used as they are, like bamboo or phantom membrane. Others are crafted into `arrowplus:custom_stick` or `arrowplus:custom_feather`, which carry the same `stick_data` or `feather_data` component. Any head, stick or feather can be added, changed or removed with a datapack, with no Java code.
 
-## Recipe viewers
+## Recipe viewers and tooltips
 
-Arrow+ has built-in **JEI** and **REI** support for arrow, stick, feather and tipped arrow recipes. Hold **Shift** over an arrow to see its damage and other [stats](./arrows#tooltip).
+Arrow+ has built-in **JEI** support for arrow, stick, feather and tipped-arrow recipes. Looking up a crafted arrow with custom parts shows the recipe for that exact build. Fletching Recipe's potion and explosive variants remain distinct in JEI.
+
+Arrow tooltips show a compact build, damage and speed summary. Hold **Shift** for **Combat** and **Flight** [stats](./arrows#tooltip). Ingredients show **Arrow material** and **Hold [Shift] for stats**; Shift reveals their roles and stats.
 
 ## Changelog
+
+::: details Current release
+<!--@include: ../changelog.md-->
+:::
 
 ::: details 26.2.0.1
 #### Fixes

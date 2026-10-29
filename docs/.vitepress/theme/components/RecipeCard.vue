@@ -1,16 +1,14 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { arrow, part } from '../arrowplus'
+import { arrowId, useArrowPlus } from '../arrowplus'
 import CraftingGrid from './CraftingGrid.vue'
 
-/**
- * `type` picks the recipe: an arrow (`id` = arrow entry), a custom stick or feather (`id` = stick/feather entry),
- * or the tipped arrow recipe. `fletching` adds the Fletching Table version of an arrow recipe.
- */
 const props = withDefaults(
-  defineProps<{ type?: 'arrow' | 'stick' | 'feather' | 'tipped'; id?: string; fletching?: boolean }>(),
-  { type: 'arrow', id: '', fletching: false },
+  defineProps<{ type?: 'arrow' | 'stick' | 'feather' | 'tipped'; id?: string; stick?: string; feather?: string; fletching?: boolean }>(),
+  { type: 'arrow', id: '', stick: 'stick', feather: 'feather', fletching: false },
 )
+
+const { arrow, part } = useArrowPlus()
 
 interface Card {
   cells: (string | null)[]
@@ -26,25 +24,29 @@ const cards = computed<Card[]>(() => {
   }
   if (props.type === 'stick') {
     const stick = part('stick', props.id)
-    if (!stick) return []
+    if (!stick || stick.standalone) return []
     const m = stick.material[0]
     return [{ cells: [null, m, null, null, m, null, null, null, null], result: stick.item, count: stick.outputAmount, station: 'Crafting' }]
   }
   if (props.type === 'feather') {
     const feather = part('feather', props.id)
-    if (!feather) return []
+    if (!feather || feather.standalone) return []
     const m = feather.material[0]
     return [{ cells: [null, m, null, m, 'minecraft:feather', m, null, m, null], result: feather.item, count: feather.outputAmount, station: 'Crafting' }]
   }
   const a = arrow(props.id)
-  if (!a) return []
-  const result: Card[] = [
-    { cells: [null, a.material, null, null, a.stick, null, null, a.feather, null], result: a.item, count: a.outputAmount, station: 'Crafting' },
+  const stick = part('stick', props.stick)
+  const feather = part('feather', props.feather)
+  if (!a || !stick || !feather) return []
+  const vanillaParts = stick.id === 'arrowplus:stick' && feather.id === 'arrowplus:feather'
+  const result = a.id === 'arrowplus:flint' && vanillaParts ? 'minecraft:arrow' : arrowId(a.id, stick.id, feather.id)
+  const cards: Card[] = [
+    { cells: [null, a.material, null, null, stick.item, null, null, feather.item, null], result, count: a.outputAmount, station: 'Crafting' },
   ]
-  if (props.fletching && a.fletchingAmount) {
-    result.push({ cells: [a.material, a.stick, a.feather], result: a.item, count: a.fletchingAmount, station: 'Fletching' })
+  if (props.fletching && vanillaParts && a.fletchingAmount) {
+    cards.push({ cells: [a.material, 'minecraft:stick', 'minecraft:feather'], result, count: a.fletchingAmount, station: 'Fletching' })
   }
-  return result
+  return cards
 })
 </script>
 

@@ -1,11 +1,4 @@
-# Builds the VitePress wiki in docs/ and publishes it to GitHub Pages.
-# One-time setup: repository Settings > Pages > Source: "GitHub Actions".
 name: Docs
-
-# Pushes to the repository's default branch rebuild and redeploy the wiki. The branch is not
-# named here: the build job compares the pushed ref against the repository's own default branch,
-# so renaming it (or making a new version branch the default) needs no change to this file.
-# A manual run deploys whatever branch it is started from.
 on:
   push:
   workflow_dispatch:
@@ -37,10 +30,6 @@ jobs:
 
       - run: npm ci
 
-      # Runs the data sync first. Builds for https://<user>.github.io/ArrowPlus/.
-      # When the site gets its own custom (sub)domain, like fishtrap.coolerpromc.com, drop the prefix with:
-      #   env:
-      #     DOCS_BASE: /
       - run: npm run build
         env:
           DOCS_BASE: /

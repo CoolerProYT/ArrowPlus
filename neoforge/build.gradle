@@ -6,7 +6,7 @@ plugins {
 
 repositories {
     maven {
-        name = "Maven for PR #3198" // https://github.com/neoforged/NeoForge/pull/3198
+        name = "Maven for PR #3198"
         url = uri("https://prmaven.neoforged.net/NeoForge/pr3198")
         content {
             includeModule("net.neoforged", "neoforge")
@@ -25,7 +25,7 @@ repositories {
 
 neoForge {
     version = neoforge_version
-    // Automatically enable neoforge AccessTransformers if the file exists
+
     def at = project(':common').file('src/main/resources/META-INF/accesstransformer.cfg')
     if (at.exists()) {
         accessTransformers.from(at.absolutePath)
@@ -33,7 +33,7 @@ neoForge {
     runs {
         configureEach {
             systemProperty('neoforge.enabledGameTestNamespaces', mod_id)
-            ideName = "NeoForge ${it.name.capitalize()} (${project.path})" // Unify the run config names with fabric
+            ideName = "NeoForge ${it.name.capitalize()} (${project.path})"
         }
         client {
             client()
@@ -42,15 +42,13 @@ neoForge {
         data {
             clientData()
             gameDirectory = this.mkdir(this.file("runs/data"))
-            // DataGen can be run by - "./gradlew :neoforge:runData" in Terminal.
-            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
+
             programArguments.addAll '--mod', project.mod_id, '--all', '--output', rootProject.project(':common').file('src/generated/resources/').getAbsolutePath(), '--existing', rootProject.project(':common').file('src/main/resources/').getAbsolutePath()
         }
         serverData {
             serverData()
             gameDirectory = this.mkdir(this.file("runs/data"))
-            // DataGen can be run by - "./gradlew :neoforge:runData" in Terminal.
-            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
+
             programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
             systemProperty 'isCommon', 'false'
         }
@@ -67,18 +65,24 @@ neoForge {
     }
 }
 
+configurations {
+    localRuntime
+    runtimeClasspath.extendsFrom localRuntime
+}
+
 dependencies {
     compileOnly("mezz.jei:jei-${dependencies_mc_version}-neoforge-api:${jei_version}")
-//    runtimeOnly("mezz.jei:jei-${dependencies_mc_version}-neoforge:${jei_version}")
+    runtimeOnly("mezz.jei:jei-${dependencies_mc_version}-neoforge:${jei_version}")
 
     compileOnly("com.coolerpromc.fletchingrecipe:fletchingrecipe-neoforge-${minecraft_version}:26.3.0.0")
     runtimeOnly("com.coolerpromc.fletchingrecipe:fletchingrecipe-neoforge-${minecraft_version}:26.3.0.0")
     jarJar implementation("com.coolerpromc.coolerconfig:coolerconfig-neoforge-${minecraft_version}:${coolerconfig_version}")
+
+    localRuntime("com.coolerpromc.mctest:mctest-neoforge-${minecraft_version}:26.3.0.3") { transitive = false }
 }
 
 sourceSets.main.resources { srcDirs 'src/generated/resources', rootProject.project(':common').file('src/generated/resources/').getAbsolutePath() }
 
-// Implement mcgradleconventions loader attribute
 def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
 ['apiElements', 'runtimeElements', 'sourcesElements', 'javadocElements'].each { variant ->
     configurations.named("$variant") {

@@ -1,6 +1,7 @@
 {
   "color": -16725933,
+  "gravity": 0.035,
   "material": "minecraft:emerald",
-  "outputAmount": 4,
-  "translationKey": "item.arrowplus.emerald_stick"
+  "translationKey": "item.arrowplus.emerald_stick",
+  "velocity": 1.0
 }

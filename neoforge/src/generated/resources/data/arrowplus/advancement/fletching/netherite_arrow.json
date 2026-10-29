@@ -7,21 +7,11 @@
   ],
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_custom_feather": {
+    "has_feather": {
       "conditions": {
         "items": [
           {
-            "items": "arrowplus:custom_feather"
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
-    "has_custom_stick": {
-      "conditions": {
-        "items": [
-          {
-            "items": "arrowplus:custom_stick"
+            "items": "minecraft:feather"
           }
         ]
       },
@@ -32,6 +22,16 @@
         "items": [
           {
             "items": "minecraft:netherite_ingot"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_stick": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:stick"
           }
         ]
       },
@@ -48,8 +48,8 @@
     [
       "has_the_recipe",
       "has_netherite_ingot",
-      "has_custom_stick",
-      "has_custom_feather"
+      "has_stick",
+      "has_feather"
     ]
   ],
   "rewards": {

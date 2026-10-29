@@ -3,8 +3,8 @@ layout: home
 
 hero:
   name: Arrow+
-  text: Eighteen new arrows, all from datapacks
-  tagline: From Wood to Netherite, each with its own damage and recipe. Add your own arrows, sticks and feathers without writing code. For Minecraft 26.1+ on Fabric and NeoForge.
+  text: Build your own arrows
+  tagline: Combine any of 19 heads with any stick and feather. Heads hit harder, sticks change the arc, feathers change the range. Add your own with datapacks, no code needed. For Arrow+ 26.3.0.2+ on Minecraft 26.3, Fabric and NeoForge.
   image:
     src: /logo.png
     alt: Arrow+
@@ -22,16 +22,16 @@ hero:
 features:
   - icon:
       src: https://storage.googleapis.com/coolerpromc/textures/arrowplus/netherite_arrow.png
-    title: 18 arrow types
-    details: Wood to Netherite, from 1 to 4.5 base damage. Better arrows need better sticks and feathers.
+    title: 19 heads
+    details: Wood to Netherite, from 1 to 4.5 base damage. Any head works with any stick and feather.
     link: /arrows
-    linkText: See all arrows
+    linkText: Build an arrow
   - icon:
       src: https://storage.googleapis.com/coolerpromc/textures/arrowplus/diamond_stick.png
     title: Sticks and feathers
-    details: Six metal and gem sticks plus the Gilded Feather, used for the strongest arrows.
+    details: Bamboo trades speed for lower gravity, phantom membrane counterbalances heavy shafts, and kelp keeps arrows going underwater.
     link: /custom-sticks
-    linkText: Crafting parts
+    linkText: Compare parts
   - icon:
       src: https://storage.googleapis.com/coolerpromc/textures/arrowplus/diamond_arrow_tipped.png
     title: Tipped arrows
@@ -41,7 +41,7 @@ features:
   - icon:
       src: https://storage.googleapis.com/coolerpromc/textures/minecraft/writable_book.png
     title: Fully datapack driven
-    details: Arrows, sticks and feathers are plain JSON. Add, change or remove any of them, and design new ones right here.
+    details: Heads, sticks and feathers are plain JSON. Add, change or remove any of them, and design new ones right here.
     link: /datapack/arrow-data
     linkText: Arrow data
 ---

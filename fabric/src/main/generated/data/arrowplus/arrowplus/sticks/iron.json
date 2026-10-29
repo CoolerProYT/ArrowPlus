@@ -1,6 +1,7 @@
 {
   "color": -5194043,
+  "gravity": 0.055,
   "material": "minecraft:iron_ingot",
-  "outputAmount": 4,
-  "translationKey": "item.arrowplus.iron_stick"
+  "translationKey": "item.arrowplus.iron_stick",
+  "velocity": 1.2
 }

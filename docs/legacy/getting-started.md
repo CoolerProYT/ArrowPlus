@@ -7,7 +7,7 @@ This covers **1.21.11-NeoForge** and all older versions (1.21.10, 1.21.8, 1.20.1
 
 In this system, **arrows** are datapack-driven, but **sticks and feathers** are individual registered items — not datapacks.
 
-If you are on **26.1+** or **1.21.1-NeoForge**, use the **version switcher** in the top navigation to switch to the New System docs.
+If you are on **26.3.0.2+**, see the [modular arrow docs](/getting-started). On **26.1 to 26.3.0.1** or **1.21.1-NeoForge**, see the [26.1 – 26.3.0.1 docs](/v26-1/getting-started). The **version switcher** in the top navigation moves between them.
 :::
 
 ## Installation
@@ -34,7 +34,7 @@ These legacy docs apply to the following branches:
 | Fabric, Forge           |      1.20.1       |  :x:   |
 
 ::: info
-None of these versions are actively maintained. For active development, see the **New System** docs (26.1+ / 1.21.1-NeoForge).
+None of these versions are actively maintained. For active development, see the [modular arrow docs](/getting-started) (26.3.0.2+).
 :::
 
 ## Overview

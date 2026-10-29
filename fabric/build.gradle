@@ -23,13 +23,14 @@ dependencies {
     implementation include("com.electronwill.night-config:core:3.8.1")
     implementation include("com.electronwill.night-config:toml:3.8.1")
 
-
     compileOnly "mezz.jei:jei-${dependencies_mc_version}-fabric-api:${jei_version}"
-//    runtimeOnly "mezz.jei:jei-${dependencies_mc_version}-fabric:${jei_version}"
+    runtimeOnly "mezz.jei:jei-${dependencies_mc_version}-fabric:${jei_version}"
 
     compileOnly("com.coolerpromc.fletchingrecipe:fletchingrecipe-fabric-${minecraft_version}:26.3.0.0")
     runtimeOnly("com.coolerpromc.fletchingrecipe:fletchingrecipe-fabric-${minecraft_version}:26.3.0.0")
     implementation include("com.coolerpromc.coolerconfig:coolerconfig-fabric-${minecraft_version}:${coolerconfig_version}")
+
+    localRuntime("com.coolerpromc.mctest:mctest-fabric-${minecraft_version}:26.3.0.3") { transitive = false }
 }
 
 fabricApi {
@@ -62,7 +63,7 @@ loom {
 sourceSets.main.resources { srcDirs 'src/generated/resources', rootProject.project(':common').file('src/generated/resources/').getAbsolutePath() }
 
 processResources {
-    // keep your other resource processing here
+
 }
 
 tasks.named('processResources').configure {
@@ -89,7 +90,6 @@ tasks.named('processResources').configure {
     }
 }
 
-// Implement mcgradleconventions loader attribute
 def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
 ['apiElements', 'runtimeElements', 'sourcesElements', 'javadocElements', 'includeInternal', 'modCompileClasspath'].each { variant ->
     configurations.named("$variant") {

@@ -7,16 +7,6 @@
   ],
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_custom_stick": {
-      "conditions": {
-        "items": [
-          {
-            "items": "arrowplus:custom_stick"
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
     "has_feather": {
       "conditions": {
         "items": [
@@ -37,6 +27,16 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "has_stick": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:stick"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "has_the_recipe": {
       "conditions": {
         "recipes": "arrowplus:fletching/gold_arrow"
@@ -48,7 +48,7 @@
     [
       "has_the_recipe",
       "has_gold_ingot",
-      "has_custom_stick",
+      "has_stick",
       "has_feather"
     ]
   ],

@@ -1,6 +1,6 @@
 # Tipped arrows
 
-Any Arrow+ arrow can be tipped with a potion, the same way as vanilla arrows: surround a **Lingering Potion** with eight arrows of the same kind.
+Any Arrow+ arrow can be tipped with a potion, the same way as vanilla arrows: surround a **Lingering Potion** with eight identical arrows: the same head, stick, feather and other item data. Already-tipped arrows cannot be tipped again. You get eight tipped arrows that keep all three parts.
 
 <RecipeCard type="tipped" />
 
@@ -12,8 +12,9 @@ Tipped arrows are named `<Arrow Name> of <Effect Name>`. A Diamond Arrow tipped 
 
 - The potion effect is applied on hit, like vanilla tipped arrows.
 - The arrow's base damage still applies in full.
-- Tipped arrows are **never** kept by Infinity, whatever the config says.
+- Tipped arrows are **never** kept by Infinity, whatever the config says. Arrows fired in survival can still be recovered.
+- Potion contents survive saving and reloading the world. After 600 grounded ticks (about 30 seconds), the potion expires, while the head, stick and feather are preserved.
 
 ## Recipe viewers
 
-JEI and REI list tipped Arrow+ arrows. They can be hidden with the [`hideTippedArrow`](./config#recipe-viewers) config option.
+JEI lists tipped Arrow+ arrows and can show the tipping recipe for a specific modular build. Default tipped variants can be hidden with the [`hideTippedArrow`](./config#recipe-viewers) config option.

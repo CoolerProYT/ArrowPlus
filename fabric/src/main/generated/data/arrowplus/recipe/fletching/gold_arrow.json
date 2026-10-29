@@ -14,17 +14,13 @@
   },
   "middle": {
     "count": 1,
-    "ingredient": {
-      "fabric:type": "fabric:components",
-      "base": "arrowplus:custom_stick",
-      "components": {
-        "arrowplus:stick_data": "arrowplus:iron"
-      }
-    }
+    "ingredient": "minecraft:stick"
   },
   "output": {
     "components": {
-      "arrowplus:arrow_data": "arrowplus:gold"
+      "arrowplus:arrow_data": "arrowplus:gold",
+      "arrowplus:feather_data": "arrowplus:feather",
+      "arrowplus:stick_data": "arrowplus:stick"
     },
     "count": 8,
     "id": "arrowplus:arrow_plus"

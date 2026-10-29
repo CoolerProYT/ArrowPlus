@@ -1,16 +1,14 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { data, hex } from '../arrowplus'
+import { percent, stat, useArrowPlus } from '../arrowplus'
 import ItemSlot from './ItemSlot.vue'
 
-/** Built-in sticks or feathers, with the arrows that use each one. */
 const props = withDefaults(defineProps<{ kind?: 'stick' | 'feather' }>(), { kind: 'stick' })
 
+const { data } = useArrowPlus()
+
 const rows = computed(() =>
-  (props.kind === 'stick' ? data.sticks : data.feathers).map((p) => ({
-    ...p,
-    usedBy: data.arrows.filter((a) => (props.kind === 'stick' ? a.stick : a.feather) === p.item),
-  })),
+  [...(props.kind === 'stick' ? data.sticks : data.feathers)].sort((a, b) => Number(b.standalone) - Number(a.standalone) || a.id.localeCompare(b.id)),
 )
 </script>
 
@@ -19,24 +17,38 @@ const rows = computed(() =>
     <thead>
       <tr>
         <th>{{ kind === 'stick' ? 'Stick' : 'Feather' }}</th>
-        <th>Material</th>
-        <th>Makes</th>
-        <th>Color</th>
-        <th>Used by</th>
+        <th>From</th>
+        <template v-if="kind === 'stick'">
+          <th title="Downward pull per tick. Vanilla: 0.05">Gravity</th>
+          <th title="Launch speed multiplier. Vanilla: ×1">Velocity</th>
+        </template>
+        <template v-else>
+          <th title="Multiplier on shaft gravity. Vanilla: ×1">Drop modifier</th>
+          <th title="Speed lost per tick in air. Vanilla: 1%">Air loss / tick</th>
+          <th title="Speed lost per tick in water. Vanilla: 40%">Water loss / tick</th>
+          <th title="Spread multiplier. Below ×1 is tighter, above ×1 is wider">Spread</th>
+        </template>
+        <th>Id</th>
       </tr>
     </thead>
     <tbody>
       <tr v-for="p in rows" :key="p.id">
         <td><ItemSlot :id="p.item" label /></td>
-        <td><ItemSlot v-for="m in p.material" :id="m" :key="m" /></td>
-        <td class="mono">×{{ p.outputAmount }}</td>
-        <td class="mono"><span class="swatch" :style="{ background: hex(p.color) }" />{{ hex(p.color) }}</td>
         <td>
-          <span v-if="!p.usedBy.length" class="ap-muted">—</span>
-          <span class="used">
-            <ItemSlot v-for="a in p.usedBy" :id="a.item" :key="a.id" />
-          </span>
+          <span v-if="p.standalone" class="ap-muted">Used directly</span>
+          <span v-else class="from"><ItemSlot v-for="m in p.material" :id="m" :key="m" /> <span class="mono">×{{ p.outputAmount }}</span></span>
         </td>
+        <template v-if="kind === 'stick'">
+          <td class="mono">{{ stat(p.gravity) }}</td>
+          <td class="mono">×{{ stat(p.velocity) }}</td>
+        </template>
+        <template v-else>
+          <td class="mono">×{{ stat(p.gravityMultiplier) }}</td>
+          <td class="mono">{{ percent(1 - p.airDrag) }}</td>
+          <td class="mono">{{ percent(1 - p.waterDrag) }}</td>
+          <td class="mono">×{{ stat(p.accuracy) }}</td>
+        </template>
+        <td><code>{{ p.id }}</code></td>
       </tr>
     </tbody>
   </table>
@@ -53,18 +65,9 @@ const rows = computed(() =>
   white-space: nowrap;
 }
 
-.swatch {
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  margin-right: 6px;
-  border-radius: 3px;
-  border: 1px solid var(--vp-c-divider);
-  vertical-align: -1px;
-}
-
-.used {
-  display: flex;
-  flex-wrap: wrap;
+.from {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
 }
 </style>

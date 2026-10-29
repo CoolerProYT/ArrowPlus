@@ -18,7 +18,9 @@
   },
   "output": {
     "components": {
-      "arrowplus:arrow_data": "arrowplus:wood"
+      "arrowplus:arrow_data": "arrowplus:wood",
+      "arrowplus:feather_data": "arrowplus:feather",
+      "arrowplus:stick_data": "arrowplus:stick"
     },
     "count": 16,
     "id": "arrowplus:arrow_plus"

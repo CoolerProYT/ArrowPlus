@@ -6,13 +6,16 @@
   "compatibilityLevel": "JAVA_18",
   "mixins": [
     "ArrowItemMixin",
+    "ItemStackMixin",
+    "ItemStackTemplateMixin"
   ],
   "server": [],
   "injectors": {
     "defaultRequire": 1
   },
   "client": [
-    "TippableArrowRendererMixin"
+    "TippableArrowRendererMixin",
+    "JeiVanillaArrowSubtypeMixin",
+    "FletchingJeiSubtypeMixin"
   ]
 }
-

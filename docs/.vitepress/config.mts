@@ -1,6 +1,5 @@
 import { defineConfig } from 'vitepress'
 
-// GitHub Pages serves a project site from /<repository>/. For a custom domain or a user site, build with DOCS_BASE=/.
 const base = process.env.DOCS_BASE ?? '/ArrowPlus/'
 const ARROW_ICON = 'https://storage.googleapis.com/coolerpromc/textures/arrowplus/diamond_arrow.png'
 
@@ -11,7 +10,7 @@ const CURSEFORGE_ICON =
 
 export default defineConfig({
   title: 'Arrow+',
-  description: 'Eighteen new arrows for Minecraft, all defined by datapacks: recipes, damage, sticks, feathers and config.',
+  description: 'Modular arrows for Minecraft: combine any head, stick and feather, all defined by datapacks.',
   base,
   cleanUrls: true,
   lastUpdated: true,
@@ -26,15 +25,15 @@ export default defineConfig({
       { component: 'VersionSwitcher' },
     ],
     sidebar: {
-      // New system: 26.1+ and 1.21.1-NeoForge. Arrows, sticks and feathers are all datapack entries.
+
       '/': [
         {
           text: 'Guide',
           items: [
             { text: 'Getting started', link: '/getting-started' },
             { text: 'Arrows', link: '/arrows' },
-            { text: 'Custom sticks', link: '/custom-sticks' },
-            { text: 'Custom feathers', link: '/custom-feathers' },
+            { text: 'Sticks', link: '/custom-sticks' },
+            { text: 'Feathers', link: '/custom-feathers' },
             { text: 'Tipped arrows', link: '/tipped-arrows' },
             { text: 'Config', link: '/config' },
           ],
@@ -48,7 +47,29 @@ export default defineConfig({
           ],
         },
       ],
-      // Legacy system: 1.21.11 and older. Only arrows are datapack entries.
+
+      '/v26-1/': [
+        {
+          text: 'Guide (26.1 – 26.3.0.1)',
+          items: [
+            { text: 'Getting started', link: '/v26-1/getting-started' },
+            { text: 'Arrows', link: '/v26-1/arrows' },
+            { text: 'Custom sticks', link: '/v26-1/custom-sticks' },
+            { text: 'Custom feathers', link: '/v26-1/custom-feathers' },
+            { text: 'Tipped arrows', link: '/v26-1/tipped-arrows' },
+            { text: 'Config', link: '/v26-1/config' },
+          ],
+        },
+        {
+          text: 'Datapacks (26.1 – 26.3.0.1)',
+          items: [
+            { text: 'Arrow data', link: '/v26-1/datapack/arrow-data' },
+            { text: 'Stick data', link: '/v26-1/datapack/stick-data' },
+            { text: 'Feather data', link: '/v26-1/datapack/feather-data' },
+          ],
+        },
+      ],
+
       '/legacy/': [
         {
           text: 'Guide (legacy)',

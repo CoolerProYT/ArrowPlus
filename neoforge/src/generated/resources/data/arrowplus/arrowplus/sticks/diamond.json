@@ -1,6 +1,7 @@
 {
   "color": -10557722,
+  "gravity": 0.045,
   "material": "minecraft:diamond",
-  "outputAmount": 4,
-  "translationKey": "item.arrowplus.diamond_stick"
+  "translationKey": "item.arrowplus.diamond_stick",
+  "velocity": 1.1
 }

@@ -12,17 +12,13 @@
   },
   "middle": {
     "count": 1,
-    "ingredient": {
-      "neoforge:ingredient_type": "neoforge:components",
-      "components": {
-        "arrowplus:stick_data": "arrowplus:diamond"
-      },
-      "items": "arrowplus:custom_stick"
-    }
+    "ingredient": "minecraft:stick"
   },
   "output": {
     "components": {
-      "arrowplus:arrow_data": "arrowplus:emerald"
+      "arrowplus:arrow_data": "arrowplus:emerald",
+      "arrowplus:feather_data": "arrowplus:feather",
+      "arrowplus:stick_data": "arrowplus:stick"
     },
     "count": 6,
     "id": "arrowplus:arrow_plus"

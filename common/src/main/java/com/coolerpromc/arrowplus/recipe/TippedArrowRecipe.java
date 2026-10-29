@@ -19,38 +19,44 @@ public class TippedArrowRecipe extends CustomRecipe {
     public static final RecipeSerializer<TippedArrowRecipe> SERIALIZER = new RecipeSerializer<>(CODEC, STREAM_CODEC);
 
     public boolean matches(CraftingInput craftingInput, Level level) {
-        if (craftingInput.width() == 3 && craftingInput.height() == 3 && craftingInput.ingredientCount() == 9) {
-            for(int i = 0; i < craftingInput.height(); ++i) {
-                for(int j = 0; j < craftingInput.width(); ++j) {
+        if (craftingInput.width() == 3 && craftingInput.height() == 3 && craftingInput.ingredientCount() == 9){
+            for (int i = 0; i < craftingInput.height(); ++i){
+                for (int j = 0; j < craftingInput.width(); ++j){
                     ItemStack itemstack = craftingInput.getItem(j, i);
-                    if (itemstack.isEmpty()) {
+                    if (itemstack.isEmpty()){
                         return false;
                     }
 
-                    if (j == 1 && i == 1) {
-                        if (!itemstack.is(Items.LINGERING_POTION)) {
+                    if (j == 1 && i == 1){
+                        if (!itemstack.is(Items.LINGERING_POTION)){
                             return false;
                         }
-                    } else if (!itemstack.is(ModItems.ARROW_PLUS.get())) {
+                    }
+                    else if (!itemstack.is(ModItems.ARROW_PLUS.get())){
                         return false;
                     }
-                    else if(itemstack.is(ModItems.ARROW_PLUS.get()) && itemstack.has(DataComponents.POTION_CONTENTS)){
+                    else if (itemstack.is(ModItems.ARROW_PLUS.get()) && itemstack.has(DataComponents.POTION_CONTENTS)){
+                        return false;
+                    }
+                    else if (!ItemStack.isSameItemSameComponents(itemstack, craftingInput.getItem(0, 0))){
                         return false;
                     }
                 }
             }
 
             return true;
-        } else {
+        }
+        else{
             return false;
         }
     }
 
     public ItemStack assemble(CraftingInput craftingInput) {
         ItemStack itemstack = craftingInput.getItem(1, 1);
-        if (!itemstack.is(Items.LINGERING_POTION)) {
+        if (!itemstack.is(Items.LINGERING_POTION)){
             return ItemStack.EMPTY;
-        } else {
+        }
+        else{
             ItemStack itemstack1 = craftingInput.getItem(0, 0).copyWithCount(8);
             itemstack1.set(DataComponents.POTION_CONTENTS, itemstack.get(DataComponents.POTION_CONTENTS));
             return itemstack1;
