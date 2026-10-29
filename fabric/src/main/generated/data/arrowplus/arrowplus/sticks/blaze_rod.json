@@ -1,0 +1,9 @@
+{
+  "color": -674816,
+  "gravity": 0.06,
+  "material": "minecraft:blaze_rod",
+  "outputAmount": 1,
+  "standalone": true,
+  "translationKey": "item.minecraft.blaze_rod",
+  "velocity": 1.2
+}

@@ -1,0 +1,9 @@
+{
+  "color": -5655066,
+  "gravity": 0.03,
+  "material": "minecraft:breeze_rod",
+  "outputAmount": 1,
+  "standalone": true,
+  "translationKey": "item.minecraft.breeze_rod",
+  "velocity": 1.1
+}

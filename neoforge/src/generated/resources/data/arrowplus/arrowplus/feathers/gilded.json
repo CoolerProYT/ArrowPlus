@@ -1,4 +1,5 @@
 {
+  "accuracy": 0.8,
   "color": -919,
   "material": "minecraft:glowstone_dust",
   "translationKey": "item.arrowplus.gilded_feather"

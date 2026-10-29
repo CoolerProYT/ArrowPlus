@@ -1,33 +1,34 @@
 package com.coolerpromc.arrowplus.datapack.arrow;
 
-import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
+import com.coolerpromc.arrowplus.Constants;
 import com.coolerpromc.arrowplus.datapack.feather.FeatherData;
 import com.coolerpromc.arrowplus.datapack.stick.StickData;
-import com.coolerpromc.arrowplus.item.custom.ModFeatherItem;
-import com.coolerpromc.arrowplus.item.custom.ModStickItem;
 import com.coolerpromc.arrowplus.registry.ModRegistries;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
-import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public record ArrowData(Ingredient ingredient, double baseDamage, int color, String translationKey, boolean flame, double gravity, Map<Identifier, Integer> effects, Holder<Item> feather, Optional<Holder<FeatherData>> featherData, Holder<Item> stick, Optional<Holder<StickData>> stickData, int outputAmount) {
+public record ArrowData(Ingredient ingredient, double baseDamage, int color, String translationKey, boolean flame, @Deprecated(forRemoval = true) double gravity, Map<Identifier, Integer> effects, @Deprecated(forRemoval = true) Optional<Holder<Item>> feather, @Deprecated(forRemoval = true) Optional<Holder<FeatherData>> featherData, @Deprecated(forRemoval = true) Optional<Holder<Item>> stick, @Deprecated(forRemoval = true) Optional<Holder<StickData>> stickData, int outputAmount) {
     public static final Codec<Holder<Item>> ITEM_HOLDER_CODEC = BuiltInRegistries.ITEM.holderByNameCodec().validate((entry) -> entry.is(Items.AIR.builtInRegistryHolder()) ? DataResult.error(() -> "Item must not be minecraft:air") : DataResult.success(entry));
     public static final StreamCodec<RegistryFriendlyByteBuf, Holder<Item>> ITEM_HOLDER_STREAM_CODEC = ByteBufCodecs.holderRegistry(Registries.ITEM);
 
@@ -37,20 +38,14 @@ public record ArrowData(Ingredient ingredient, double baseDamage, int color, Str
             Codec.INT.fieldOf("color").forGetter(ArrowData::color),
             Codec.STRING.fieldOf("translationKey").forGetter(ArrowData::translationKey),
             Codec.BOOL.fieldOf("flame").forGetter(ArrowData::flame),
-            Codec.DOUBLE.fieldOf("gravity").forGetter(ArrowData::gravity),
+            Codec.DOUBLE.optionalFieldOf("gravity", StickData.DEFAULT_GRAVITY).forGetter(ArrowData::gravity),
             Codec.unboundedMap(Identifier.CODEC, Codec.INT).fieldOf("effects").forGetter(ArrowData::effects),
-            ITEM_HOLDER_CODEC.fieldOf("feather").forGetter(ArrowData::feather),
+            ITEM_HOLDER_CODEC.optionalFieldOf("feather").forGetter(ArrowData::feather),
             RegistryFixedCodec.create(ModRegistries.FEATHER_DATA_KEY).optionalFieldOf("featherData").forGetter(ArrowData::featherData),
-            ITEM_HOLDER_CODEC.fieldOf("stick").forGetter(ArrowData::stick),
+            ITEM_HOLDER_CODEC.optionalFieldOf("stick").forGetter(ArrowData::stick),
             RegistryFixedCodec.create(ModRegistries.STICK_DATA_KEY).optionalFieldOf("stickData").forGetter(ArrowData::stickData),
-            Codec.INT.fieldOf("outputAmount").forGetter(ArrowData::outputAmount)
+            Codec.INT.optionalFieldOf("outputAmount", 4).forGetter(ArrowData::outputAmount)
     ).apply(instance, ArrowData::new)).flatXmap(data -> {
-        if (data.feather().value() instanceof ModFeatherItem && data.featherData().isEmpty()) {
-            return DataResult.error(() -> "featherData is required when feather is a arrowplus:custom_feather");
-        }
-        if (data.stick().value() instanceof ModStickItem && data.stickData().isEmpty()) {
-            return DataResult.error(() -> "stickData is required when stick is a arrowplus:custom_stick");
-        }
         return DataResult.success(data);
     }, DataResult::success);
 
@@ -69,11 +64,11 @@ public record ArrowData(Ingredient ingredient, double baseDamage, int color, Str
             ArrowData::gravity,
             ByteBufCodecs.map(HashMap::new, Identifier.STREAM_CODEC, ByteBufCodecs.INT),
             ArrowData::effects,
-            ITEM_HOLDER_STREAM_CODEC,
+            ByteBufCodecs.optional(ITEM_HOLDER_STREAM_CODEC),
             ArrowData::feather,
             ByteBufCodecs.optional(ByteBufCodecs.holderRegistry(ModRegistries.FEATHER_DATA_KEY)),
             ArrowData::featherData,
-            ITEM_HOLDER_STREAM_CODEC,
+            ByteBufCodecs.optional(ITEM_HOLDER_STREAM_CODEC),
             ArrowData::stick,
             ByteBufCodecs.optional(ByteBufCodecs.holderRegistry(ModRegistries.STICK_DATA_KEY)),
             ArrowData::stickData,
@@ -102,10 +97,10 @@ public record ArrowData(Ingredient ingredient, double baseDamage, int color, Str
         private int color = 0xFFFFFFFF;
         private String translationKey = "";
         private boolean flame = false;
-        private double gravity = 0.05;
+        private double gravity = StickData.DEFAULT_GRAVITY;
         private Map<Identifier, Integer> effects = Map.of();
-        private Holder<Item> feather = Items.FEATHER.builtInRegistryHolder();
-        private Holder<Item> stick = Items.STICK.builtInRegistryHolder();
+        private Optional<Holder<Item>> feather = Optional.empty();
+        private Optional<Holder<Item>> stick = Optional.empty();
         private int outputAmount = 4;
         private Optional<Holder<FeatherData>> featherData = Optional.empty();
         private Optional<Holder<StickData>> stickData = Optional.empty();
@@ -139,6 +134,7 @@ public record ArrowData(Ingredient ingredient, double baseDamage, int color, Str
             return this;
         }
 
+        @Deprecated(forRemoval = true)
         public Builder gravity(double gravity) {
             this.gravity = gravity;
             return this;
@@ -149,13 +145,15 @@ public record ArrowData(Ingredient ingredient, double baseDamage, int color, Str
             return this;
         }
 
+        @Deprecated(forRemoval = true)
         public Builder feather(Item feather) {
-            this.feather = feather.builtInRegistryHolder();
+            this.feather = Optional.of(feather.builtInRegistryHolder());
             return this;
         }
 
+        @Deprecated(forRemoval = true)
         public Builder stick(Item stick) {
-            this.stick = stick.builtInRegistryHolder();
+            this.stick = Optional.of(stick.builtInRegistryHolder());
             return this;
         }
 
@@ -164,11 +162,13 @@ public record ArrowData(Ingredient ingredient, double baseDamage, int color, Str
             return this;
         }
 
+        @Deprecated(forRemoval = true)
         public Builder featherData(Holder<FeatherData> location){
             this.featherData = Optional.of(location);
             return this;
         }
 
+        @Deprecated(forRemoval = true)
         public Builder stickData(Holder<StickData> location){
             this.stickData = Optional.of(location);
             return this;
@@ -179,17 +179,21 @@ public record ArrowData(Ingredient ingredient, double baseDamage, int color, Str
         }
     }
 
-    public boolean isValidMaterial(ItemStack materialStack, ItemStack stickStack, ItemStack featherStack){
-        return ingredient().test(materialStack) && stickStack.is(stick) && isValidFeather(featherStack);
+    public List<MobEffectInstance> effectInstances(){
+        List<MobEffectInstance> instances = new ArrayList<>();
+        effects.forEach((potion, duration) -> BuiltInRegistries.POTION.get(potion).ifPresent(reference -> reference.value().getEffects().forEach(instance ->
+                instances.add(new MobEffectInstance(instance.getEffect(), duration, instance.getAmplifier(), instance.isAmbient(), instance.isVisible(), instance.showIcon(), null)))));
+        return instances;
     }
 
-    public boolean isValidFeather(ItemStack featherStack){
-        if (feather.value() instanceof ModFeatherItem){
-            if (featherData.isPresent()){
-                Holder<FeatherData> data = featherStack.getOrDefault(ModDataComponents.FEATHER_DATA.get(), Holder.direct(FeatherData.EMPTY));
-                return featherStack.is(feather) && featherData.get().is(data);
-            }
-        }
-        return featherStack.is(feather);
+    public static void warnDeprecatedFields(HolderLookup.Provider registries){
+        registries.lookupOrThrow(ModRegistries.ARROW_DATA_KEY).listElements()
+                .filter(reference -> reference.value().usesDeprecatedFields())
+                .forEach(reference -> Constants.LOGGER.warn("Arrow {} uses deprecated fields (gravity, feather, featherData, stick, stickData). Arrows are now modular: gravity belongs to sticks, and these fields no longer affect crafting or stats. They will be removed in a future version.", reference.key().identifier()));
+    }
+
+    @SuppressWarnings("removal")
+    public boolean usesDeprecatedFields(){
+        return gravity != StickData.DEFAULT_GRAVITY || feather.isPresent() || featherData.isPresent() || stick.isPresent() || stickData.isPresent();
     }
 }

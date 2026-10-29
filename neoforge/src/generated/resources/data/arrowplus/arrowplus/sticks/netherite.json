@@ -1,6 +1,7 @@
 {
   "color": -12698050,
+  "gravity": 0.12,
   "material": "minecraft:netherite_ingot",
-  "outputAmount": 4,
-  "translationKey": "item.arrowplus.netherite_stick"
+  "translationKey": "item.arrowplus.netherite_stick",
+  "velocity": 1.25
 }

@@ -39,14 +39,14 @@ public class FeatherRecipe extends CustomRecipe {
             material.add(craftingInput.getItem(2, 1).getItem());
 
             for (Holder<FeatherData> featherData : level.registryAccess().lookupOrThrow(ModRegistries.FEATHER_DATA_KEY).listElements().toList()){
-                if (material.size() == 1 && featherData.value().ingredient().test(material.iterator().next().getDefaultInstance()) && feather.is(Items.FEATHER)){
+                if (material.size() == 1 && !featherData.value().standalone() && featherData.value().ingredient().test(material.iterator().next().getDefaultInstance()) && feather.is(Items.FEATHER)){
                     this.resultData = featherData;
                     return true;
                 }
             }
             return false;
         }
-        else {
+        else{
             return false;
         }
     }

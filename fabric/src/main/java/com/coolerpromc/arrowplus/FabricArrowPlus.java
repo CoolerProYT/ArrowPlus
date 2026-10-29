@@ -15,11 +15,13 @@ public class FabricArrowPlus implements ModInitializer {
     @Override
     public void onInitialize() {
         ArrowPlus.init();
+        ArrowPlus.setup();
         DynamicRegistries.registerSynced(ModRegistries.ARROW_DATA_KEY, ArrowData.CODEC, ArrowData.CODEC);
         DynamicRegistries.registerSynced(ModRegistries.FEATHER_DATA_KEY, FeatherData.CODEC, FeatherData.CODEC);
         DynamicRegistries.registerSynced(ModRegistries.STICK_DATA_KEY, StickData.CODEC, StickData.CODEC);
 
         ServerLifecycleEvents.SERVER_STARTING.register(s -> server = s);
+        ServerLifecycleEvents.SERVER_STARTED.register(s -> ArrowData.warnDeprecatedFields(s.registryAccess()));
         ServerLifecycleEvents.SERVER_STOPPED.register(_ -> server = null);
     }
 }
