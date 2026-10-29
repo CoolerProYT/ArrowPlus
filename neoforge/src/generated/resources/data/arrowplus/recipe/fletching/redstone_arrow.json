@@ -16,7 +16,9 @@
   },
   "output": {
     "components": {
-      "arrowplus:arrow_data": "arrowplus:redstone"
+      "arrowplus:arrow_data": "arrowplus:redstone",
+      "arrowplus:feather_data": "arrowplus:feather",
+      "arrowplus:stick_data": "arrowplus:stick"
     },
     "count": 8,
     "id": "arrowplus:arrow_plus"

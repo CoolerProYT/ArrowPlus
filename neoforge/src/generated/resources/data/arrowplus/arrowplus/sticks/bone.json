@@ -1,0 +1,8 @@
+{
+  "color": -1514289,
+  "material": "minecraft:bone",
+  "outputAmount": 1,
+  "standalone": true,
+  "translationKey": "item.minecraft.bone",
+  "velocity": 1.05
+}

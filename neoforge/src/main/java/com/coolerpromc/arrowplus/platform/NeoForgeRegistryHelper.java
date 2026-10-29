@@ -39,10 +39,10 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
     public static final DeferredRegister<EntityDataSerializer<?>> ENTITY_SERIALIZERS = DeferredRegister.create(NeoForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS, Constants.MODID);
 
     @Override
-    public <T extends Item> RegistryHandler<T> registerItem(String name, Function<Item.Properties, T> func) {
+    public <T extends Item> RegistryHandler.Items<T> registerItem(String name, Function<Item.Properties, T> func) {
         DeferredItem<T> item = ITEMS.registerItem(name, func);
 
-        return new RegistryHandler<>() {
+        return new RegistryHandler.Items<>() {
             @Override
             public Identifier id() {
                 return item.getId();
@@ -61,7 +61,7 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
     }
 
     @Override
-    public RegistryHandler<CreativeModeTab> registerCreativeTab(String name, Supplier<ItemStack> icon, Component title, Function<CreativeModeTab.ItemDisplayParameters, ItemStack[]> func) {
+    public RegistryHandler<CreativeModeTab, CreativeModeTab> registerCreativeTab(String name, Supplier<ItemStack> icon, Component title, Function<CreativeModeTab.ItemDisplayParameters, ItemStack[]> func) {
         DeferredHolder<CreativeModeTab, CreativeModeTab> tab = CREATIVE_TABS.register(name, () -> CreativeModeTab.builder().icon(icon).title(title).displayItems(((param, output) -> Arrays.stream(func.apply(param)).forEach(output::accept))).build());
 
         return new RegistryHandler<>() {
@@ -83,7 +83,7 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
     }
 
     @Override
-    public <T> RegistryHandler<DataComponentType<T>> registerDataComponent(String name, UnaryOperator<DataComponentType.Builder<T>> builder) {
+    public <T> RegistryHandler<DataComponentType<?>, DataComponentType<T>> registerDataComponent(String name, UnaryOperator<DataComponentType.Builder<T>> builder) {
         DeferredHolder<DataComponentType<?>, DataComponentType<T>> component = COMPONENTS.register(name, () -> builder.apply(DataComponentType.builder()).build());
 
         return new RegistryHandler<>() {
@@ -105,7 +105,7 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
     }
 
     @Override
-    public <T extends Recipe<?>> RegistryHandler<RecipeSerializer<T>> registerRecipeSerializer(String name, RecipeSerializer<T> serializer) {
+    public <T extends Recipe<?>> RegistryHandler<RecipeSerializer<?>, RecipeSerializer<T>> registerRecipeSerializer(String name, RecipeSerializer<T> serializer) {
         DeferredHolder<RecipeSerializer<?>, RecipeSerializer<T>> holder = RECIPE_SERIALIZERS.register(name, () -> serializer);
 
         return new RegistryHandler<>() {
@@ -127,7 +127,7 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
     }
 
     @Override
-    public <T extends Entity> RegistryHandler<EntityType<T>> registerEntity(String name, EntityType.EntityFactory<T> factory, MobCategory category, UnaryOperator<EntityType.Builder<T>> builder) {
+    public <T extends Entity> RegistryHandler<EntityType<?>, EntityType<T>> registerEntity(String name, EntityType.EntityFactory<T> factory, MobCategory category, UnaryOperator<EntityType.Builder<T>> builder) {
         DeferredHolder<EntityType<?>, EntityType<T>> holder = ENTITIES.registerEntityType(name, factory, category, builder);
 
         return new RegistryHandler<>() {
@@ -149,7 +149,7 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
     }
 
     @Override
-    public <T> RegistryHandler<EntityDataSerializer<T>> registerEntityDataSerializer(String name, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec) {
+    public <T> RegistryHandler<EntityDataSerializer<?>, EntityDataSerializer<T>> registerEntityDataSerializer(String name, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec) {
         DeferredHolder<EntityDataSerializer<?>, EntityDataSerializer<T>> holder = ENTITY_SERIALIZERS.register(name, () -> EntityDataSerializer.forValueType(streamCodec));
 
         return new RegistryHandler<>() {

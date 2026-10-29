@@ -1,0 +1,10 @@
+{
+  "accuracy": 0.8,
+  "airDrag": 0.995,
+  "color": -3555104,
+  "gravityMultiplier": 0.6,
+  "material": "minecraft:phantom_membrane",
+  "outputAmount": 1,
+  "standalone": true,
+  "translationKey": "item.minecraft.phantom_membrane"
+}

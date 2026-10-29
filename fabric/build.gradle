@@ -3,7 +3,20 @@ plugins {
     id 'net.fabricmc.fabric-loom'
     id "me.modmuss50.mod-publish-plugin"
 }
+
+repositories {
+    maven {
+        name "coolerpromcMavenPrivate"
+        url "https://maven.coolerpromc.com/private"
+        credentials {
+            username = findProperty("maven_username")
+            password = findProperty("maven_password")
+        }
+    }
+}
+
 dependencies {
+    include implementation("io.github.llamalad7:mixinextras-fabric:0.5.5")
     minecraft "com.mojang:minecraft:${minecraft_version}"
     implementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     implementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
@@ -11,13 +24,14 @@ dependencies {
     implementation include("com.electronwill.night-config:core:3.8.1")
     implementation include("com.electronwill.night-config:toml:3.8.1")
 
+    compileOnly "mezz.jei:jei-${dependencies_mc_version}-fabric-api:${jei_version}"
+    runtimeOnly "mezz.jei:jei-${dependencies_mc_version}-fabric:${jei_version}"
 
-    compileOnly "mezz.jei:jei-${minecraft_version}-fabric-api:${jei_version}"
-    runtimeOnly "mezz.jei:jei-${minecraft_version}-fabric:${jei_version}"
+    compileOnly("com.coolerpromc.fletchingrecipe:fletchingrecipe-fabric-${minecraft_version}:26.1.2.3")
+    runtimeOnly("com.coolerpromc.fletchingrecipe:fletchingrecipe-fabric-${minecraft_version}:26.1.2.3")
+    implementation include("com.coolerpromc.coolerconfig:coolerconfig-fabric-${minecraft_version}:${coolerconfig_version}")
 
-    compileOnly("com.coolerpromc.fletchingrecipe:fletchingrecipe-fabric-26.1.2:26.1.2.3")
-    runtimeOnly("com.coolerpromc.fletchingrecipe:fletchingrecipe-fabric-26.1.2:26.1.2.3")
-    implementation include("com.coolerpromc.coolerconfig:coolerconfig-fabric-${dependencies_mc_version}:${coolerconfig_version}")
+    localRuntime("com.coolerpromc.mctest:mctest-fabric-${minecraft_version}:26.1.2.1") { transitive = false }
 }
 
 fabricApi {
@@ -50,7 +64,7 @@ loom {
 sourceSets.main.resources { srcDirs 'src/generated/resources', rootProject.project(':common').file('src/generated/resources/').getAbsolutePath() }
 
 processResources {
-    // keep your other resource processing here
+
 }
 
 tasks.named('processResources').configure {
@@ -77,7 +91,6 @@ tasks.named('processResources').configure {
     }
 }
 
-// Implement mcgradleconventions loader attribute
 def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
 ['apiElements', 'runtimeElements', 'sourcesElements', 'javadocElements', 'includeInternal', 'modCompileClasspath'].each { variant ->
     configurations.named("$variant") {
@@ -106,18 +119,14 @@ publishMods {
     curseforge {
         projectId = "1317209"
         accessToken = findProperty("CF_TOKEN")
-        minecraftVersionRange {
-            start = "26.1"
-            end = "26.1.2"
-        }
+        minecraftVersions.add(minecraft_version)
+        client = true
+        server = true
     }
 
     modrinth {
         projectId = 'srzQqcGY'
         accessToken = findProperty("MODRINTH_TOKEN")
-        minecraftVersionRange {
-            start = "26.1"
-            end = "26.1.2"
-        }
+        minecraftVersions.add(minecraft_version)
     }
 }

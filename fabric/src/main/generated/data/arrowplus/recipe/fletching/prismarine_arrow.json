@@ -18,7 +18,9 @@
   },
   "output": {
     "components": {
-      "arrowplus:arrow_data": "arrowplus:prismarine"
+      "arrowplus:arrow_data": "arrowplus:prismarine",
+      "arrowplus:feather_data": "arrowplus:feather",
+      "arrowplus:stick_data": "arrowplus:stick"
     },
     "count": 12,
     "id": "arrowplus:arrow_plus"

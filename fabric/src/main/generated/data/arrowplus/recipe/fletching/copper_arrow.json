@@ -18,7 +18,9 @@
   },
   "output": {
     "components": {
-      "arrowplus:arrow_data": "arrowplus:copper"
+      "arrowplus:arrow_data": "arrowplus:copper",
+      "arrowplus:feather_data": "arrowplus:feather",
+      "arrowplus:stick_data": "arrowplus:stick"
     },
     "count": 8,
     "id": "arrowplus:arrow_plus"

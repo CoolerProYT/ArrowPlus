@@ -1,14 +1,13 @@
 package com.coolerpromc.arrowplus.client.item;
 
-import com.coolerpromc.arrowplus.datapack.arrow.ArrowData;
 import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
-import com.coolerpromc.arrowplus.item.custom.ModStickItem;
+import com.coolerpromc.arrowplus.datapack.ArrowParts;
+import com.coolerpromc.arrowplus.datapack.stick.StickData;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.color.item.ItemTintSource;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.core.Holder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -22,11 +21,10 @@ public record BowStickTintSource(int defaultColor) implements ItemTintSource {
     public int calculate(ItemStack itemStack, @Nullable ClientLevel clientLevel, @Nullable LivingEntity livingEntity) {
         if (livingEntity != null){
             ItemStack arrowStack = livingEntity.getProjectile(itemStack);
-            Holder<ArrowData> data = arrowStack.get(ModDataComponents.ARROW_DATA.get());
-            if (data != null && data.value().stick().value() instanceof ModStickItem item && data.value().stickData().isPresent()){
-                return data.value().stickData().get().value().color();
+            if (arrowStack.has(ModDataComponents.ARROW_DATA.get())){
+                return ArrowParts.stick(arrowStack).color();
             }
-            return 0xFF886627;
+            return StickData.VANILLA_COLOR;
         }
         return defaultColor;
     }

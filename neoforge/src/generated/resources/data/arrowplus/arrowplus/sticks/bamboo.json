@@ -1,0 +1,9 @@
+{
+  "color": -8412366,
+  "gravity": 0.045,
+  "material": "minecraft:bamboo",
+  "outputAmount": 1,
+  "standalone": true,
+  "translationKey": "block.minecraft.bamboo",
+  "velocity": 0.9
+}

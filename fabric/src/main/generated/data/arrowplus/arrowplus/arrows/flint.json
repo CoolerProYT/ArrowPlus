@@ -1,0 +1,8 @@
+{
+  "baseDamage": 2.0,
+  "color": -11908534,
+  "effects": {},
+  "flame": false,
+  "material": "minecraft:flint",
+  "translationKey": "item.minecraft.arrow"
+}

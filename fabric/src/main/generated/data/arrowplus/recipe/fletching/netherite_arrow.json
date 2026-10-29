@@ -10,27 +10,17 @@
   "type": "fletchingrecipe:fletching",
   "bottom": {
     "count": 1,
-    "ingredient": {
-      "fabric:type": "fabric:components",
-      "base": "arrowplus:custom_feather",
-      "components": {
-        "arrowplus:feather_data": "arrowplus:gilded"
-      }
-    }
+    "ingredient": "minecraft:feather"
   },
   "middle": {
     "count": 1,
-    "ingredient": {
-      "fabric:type": "fabric:components",
-      "base": "arrowplus:custom_stick",
-      "components": {
-        "arrowplus:stick_data": "arrowplus:diamond"
-      }
-    }
+    "ingredient": "minecraft:stick"
   },
   "output": {
     "components": {
-      "arrowplus:arrow_data": "arrowplus:netherite"
+      "arrowplus:arrow_data": "arrowplus:netherite",
+      "arrowplus:feather_data": "arrowplus:feather",
+      "arrowplus:stick_data": "arrowplus:stick"
     },
     "count": 4,
     "id": "arrowplus:arrow_plus"

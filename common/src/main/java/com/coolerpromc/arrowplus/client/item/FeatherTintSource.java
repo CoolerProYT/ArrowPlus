@@ -1,7 +1,7 @@
 package com.coolerpromc.arrowplus.client.item;
 
-import com.coolerpromc.arrowplus.datapack.arrow.ArrowData;
 import com.coolerpromc.arrowplus.datacomponent.ModDataComponents;
+import com.coolerpromc.arrowplus.datapack.ArrowParts;
 import com.coolerpromc.arrowplus.datapack.feather.FeatherData;
 import com.coolerpromc.arrowplus.item.custom.ModFeatherItem;
 import com.mojang.serialization.MapCodec;
@@ -22,13 +22,7 @@ public record FeatherTintSource(int defaultColor) implements ItemTintSource {
     @Override
     public int calculate(ItemStack itemStack, @Nullable ClientLevel clientLevel, @Nullable LivingEntity livingEntity) {
         if (itemStack.has(ModDataComponents.ARROW_DATA.get())){
-            Holder<ArrowData> holder = itemStack.get(ModDataComponents.ARROW_DATA.get());
-            ArrowData data = holder.value();
-            if (data.feather().value() instanceof ModFeatherItem && data.featherData().isPresent()){
-                Holder<FeatherData> featherData = data.featherData().get();
-                return featherData.value().color();
-            }
-            return -1;
+            return ArrowParts.feather(itemStack).color();
         }
         if (itemStack.getItem() instanceof ModFeatherItem){
             Holder<FeatherData> featherData = itemStack.get(ModDataComponents.FEATHER_DATA.get());

@@ -1,0 +1,8 @@
+{
+  "accuracy": 1.1,
+  "airDrag": 0.985,
+  "color": -11834582,
+  "material": "minecraft:dried_kelp",
+  "translationKey": "item.arrowplus.kelp_feather",
+  "waterDrag": 0.95
+}

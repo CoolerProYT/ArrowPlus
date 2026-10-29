@@ -6,6 +6,9 @@
   "compatibilityLevel": "JAVA_18",
   "mixins": [
     "ArrowItemMixin",
+    "AbstractArrowMixin",
+    "ItemStackMixin",
+    "ItemStackTemplateMixin",
     "migrate.ItemStackMixin"
   ],
   "server": [],
@@ -13,7 +16,8 @@
     "defaultRequire": 1
   },
   "client": [
-    "TippableArrowRendererMixin"
+    "TippableArrowRendererMixin",
+    "JeiVanillaArrowSubtypeMixin",
+    "FletchingJeiSubtypeMixin"
   ]
 }
-

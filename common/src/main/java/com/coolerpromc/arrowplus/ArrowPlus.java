@@ -6,6 +6,7 @@ import com.coolerpromc.arrowplus.entity.ModEntities;
 import com.coolerpromc.arrowplus.item.ModCreativeTabs;
 import com.coolerpromc.arrowplus.item.ModItems;
 import com.coolerpromc.arrowplus.recipe.ModRecipeSerializer;
+import net.minecraft.world.level.block.DispenserBlock;
 
 public class ArrowPlus {
     public static void init() {
@@ -16,5 +17,9 @@ public class ArrowPlus {
         ModEntities.load();
         ModCreativeTabs.load();
         ModRecipeSerializer.load();
+    }
+
+    public static void setup() {
+        DispenserBlock.registerProjectileBehavior(ModItems.ARROW_PLUS.get());
     }
 }

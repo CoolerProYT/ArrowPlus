@@ -1,46 +1,45 @@
 {
-    "schemaVersion": 1,
-    "id": "${mod_id}",
-    "version": "${version}",
-    "name": "${mod_name}",
-    "description": "${description}",
-    "authors": [
-        "${mod_author}"
+  "schemaVersion": 1,
+  "id": "${mod_id}",
+  "version": "${version}",
+  "name": "${mod_name}",
+  "description": "${description}",
+  "authors": [
+    "${mod_author}"
+  ],
+  "contact": {
+    "homepage": "https://modrinth.com/mod/srzQqcGY",
+    "sources": "https://github.com/CoolerProYT/ArrowPlus"
+  },
+  "license": "${license}",
+  "icon": "${mod_id}.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.coolerpromc.arrowplus.FabricArrowPlus"
     ],
-    "contact": {
-        "homepage": "https://fabricmc.net/",
-        "sources": "https://github.com/FabricMC/fabric-example-mod"
-    },
-    "license": "${license}",
-    "icon": "${mod_id}.png",
-    "environment": "*",
-    "entrypoints": {
-        "main": [
-            "com.coolerpromc.arrowplus.FabricArrowPlus"
-        ],
-        "client": [
-            "com.coolerpromc.arrowplus.FabricArrowPlusClient"
-        ],
-        "fabric-datagen": [
-            "com.coolerpromc.arrowplus.datagen.ArrowPlusDataGenerator"
-        ],
-        "jei_mod_plugin": [
-            "com.coolerpromc.arrowplus.compat.jei.ModJEIPlugin"
-        ]
-    },
-    "mixins": [
-        "${mod_id}.mixins.json",
-        "${mod_id}.fabric.mixins.json"
+    "client": [
+      "com.coolerpromc.arrowplus.FabricArrowPlusClient"
     ],
-    "depends": {
-        "fabricloader": ">=${fabric_loader_version}",
-        "fabric-api": "*",
-        "minecraft": "~26.1",
-        "java": ">=${java_version}",
-        "coolerconfig": "*"
-    },
-    "suggests": {
-        "another-mod": "*"
-    }
+    "fabric-datagen": [
+      "com.coolerpromc.arrowplus.datagen.ArrowPlusDataGenerator"
+    ],
+    "jei_mod_plugin": [
+      "com.coolerpromc.arrowplus.compat.jei.ModJEIPlugin"
+    ]
+  },
+  "mixins": [
+    "${mod_id}.mixins.json",
+    "${mod_id}.fabric.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${fabric_loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${fabric_mc_version_range}",
+    "java": ">=${java_version}",
+    "coolerconfig": "*"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
 }
-  
