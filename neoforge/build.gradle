@@ -75,7 +75,8 @@ dependencies {
     runtimeOnly("mezz.jei:jei-${dependencies_mc_version}-neoforge:${jei_version}")
 
     compileOnly("com.coolerpromc.fletchingrecipe:fletchingrecipe-neoforge-${minecraft_version}:26.3.0.0")
-    runtimeOnly("com.coolerpromc.fletchingrecipe:fletchingrecipe-neoforge-${minecraft_version}:26.3.0.0")
+    // Keep the optional integration available at compile time. The released
+    // Fletching Recipe 26.3.0.0 uses ModConfig.Type.COMMON, removed in NeoForge 26.3.0.97.
     jarJar implementation("com.coolerpromc.coolerconfig:coolerconfig-neoforge-${minecraft_version}:${coolerconfig_version}")
 
     localRuntime("com.coolerpromc.mctest:mctest-neoforge-${minecraft_version}:26.3.0.3") { transitive = false }

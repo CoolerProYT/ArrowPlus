@@ -39,8 +39,8 @@ public class ModDataGenerator {
 
     @SubscribeEvent
     public static void onGatherData(GatherDataEvent.Server event) {
-        event.createWorldRegistryObjects(ModDatapackProvider.registrySetBuilder);
-        event.createReloadableRegistryObjects(new RegistrySetBuilder().add(new MultiRegistryBootstrap() {
+        event.getDefaultPackGenerator().createWorldRegistryObjects(ModDatapackProvider.registrySetBuilder);
+        event.getDefaultPackGenerator().createReloadableRegistryObjects(new RegistrySetBuilder().add(new MultiRegistryBootstrap() {
             @Override
             public Set<ResourceKey<? extends Registry<?>>> requestedRegistries() {
                 return Set.of(Registries.RECIPE, Registries.ADVANCEMENT);
@@ -57,8 +57,20 @@ public class ModDataGenerator {
 
     @SubscribeEvent
     public static void onDataPackRegistry(NewDatapackRegistryEvent event) {
-        event.worldRegistry(ModRegistries.ARROW_DATA_KEY, ArrowData.CODEC, ArrowData.CODEC, builder -> builder.maxId(256));
-        event.worldRegistry(ModRegistries.FEATHER_DATA_KEY, FeatherData.CODEC, FeatherData.CODEC, builder -> builder.maxId(256));
-        event.worldRegistry(ModRegistries.STICK_DATA_KEY, StickData.CODEC, StickData.CODEC, builder -> builder.maxId(256));
+        event.<ArrowData>worldRegistry(builder -> builder
+                .key(ModRegistries.ARROW_DATA_KEY)
+                .codec(ArrowData.CODEC)
+                .networkCodec(ArrowData.CODEC)
+                .configurator(registry -> registry.maxId(256)));
+        event.<FeatherData>worldRegistry(builder -> builder
+                .key(ModRegistries.FEATHER_DATA_KEY)
+                .codec(FeatherData.CODEC)
+                .networkCodec(FeatherData.CODEC)
+                .configurator(registry -> registry.maxId(256)));
+        event.<StickData>worldRegistry(builder -> builder
+                .key(ModRegistries.STICK_DATA_KEY)
+                .codec(StickData.CODEC)
+                .networkCodec(StickData.CODEC)
+                .configurator(registry -> registry.maxId(256)));
     }
 }
